@@ -11,6 +11,13 @@ h1 {
     font-family: 'Raleway', sans-serif;
 }
 
+h2 {
+    color: white;
+    font-weight: bold;
+    font-size: 1.7em;
+    font-family: 'Raleway', sans-serif;
+}
+
 a {
     color: #E6E6E6 !important;
     font-size: 1em;
@@ -35,6 +42,10 @@ img {
     width: 50%;
 }
 
+.avatar {
+    width: 30%;
+}
+
 .content {
     padding: 0.7em 1em;
 }
@@ -50,7 +61,10 @@ img {
     font-family: 'Nunito Sans', sans-serif;
     cursor: pointer;
 }
-
+.error-message {
+    margin-bottom: 20px;
+    z-index: 9999
+}
 /*koniec*/
 
 .valid.modified:not([type=checkbox]) {

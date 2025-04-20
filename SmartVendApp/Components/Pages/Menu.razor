@@ -1,0 +1,57 @@
+﻿@page "/menu"
+
+@inject NavigationManager NavigationManager
+
+<div class="container-fluid d-flex flex-column h-100">
+    <div class="row flex-grow-1 d-flex align-items-start">
+        <div class="col-12 text-center">
+            <img src="content/SmartVendLogo.png" alt="Logo" />
+        </div>
+    </div>
+    <div class="row text-center mb-5 pb-3">
+       <div class="col-12 my-1">
+            <button type="submit" class="main-button w-100 mb-3" @onclick="NavigateToAddMachines">Dodaj maszyny</button>
+        </div>
+        <div class="col-12 my-1">
+            <button type="submit" class="main-button w-100 mb-3" @onclick="NavigateToViewList">Pokaż listę</button>
+        </div>
+        <div class="col-12 my-1">
+            <button type="submit" class="main-button w-100 mb-3" @onclick="NavigateToListMachies">Lista maszyn</button>
+        </div>
+        <div class="col-12 my-1">
+            <button type="submit" class="main-button w-100 mb-3" @onclick="NavigateToOrders">Zamówienia</button>
+        </div>
+        <div class="col-12 my-1">
+            <button type="submit" class="main-button w-100 mb-3" @onclick="NavigateToOperationsMM">Operacje MM</button>
+        </div>
+    </div>
+    <div class="row text-center mb-5 pb-3">
+        <div class="col-12 my-4">
+            <a href="#">Wyloguj się</a>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private void NavigateToAddMachines()
+    {
+        NavigationManager.NavigateTo("/addmachines");
+    }
+    private void NavigateToViewList()
+    {
+        NavigationManager.NavigateTo("/viewlist");
+    }
+    private void NavigateToListMachies()
+    {
+        NavigationManager.NavigateTo("/listmachines");
+    }
+    private void NavigateToOrders()
+    {
+        NavigationManager.NavigateTo("/orders");
+    }
+    private void NavigateToOperationsMM()
+    {
+        NavigationManager.NavigateTo("/operationsmm");
+    }
+}
