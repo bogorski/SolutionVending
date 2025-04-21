@@ -1,10 +1,49 @@
 ﻿@page "/addmachines"
 
-<h3>AddMachines</h3>
-<div class="col-12 my-4">
-    <a href="/menu">Wróć</a>
-</div>
+@using SmartVendApp.Controllers
+@using SmartVendApp.Models
+@inject MachineController machineController
+
+<h3>Dodaj Maszynę</h3>
+
+<form @onsubmit="HandleFormSubmit">
+    <div>
+        <label>Numer maszyny:</label>
+        <input type="text" @bind="newMachine.NumerMaszyny" />
+    </div>
+    <div>
+        <label>Typ maszyny:</label>
+        <input type="text" @bind="newMachine.IdtypMaszyny" />
+    </div>
+    <div>
+        <label>Numer seryjny:</label>
+        <input type="text" @bind="newMachine.NumerSeryjny" />
+    </div>
+    <div>
+        <label>Rok produkcji:</label>
+        <input type="date" @bind="newMachine.RokProdukcji" />
+    </div>
+    <div>
+        <label>Opis:</label>
+        <input type="text" @bind="newMachine.Opis" />
+    </div>
+    <div>
+        <label>Data montażu:</label>
+        <input type="date" @bind="newMachine.DataMontazu" />
+    </div>
+
+    <button type="submit">Dodaj maszynę</button>
+</form>
+
+<a href="/menu">Wróć</a>
 
 @code {
+    private Machine newMachine = new Machine();
 
+    private void HandleFormSubmit()
+    {
+        if (string.IsNullOrEmpty(newMachine.NumerMaszyny)) return;
+
+        machineController.AddMachine(newMachine);
+    }
 }

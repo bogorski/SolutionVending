@@ -1,7 +1,16 @@
-﻿
-@page "/listmachines"
+﻿@page "/listmachines"
+
+
+@using SmartVendApp.Controllers
+@inject MachineController machineController
 
 <h3>ListMachines</h3>
+<ul>
+    @foreach (var machine in machineController.GetMachines())
+    {
+        <li>@machine.NumerMaszyny - @machine.NumerSeryjny</li>
+    }
+</ul>
 <div class="col-12 my-4">
     <a href="/menu">Wróć</a>
 </div>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SmartVendApp.Controllers;
 
 namespace SmartVendApp
 {
@@ -15,9 +16,10 @@ namespace SmartVendApp
                 });
 
             builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddSingleton<MachineController>();
 
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
 
