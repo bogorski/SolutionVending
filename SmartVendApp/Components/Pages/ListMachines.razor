@@ -1,20 +1,41 @@
 ﻿@page "/listmachines"
 
+@using SmartVendApp.Models
+@using SmartVendApp.Controllers;
+@using SmartVendApp.ServiceReference;
 
-@using SmartVendApp.Controllers
-@inject MachineController machineController
+@inject MachineController MachineController
+@inject VendingService VendingService
 
-<h3>ListMachines</h3>
-<ul>
-    @foreach (var machine in machineController.GetMachines())
-    {
-        <li>@machine.NumerMaszyny - @machine.NumerSeryjny</li>
-    }
-</ul>
-<div class="col-12 my-4">
-    <a href="/menu">Wróć</a>
-</div>
+<h3>Lista Maszyn</h3>
+
+@if (maszyny == null)
+{
+    <p><em>Ładowanie...</em></p>
+}
+else
+{
+    <ul>
+        @foreach (var maszyna in maszyny)
+        {
+            <li>@maszyna.NumerMaszyny</li> <!-- Zamień 'Nazwa' na odpowiednią właściwość Twojego obiektu Maszyny -->
+        }
+    </ul>
+}
 
 @code {
+    private ICollection<Maszyny> maszyny;
 
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            maszyny = await VendingService.MaszynyAllAsync(); // Wywołanie metody na instancji
+        }
+        catch (Exception ex)
+        {
+            // Obsługa błędów
+            Console.WriteLine($"Błąd podczas ładowania maszyn: {ex.Message}");
+        }
+    }
 }

@@ -58,10 +58,34 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
+      <OpenApiReference Include="OpenAPIs\swagger.json" Namespace="SmartVendApp.ServiceReference" ClassName="VendingService">
+        <SourceUri>https://localhost:7052/swagger/v1/swagger.json</SourceUri>
+      </OpenApiReference>
     </ItemGroup>
+
+   <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.100" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="8.0.100" />
+    <!-- Pozostałe pakiety, które już masz -->
+    <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="8.0.15">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
+    <PackageReference Include="Microsoft.NETCore.Platforms" Version="7.0.4" />
+    <PackageReference Include="Microsoft.NETCore.Targets" Version="5.0.0" />
+    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NSwag.ApiDescription.Client" Version="14.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.Numerics.Vectors" Version="4.6.1" />
+</ItemGroup>
+
+	<Target Name="GenerateSwaggerClient" AfterTargets="Build">
+		<Exec Command="nswag openapi2csclient /input:https://localhost:7052/swagger/v1/swagger.json /output:Services/ServiceReference/swaggerClient.cs /namespace:SmartVendApp.ServiceReference /classname:VendingService" />
+	</Target>
 
 </Project>

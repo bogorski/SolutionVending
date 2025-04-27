@@ -1,11 +1,71 @@
-﻿
-@page "/operationsmm"
+﻿@page "/operationsmm"
+@using Newtonsoft.Json
+@using SmartVendApp.Models
+@using SmartVendApp.ServiceReference
+@inject VendingService VendingService
 
-<h3>OperationsMM</h3>
-<div class="col-12 my-4">
-    <a href="/menu">Wróć</a>
-</div>
+<h3>Lista Dostawców</h3>
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+
+@if (dostawcy == null)
+{
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Ładowanie...</span>
+    </div>
+}
+else if (dostawcy.Any())
+{
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nazwa</th>
+                <th>Adres</th>
+                <th>Kraj</th>
+                <th>Opis</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var dostawca in dostawcy)
+            {
+                <tr>
+                    <td>@dostawca.Iddostawcy</td>
+                    <td>@dostawca.Nazwa</td>
+                    <td>
+                        @dostawca.Ulica, @dostawca.KodPocztowy @dostawca.Miasto
+                    </td>
+                    <td>@dostawca.Kraj</td>
+                    <td>@dostawca.Opis</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">Brak dostawców do wyświetlenia.</div>
+}
+
 
 @code {
+    private ICollection<Dostawcy> dostawcy;
+    private string errorMessage;
 
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Bezpośrednie przypisanie wyniku z serwisu
+            dostawcy = await VendingService.DostawcyAllAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Wystąpił błąd: {ex.Message}";
+            Console.WriteLine($"Szczegóły błędu: {ex}");
+        }
+    }
 }
