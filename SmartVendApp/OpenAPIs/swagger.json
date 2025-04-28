@@ -1,14 +1,14 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "RestApiVending",
+    "title": "RestAPIVend",
     "version": "1.0"
   },
   "paths": {
-    "/api/DostawaTowary": {
+    "/api/DostawaTowaries": {
       "get": {
         "tags": [
-          "DostawaTowary"
+          "DostawaTowaries"
         ],
         "responses": {
           "200": {
@@ -44,7 +44,7 @@
       },
       "post": {
         "tags": [
-          "DostawaTowary"
+          "DostawaTowaries"
         ],
         "requestBody": {
           "content": {
@@ -89,10 +89,10 @@
         }
       }
     },
-    "/api/DostawaTowary/{id}": {
+    "/api/DostawaTowaries/{id}": {
       "get": {
         "tags": [
-          "DostawaTowary"
+          "DostawaTowaries"
         ],
         "parameters": [
           {
@@ -130,7 +130,7 @@
       },
       "put": {
         "tags": [
-          "DostawaTowary"
+          "DostawaTowaries"
         ],
         "parameters": [
           {
@@ -170,7 +170,7 @@
       },
       "delete": {
         "tags": [
-          "DostawaTowary"
+          "DostawaTowaries"
         ],
         "parameters": [
           {
@@ -190,10 +190,10 @@
         }
       }
     },
-    "/api/Dostawcy": {
+    "/api/Dostawcies": {
       "get": {
         "tags": [
-          "Dostawcy"
+          "Dostawcies"
         ],
         "responses": {
           "200": {
@@ -229,7 +229,7 @@
       },
       "post": {
         "tags": [
-          "Dostawcy"
+          "Dostawcies"
         ],
         "requestBody": {
           "content": {
@@ -274,10 +274,10 @@
         }
       }
     },
-    "/api/Dostawcy/{id}": {
+    "/api/Dostawcies/{id}": {
       "get": {
         "tags": [
-          "Dostawcy"
+          "Dostawcies"
         ],
         "parameters": [
           {
@@ -315,7 +315,7 @@
       },
       "put": {
         "tags": [
-          "Dostawcy"
+          "Dostawcies"
         ],
         "parameters": [
           {
@@ -355,7 +355,7 @@
       },
       "delete": {
         "tags": [
-          "Dostawcy"
+          "Dostawcies"
         ],
         "parameters": [
           {
@@ -375,10 +375,10 @@
         }
       }
     },
-    "/api/Faktury": {
+    "/api/Fakturies": {
       "get": {
         "tags": [
-          "Faktury"
+          "Fakturies"
         ],
         "responses": {
           "200": {
@@ -414,7 +414,7 @@
       },
       "post": {
         "tags": [
-          "Faktury"
+          "Fakturies"
         ],
         "requestBody": {
           "content": {
@@ -459,10 +459,10 @@
         }
       }
     },
-    "/api/Faktury/{id}": {
+    "/api/Fakturies/{id}": {
       "get": {
         "tags": [
-          "Faktury"
+          "Fakturies"
         ],
         "parameters": [
           {
@@ -500,7 +500,7 @@
       },
       "put": {
         "tags": [
-          "Faktury"
+          "Fakturies"
         ],
         "parameters": [
           {
@@ -540,7 +540,7 @@
       },
       "delete": {
         "tags": [
-          "Faktury"
+          "Fakturies"
         ],
         "parameters": [
           {
@@ -560,10 +560,10 @@
         }
       }
     },
-    "/api/LokalizacjaMaszyny": {
+    "/api/LokalizacjaMaszynies": {
       "get": {
         "tags": [
-          "LokalizacjaMaszyny"
+          "LokalizacjaMaszynies"
         ],
         "responses": {
           "200": {
@@ -599,7 +599,7 @@
       },
       "post": {
         "tags": [
-          "LokalizacjaMaszyny"
+          "LokalizacjaMaszynies"
         ],
         "requestBody": {
           "content": {
@@ -644,10 +644,10 @@
         }
       }
     },
-    "/api/LokalizacjaMaszyny/{id}": {
+    "/api/LokalizacjaMaszynies/{id}": {
       "get": {
         "tags": [
-          "LokalizacjaMaszyny"
+          "LokalizacjaMaszynies"
         ],
         "parameters": [
           {
@@ -685,7 +685,7 @@
       },
       "put": {
         "tags": [
-          "LokalizacjaMaszyny"
+          "LokalizacjaMaszynies"
         ],
         "parameters": [
           {
@@ -725,7 +725,7 @@
       },
       "delete": {
         "tags": [
-          "LokalizacjaMaszyny"
+          "LokalizacjaMaszynies"
         ],
         "parameters": [
           {
@@ -745,10 +745,10 @@
         }
       }
     },
-    "/api/Lokalizacje": {
+    "/api/Lokalizacjes": {
       "get": {
         "tags": [
-          "Lokalizacje"
+          "Lokalizacjes"
         ],
         "responses": {
           "200": {
@@ -784,7 +784,7 @@
       },
       "post": {
         "tags": [
-          "Lokalizacje"
+          "Lokalizacjes"
         ],
         "requestBody": {
           "content": {
@@ -829,10 +829,10 @@
         }
       }
     },
-    "/api/Lokalizacje/{id}": {
+    "/api/Lokalizacjes/{id}": {
       "get": {
         "tags": [
-          "Lokalizacje"
+          "Lokalizacjes"
         ],
         "parameters": [
           {
@@ -870,7 +870,7 @@
       },
       "put": {
         "tags": [
-          "Lokalizacje"
+          "Lokalizacjes"
         ],
         "parameters": [
           {
@@ -910,7 +910,7 @@
       },
       "delete": {
         "tags": [
-          "Lokalizacje"
+          "Lokalizacjes"
         ],
         "parameters": [
           {
@@ -930,195 +930,10 @@
         }
       }
     },
-    "/api/MagazynTowary": {
+    "/api/Magazynies": {
       "get": {
         "tags": [
-          "MagazynTowary"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MagazynTowary"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MagazynTowary"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MagazynTowary"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "MagazynTowary"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MagazynTowary"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MagazynTowary"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/MagazynTowary"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MagazynTowary"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MagazynTowary"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MagazynTowary"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/MagazynTowary/{id}": {
-      "get": {
-        "tags": [
-          "MagazynTowary"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/MagazynTowary"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MagazynTowary"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MagazynTowary"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "MagazynTowary"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MagazynTowary"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MagazynTowary"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/MagazynTowary"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "MagazynTowary"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Magazyny": {
-      "get": {
-        "tags": [
-          "Magazyny"
+          "Magazynies"
         ],
         "responses": {
           "200": {
@@ -1154,7 +969,7 @@
       },
       "post": {
         "tags": [
-          "Magazyny"
+          "Magazynies"
         ],
         "requestBody": {
           "content": {
@@ -1199,10 +1014,10 @@
         }
       }
     },
-    "/api/Magazyny/{id}": {
+    "/api/Magazynies/{id}": {
       "get": {
         "tags": [
-          "Magazyny"
+          "Magazynies"
         ],
         "parameters": [
           {
@@ -1240,7 +1055,7 @@
       },
       "put": {
         "tags": [
-          "Magazyny"
+          "Magazynies"
         ],
         "parameters": [
           {
@@ -1280,7 +1095,7 @@
       },
       "delete": {
         "tags": [
-          "Magazyny"
+          "Magazynies"
         ],
         "parameters": [
           {
@@ -1300,10 +1115,195 @@
         }
       }
     },
-    "/api/MaszynaTowary": {
+    "/api/MagazynTowaries": {
       "get": {
         "tags": [
-          "MaszynaTowary"
+          "MagazynTowaries"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MagazynTowary"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MagazynTowary"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MagazynTowary"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "MagazynTowaries"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MagazynTowary"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MagazynTowary"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MagazynTowary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MagazynTowary"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MagazynTowary"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MagazynTowary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/MagazynTowaries/{id}": {
+      "get": {
+        "tags": [
+          "MagazynTowaries"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MagazynTowary"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MagazynTowary"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MagazynTowary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "MagazynTowaries"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MagazynTowary"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MagazynTowary"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MagazynTowary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "MagazynTowaries"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/MaszynaTowaries": {
+      "get": {
+        "tags": [
+          "MaszynaTowaries"
         ],
         "responses": {
           "200": {
@@ -1339,7 +1339,7 @@
       },
       "post": {
         "tags": [
-          "MaszynaTowary"
+          "MaszynaTowaries"
         ],
         "requestBody": {
           "content": {
@@ -1384,10 +1384,10 @@
         }
       }
     },
-    "/api/MaszynaTowary/{id}": {
+    "/api/MaszynaTowaries/{id}": {
       "get": {
         "tags": [
-          "MaszynaTowary"
+          "MaszynaTowaries"
         ],
         "parameters": [
           {
@@ -1424,7 +1424,7 @@
       },
       "put": {
         "tags": [
-          "MaszynaTowary"
+          "MaszynaTowaries"
         ],
         "parameters": [
           {
@@ -1463,7 +1463,7 @@
       },
       "delete": {
         "tags": [
-          "MaszynaTowary"
+          "MaszynaTowaries"
         ],
         "parameters": [
           {
@@ -1482,10 +1482,192 @@
         }
       }
     },
-    "/api/Maszyny": {
+    "/api/MaszynaTrasas": {
       "get": {
         "tags": [
-          "Maszyny"
+          "MaszynaTrasas"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MaszynaTrasa"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MaszynaTrasa"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MaszynaTrasa"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "MaszynaTrasas"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaszynaTrasa"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaszynaTrasa"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaszynaTrasa"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaszynaTrasa"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaszynaTrasa"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaszynaTrasa"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/MaszynaTrasas/{id}": {
+      "get": {
+        "tags": [
+          "MaszynaTrasas"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaszynaTrasa"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaszynaTrasa"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaszynaTrasa"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "MaszynaTrasas"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaszynaTrasa"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaszynaTrasa"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaszynaTrasa"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "MaszynaTrasas"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Maszynies": {
+      "get": {
+        "tags": [
+          "Maszynies"
         ],
         "responses": {
           "200": {
@@ -1521,7 +1703,7 @@
       },
       "post": {
         "tags": [
-          "Maszyny"
+          "Maszynies"
         ],
         "requestBody": {
           "content": {
@@ -1566,10 +1748,10 @@
         }
       }
     },
-    "/api/Maszyny/{id}": {
+    "/api/Maszynies/{id}": {
       "get": {
         "tags": [
-          "Maszyny"
+          "Maszynies"
         ],
         "parameters": [
           {
@@ -1606,7 +1788,7 @@
       },
       "put": {
         "tags": [
-          "Maszyny"
+          "Maszynies"
         ],
         "parameters": [
           {
@@ -1645,7 +1827,7 @@
       },
       "delete": {
         "tags": [
-          "Maszyny"
+          "Maszynies"
         ],
         "parameters": [
           {
@@ -1664,10 +1846,10 @@
         }
       }
     },
-    "/api/Pojazdy": {
+    "/api/Pojazdies": {
       "get": {
         "tags": [
-          "Pojazdy"
+          "Pojazdies"
         ],
         "responses": {
           "200": {
@@ -1703,7 +1885,7 @@
       },
       "post": {
         "tags": [
-          "Pojazdy"
+          "Pojazdies"
         ],
         "requestBody": {
           "content": {
@@ -1748,10 +1930,10 @@
         }
       }
     },
-    "/api/Pojazdy/{id}": {
+    "/api/Pojazdies/{id}": {
       "get": {
         "tags": [
-          "Pojazdy"
+          "Pojazdies"
         ],
         "parameters": [
           {
@@ -1789,7 +1971,7 @@
       },
       "put": {
         "tags": [
-          "Pojazdy"
+          "Pojazdies"
         ],
         "parameters": [
           {
@@ -1829,7 +2011,7 @@
       },
       "delete": {
         "tags": [
-          "Pojazdy"
+          "Pojazdies"
         ],
         "parameters": [
           {
@@ -1849,10 +2031,10 @@
         }
       }
     },
-    "/api/Pracownicy": {
+    "/api/Pracownicies": {
       "get": {
         "tags": [
-          "Pracownicy"
+          "Pracownicies"
         ],
         "responses": {
           "200": {
@@ -1888,7 +2070,7 @@
       },
       "post": {
         "tags": [
-          "Pracownicy"
+          "Pracownicies"
         ],
         "requestBody": {
           "content": {
@@ -1933,10 +2115,10 @@
         }
       }
     },
-    "/api/Pracownicy/{id}": {
+    "/api/Pracownicies/{id}": {
       "get": {
         "tags": [
-          "Pracownicy"
+          "Pracownicies"
         ],
         "parameters": [
           {
@@ -1974,7 +2156,7 @@
       },
       "put": {
         "tags": [
-          "Pracownicy"
+          "Pracownicies"
         ],
         "parameters": [
           {
@@ -2014,7 +2196,7 @@
       },
       "delete": {
         "tags": [
-          "Pracownicy"
+          "Pracownicies"
         ],
         "parameters": [
           {
@@ -2034,10 +2216,10 @@
         }
       }
     },
-    "/api/PracownikTowary": {
+    "/api/PracownikTowaries": {
       "get": {
         "tags": [
-          "PracownikTowary"
+          "PracownikTowaries"
         ],
         "responses": {
           "200": {
@@ -2073,7 +2255,7 @@
       },
       "post": {
         "tags": [
-          "PracownikTowary"
+          "PracownikTowaries"
         ],
         "requestBody": {
           "content": {
@@ -2118,10 +2300,10 @@
         }
       }
     },
-    "/api/PracownikTowary/{id}": {
+    "/api/PracownikTowaries/{id}": {
       "get": {
         "tags": [
-          "PracownikTowary"
+          "PracownikTowaries"
         ],
         "parameters": [
           {
@@ -2159,7 +2341,7 @@
       },
       "put": {
         "tags": [
-          "PracownikTowary"
+          "PracownikTowaries"
         ],
         "parameters": [
           {
@@ -2199,7 +2381,7 @@
       },
       "delete": {
         "tags": [
-          "PracownikTowary"
+          "PracownikTowaries"
         ],
         "parameters": [
           {
@@ -2219,10 +2401,10 @@
         }
       }
     },
-    "/api/StanowiskaPracy": {
+    "/api/StanowiskaPracies": {
       "get": {
         "tags": [
-          "StanowiskaPracy"
+          "StanowiskaPracies"
         ],
         "responses": {
           "200": {
@@ -2258,7 +2440,7 @@
       },
       "post": {
         "tags": [
-          "StanowiskaPracy"
+          "StanowiskaPracies"
         ],
         "requestBody": {
           "content": {
@@ -2303,10 +2485,10 @@
         }
       }
     },
-    "/api/StanowiskaPracy/{id}": {
+    "/api/StanowiskaPracies/{id}": {
       "get": {
         "tags": [
-          "StanowiskaPracy"
+          "StanowiskaPracies"
         ],
         "parameters": [
           {
@@ -2344,7 +2526,7 @@
       },
       "put": {
         "tags": [
-          "StanowiskaPracy"
+          "StanowiskaPracies"
         ],
         "parameters": [
           {
@@ -2384,7 +2566,7 @@
       },
       "delete": {
         "tags": [
-          "StanowiskaPracy"
+          "StanowiskaPracies"
         ],
         "parameters": [
           {
@@ -2404,10 +2586,10 @@
         }
       }
     },
-    "/api/Towary": {
+    "/api/Towaries": {
       "get": {
         "tags": [
-          "Towary"
+          "Towaries"
         ],
         "responses": {
           "200": {
@@ -2443,7 +2625,7 @@
       },
       "post": {
         "tags": [
-          "Towary"
+          "Towaries"
         ],
         "requestBody": {
           "content": {
@@ -2488,10 +2670,10 @@
         }
       }
     },
-    "/api/Towary/{id}": {
+    "/api/Towaries/{id}": {
       "get": {
         "tags": [
-          "Towary"
+          "Towaries"
         ],
         "parameters": [
           {
@@ -2529,7 +2711,7 @@
       },
       "put": {
         "tags": [
-          "Towary"
+          "Towaries"
         ],
         "parameters": [
           {
@@ -2569,7 +2751,7 @@
       },
       "delete": {
         "tags": [
-          "Towary"
+          "Towaries"
         ],
         "parameters": [
           {
@@ -2589,10 +2771,10 @@
         }
       }
     },
-    "/api/Transakcje": {
+    "/api/Transakcjes": {
       "get": {
         "tags": [
-          "Transakcje"
+          "Transakcjes"
         ],
         "responses": {
           "200": {
@@ -2628,7 +2810,7 @@
       },
       "post": {
         "tags": [
-          "Transakcje"
+          "Transakcjes"
         ],
         "requestBody": {
           "content": {
@@ -2673,10 +2855,10 @@
         }
       }
     },
-    "/api/Transakcje/{id}": {
+    "/api/Transakcjes/{id}": {
       "get": {
         "tags": [
-          "Transakcje"
+          "Transakcjes"
         ],
         "parameters": [
           {
@@ -2714,7 +2896,7 @@
       },
       "put": {
         "tags": [
-          "Transakcje"
+          "Transakcjes"
         ],
         "parameters": [
           {
@@ -2754,7 +2936,7 @@
       },
       "delete": {
         "tags": [
-          "Transakcje"
+          "Transakcjes"
         ],
         "parameters": [
           {
@@ -2774,10 +2956,10 @@
         }
       }
     },
-    "/api/Trasy": {
+    "/api/Trasies": {
       "get": {
         "tags": [
-          "Trasy"
+          "Trasies"
         ],
         "responses": {
           "200": {
@@ -2813,7 +2995,7 @@
       },
       "post": {
         "tags": [
-          "Trasy"
+          "Trasies"
         ],
         "requestBody": {
           "content": {
@@ -2858,10 +3040,10 @@
         }
       }
     },
-    "/api/Trasy/{id}": {
+    "/api/Trasies/{id}": {
       "get": {
         "tags": [
-          "Trasy"
+          "Trasies"
         ],
         "parameters": [
           {
@@ -2899,7 +3081,7 @@
       },
       "put": {
         "tags": [
-          "Trasy"
+          "Trasies"
         ],
         "parameters": [
           {
@@ -2939,7 +3121,7 @@
       },
       "delete": {
         "tags": [
-          "Trasy"
+          "Trasies"
         ],
         "parameters": [
           {
@@ -2959,10 +3141,10 @@
         }
       }
     },
-    "/api/TypyMaszyn": {
+    "/api/TypyMaszyns": {
       "get": {
         "tags": [
-          "TypyMaszyn"
+          "TypyMaszyns"
         ],
         "responses": {
           "200": {
@@ -2998,7 +3180,7 @@
       },
       "post": {
         "tags": [
-          "TypyMaszyn"
+          "TypyMaszyns"
         ],
         "requestBody": {
           "content": {
@@ -3043,10 +3225,10 @@
         }
       }
     },
-    "/api/TypyMaszyn/{id}": {
+    "/api/TypyMaszyns/{id}": {
       "get": {
         "tags": [
-          "TypyMaszyn"
+          "TypyMaszyns"
         ],
         "parameters": [
           {
@@ -3084,7 +3266,7 @@
       },
       "put": {
         "tags": [
-          "TypyMaszyn"
+          "TypyMaszyns"
         ],
         "parameters": [
           {
@@ -3124,7 +3306,7 @@
       },
       "delete": {
         "tags": [
-          "TypyMaszyn"
+          "TypyMaszyns"
         ],
         "parameters": [
           {
@@ -3144,10 +3326,10 @@
         }
       }
     },
-    "/api/Warsztaty": {
+    "/api/Warsztaties": {
       "get": {
         "tags": [
-          "Warsztaty"
+          "Warsztaties"
         ],
         "responses": {
           "200": {
@@ -3183,7 +3365,7 @@
       },
       "post": {
         "tags": [
-          "Warsztaty"
+          "Warsztaties"
         ],
         "requestBody": {
           "content": {
@@ -3228,10 +3410,10 @@
         }
       }
     },
-    "/api/Warsztaty/{id}": {
+    "/api/Warsztaties/{id}": {
       "get": {
         "tags": [
-          "Warsztaty"
+          "Warsztaties"
         ],
         "parameters": [
           {
@@ -3269,7 +3451,7 @@
       },
       "put": {
         "tags": [
-          "Warsztaty"
+          "Warsztaties"
         ],
         "parameters": [
           {
@@ -3309,7 +3491,7 @@
       },
       "delete": {
         "tags": [
-          "Warsztaty"
+          "Warsztaties"
         ],
         "parameters": [
           {
@@ -3329,10 +3511,49 @@
         }
       }
     },
-    "/api/Wizyty": {
+    "/WeatherForecast": {
       "get": {
         "tags": [
-          "Wizyty"
+          "WeatherForecast"
+        ],
+        "operationId": "GetWeatherForecast",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherForecast"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherForecast"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherForecast"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Wizyties": {
+      "get": {
+        "tags": [
+          "Wizyties"
         ],
         "responses": {
           "200": {
@@ -3368,7 +3589,7 @@
       },
       "post": {
         "tags": [
-          "Wizyty"
+          "Wizyties"
         ],
         "requestBody": {
           "content": {
@@ -3413,10 +3634,10 @@
         }
       }
     },
-    "/api/Wizyty/{id}": {
+    "/api/Wizyties/{id}": {
       "get": {
         "tags": [
-          "Wizyty"
+          "Wizyties"
         ],
         "parameters": [
           {
@@ -3454,7 +3675,7 @@
       },
       "put": {
         "tags": [
-          "Wizyty"
+          "Wizyties"
         ],
         "parameters": [
           {
@@ -3494,7 +3715,7 @@
       },
       "delete": {
         "tags": [
-          "Wizyty"
+          "Wizyties"
         ],
         "parameters": [
           {
@@ -3514,10 +3735,10 @@
         }
       }
     },
-    "/api/Zamowienia": {
+    "/api/Zamowienias": {
       "get": {
         "tags": [
-          "Zamowienia"
+          "Zamowienias"
         ],
         "responses": {
           "200": {
@@ -3553,7 +3774,7 @@
       },
       "post": {
         "tags": [
-          "Zamowienia"
+          "Zamowienias"
         ],
         "requestBody": {
           "content": {
@@ -3598,10 +3819,10 @@
         }
       }
     },
-    "/api/Zamowienia/{id}": {
+    "/api/Zamowienias/{id}": {
       "get": {
         "tags": [
-          "Zamowienia"
+          "Zamowienias"
         ],
         "parameters": [
           {
@@ -3639,7 +3860,7 @@
       },
       "put": {
         "tags": [
-          "Zamowienia"
+          "Zamowienias"
         ],
         "parameters": [
           {
@@ -3679,7 +3900,7 @@
       },
       "delete": {
         "tags": [
-          "Zamowienia"
+          "Zamowienias"
         ],
         "parameters": [
           {
@@ -3699,10 +3920,10 @@
         }
       }
     },
-    "/api/ZamowieniaZewnetrzne": {
+    "/api/ZamowieniaZewnetrznes": {
       "get": {
         "tags": [
-          "ZamowieniaZewnetrzne"
+          "ZamowieniaZewnetrznes"
         ],
         "responses": {
           "200": {
@@ -3738,7 +3959,7 @@
       },
       "post": {
         "tags": [
-          "ZamowieniaZewnetrzne"
+          "ZamowieniaZewnetrznes"
         ],
         "requestBody": {
           "content": {
@@ -3783,10 +4004,10 @@
         }
       }
     },
-    "/api/ZamowieniaZewnetrzne/{id}": {
+    "/api/ZamowieniaZewnetrznes/{id}": {
       "get": {
         "tags": [
-          "ZamowieniaZewnetrzne"
+          "ZamowieniaZewnetrznes"
         ],
         "parameters": [
           {
@@ -3824,7 +4045,7 @@
       },
       "put": {
         "tags": [
-          "ZamowieniaZewnetrzne"
+          "ZamowieniaZewnetrznes"
         ],
         "parameters": [
           {
@@ -3864,7 +4085,192 @@
       },
       "delete": {
         "tags": [
-          "ZamowieniaZewnetrzne"
+          "ZamowieniaZewnetrznes"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ZamowienieTowaries": {
+      "get": {
+        "tags": [
+          "ZamowienieTowaries"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ZamowienieTowary"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ZamowienieTowary"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ZamowienieTowary"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ZamowienieTowaries"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZamowienieTowary"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZamowienieTowary"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZamowienieTowary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZamowienieTowary"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZamowienieTowary"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZamowienieTowary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ZamowienieTowaries/{id}": {
+      "get": {
+        "tags": [
+          "ZamowienieTowaries"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZamowienieTowary"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZamowienieTowary"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZamowienieTowary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "ZamowienieTowaries"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZamowienieTowary"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZamowienieTowary"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ZamowienieTowary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ZamowienieTowaries"
         ],
         "parameters": [
           {
@@ -3911,6 +4317,10 @@
           "dataWaznosci": {
             "type": "string",
             "format": "date-time",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean",
             "nullable": true
           },
           "idtowaruNavigation": {
@@ -3963,6 +4373,10 @@
             "maxLength": 50,
             "minLength": 0,
             "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean",
             "nullable": true
           },
           "zamowieniaZewnetrznes": {
@@ -4040,6 +4454,10 @@
             "type": "string",
             "nullable": true
           },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
           "zamowieniaZewnetrzne": {
             "$ref": "#/components/schemas/ZamowieniaZewnetrzne"
           }
@@ -4057,6 +4475,10 @@
             "maxLength": 10,
             "minLength": 0,
             "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean",
             "nullable": true
           },
           "idLokalizacjiNavigation": {
@@ -4111,6 +4533,10 @@
             "type": "string",
             "nullable": true
           },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
           "lokalizacjaMaszynies": {
             "type": "array",
             "items": {
@@ -4145,6 +4571,10 @@
           "data": {
             "type": "string",
             "format": "date-time",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean",
             "nullable": true
           },
           "idmagazynuNavigation": {
@@ -4199,6 +4629,10 @@
             "type": "string",
             "nullable": true
           },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
           "magazynTowaries": {
             "type": "array",
             "items": {
@@ -4251,8 +4685,38 @@
             "format": "date-time",
             "nullable": true
           },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
           "idtowaruNavigation": {
             "$ref": "#/components/schemas/Towary"
+          },
+          "numerMaszynyNavigation": {
+            "$ref": "#/components/schemas/Maszyny"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MaszynaTrasa": {
+        "type": "object",
+        "properties": {
+          "numerMaszyny": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "idtrasy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "idtrasyNavigation": {
+            "$ref": "#/components/schemas/Trasy"
           },
           "numerMaszynyNavigation": {
             "$ref": "#/components/schemas/Maszyny"
@@ -4294,6 +4758,10 @@
             "format": "date-time",
             "nullable": true
           },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
           "idtypMaszynyNavigation": {
             "$ref": "#/components/schemas/TypyMaszyn"
           },
@@ -4304,6 +4772,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MaszynaTowary"
+            },
+            "nullable": true
+          },
+          "maszynaTrasas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MaszynaTrasa"
             },
             "nullable": true
           },
@@ -4318,13 +4793,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Wizyty"
-            },
-            "nullable": true
-          },
-          "idtrasies": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Trasy"
             },
             "nullable": true
           }
@@ -4373,6 +4841,10 @@
             "maxLength": 50,
             "minLength": 0,
             "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean",
             "nullable": true
           },
           "idwarsztatuNavigation": {
@@ -4435,6 +4907,10 @@
             "type": "string",
             "nullable": true
           },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
           "idpojazduNavigation": {
             "$ref": "#/components/schemas/Pojazdy"
           },
@@ -4494,6 +4970,10 @@
             "format": "date-time",
             "nullable": true
           },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
           "idpracownikaNavigation": {
             "$ref": "#/components/schemas/Pracownicy"
           },
@@ -4541,6 +5021,10 @@
           "dataUtworzenia": {
             "type": "string",
             "format": "date",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean",
             "nullable": true
           },
           "pracownicies": {
@@ -4596,6 +5080,10 @@
             "type": "string",
             "nullable": true
           },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
           "dostawaTowaries": {
             "type": "array",
             "items": {
@@ -4631,10 +5119,10 @@
             },
             "nullable": true
           },
-          "idzamowienia": {
+          "zamowienieTowaries": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Zamowienia"
+              "$ref": "#/components/schemas/ZamowienieTowary"
             },
             "nullable": true
           }
@@ -4678,6 +5166,10 @@
             "type": "string",
             "nullable": true
           },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
           "idtowaruNavigation": {
             "$ref": "#/components/schemas/Towary"
           },
@@ -4717,17 +5209,21 @@
             "type": "string",
             "nullable": true
           },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "maszynaTrasas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MaszynaTrasa"
+            },
+            "nullable": true
+          },
           "pracownicies": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Pracownicy"
-            },
-            "nullable": true
-          },
-          "numerMaszynies": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Maszyny"
             },
             "nullable": true
           }
@@ -4763,6 +5259,10 @@
             "maxLength": 50,
             "minLength": 0,
             "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean",
             "nullable": true
           },
           "maszynies": {
@@ -4818,11 +5318,38 @@
             "type": "string",
             "nullable": true
           },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
           "pojazdies": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Pojazdy"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WeatherForecast": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "temperatureC": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "temperatureF": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "summary": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -4859,6 +5386,10 @@
             "maxLength": 50,
             "minLength": 0,
             "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean",
             "nullable": true
           },
           "idpracownikaNavigation": {
@@ -4901,16 +5432,20 @@
             "type": "string",
             "nullable": true
           },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
           "idmagazynuNavigation": {
             "$ref": "#/components/schemas/Magazyny"
           },
           "idpracownikaNavigation": {
             "$ref": "#/components/schemas/Pracownicy"
           },
-          "idtowarus": {
+          "zamowienieTowaries": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Towary"
+              "$ref": "#/components/schemas/ZamowienieTowary"
             },
             "nullable": true
           }
@@ -4946,6 +5481,10 @@
             "type": "string",
             "nullable": true
           },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
           "dostawaTowaries": {
             "type": "array",
             "items": {
@@ -4961,6 +5500,30 @@
           },
           "idmagazynuNavigation": {
             "$ref": "#/components/schemas/Magazyny"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ZamowienieTowary": {
+        "type": "object",
+        "properties": {
+          "idzamowienia": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "idtowaru": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "idtowaruNavigation": {
+            "$ref": "#/components/schemas/Towary"
+          },
+          "idzamowieniaNavigation": {
+            "$ref": "#/components/schemas/Zamowienia"
           }
         },
         "additionalProperties": false

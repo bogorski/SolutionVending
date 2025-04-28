@@ -57,12 +57,6 @@
         <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
     </ItemGroup>
 
-    <ItemGroup>
-      <OpenApiReference Include="OpenAPIs\swagger.json" Namespace="SmartVendApp.ServiceReference" ClassName="VendingService">
-        <SourceUri>https://localhost:7052/swagger/v1/swagger.json</SourceUri>
-      </OpenApiReference>
-    </ItemGroup>
-
    <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.100" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="8.0.100" />
@@ -83,5 +77,17 @@
     <PackageReference Include="System.Numerics.Vectors" Version="4.6.1" />
 </ItemGroup>
 
+   <ItemGroup>
+     <OpenApiReference Include="OpenAPIs\swagger.json" Namespace="SmartVendApp.ServiceReference" ClassName="VendingService">
+       <SourceUri>https://localhost:7198/swagger/v1/swagger.json</SourceUri>
+     </OpenApiReference>
+   </ItemGroup>
+
+   <ItemGroup>
+     <Folder Include="Services\ServiceReference\" />
+   </ItemGroup>
+	<Target Name="GenerateSwaggerClient" AfterTargets="Build">
+		<Exec Command="nswag openapi2csclient /input:https://localhost:7198/swagger/v1/swagger.json /output:Services/ServiceReference/swaggerClient.cs /namespace:SmartVendApp.ServiceReference /classname:VendingService" />
+	</Target>
 	
 </Project>

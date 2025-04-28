@@ -8,7 +8,7 @@ namespace SmartVendApp.Services.Abstract
 
         public ADataStore()
         {
-            vendingService = new VendingService("https://localhost:7052", new System.Net.Http.HttpClient());
+            vendingService = new VendingService("https://localhost:7198", new System.Net.Http.HttpClient());
         }
     }
 }

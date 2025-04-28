@@ -28,14 +28,14 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            maszyny = await VendingService.MaszynyAllAsync(); // Wywołanie metody na instancji
-        }
-        catch (Exception ex)
-        {
-            // Obsługa błędów
-            Console.WriteLine($"Błąd podczas ładowania maszyn: {ex.Message}");
-        }
+        // try
+        // {
+        //     maszyny = await VendingService.MaszynyAllAsync(); Wywołanie metody na instancji
+        // }
+        // catch (Exception ex)
+        // {
+        //     Obsługa błędów
+        //     Console.WriteLine($"Błąd podczas ładowania maszyn: {ex.Message}");
+        // }
     }
 }

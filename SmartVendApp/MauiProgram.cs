@@ -35,7 +35,7 @@ namespace SmartVendApp
             //   builder.Services.AddScoped<VendingService>();
             builder.Services.AddScoped(sp => new HttpClient
             {
-                BaseAddress = new Uri("https://localhost:7052") // ← Podaj prawidłowy adres API
+                BaseAddress = new Uri("https://localhost:7198") // ← Podaj prawidłowy adres API
             });
             //builder.Services.AddSingleton<HttpClient>(s =>
             //{
@@ -44,7 +44,7 @@ namespace SmartVendApp
             builder.Services.AddSingleton<VendingService>(sp =>
             {
                 var httpClient = sp.GetRequiredService<HttpClient>(); // Pobranie HttpClient z DI
-                var baseUrl = "https://localhost:7052";  // Adres URL API
+                var baseUrl = "https://localhost:7198";  // Adres URL API
                 return new VendingService(baseUrl, httpClient);
             });
 
