@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestApiVending", "RestApiVending\RestApiVending.csproj", "{93A47460-8E6F-476D-9B35-1E80AD7D05ED}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartVendApp", "SmartVendApp\SmartVendApp.csproj", "{C7103157-BA4E-4928-9B9E-6946DD2EFD35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestAPIVend", "RestAPIVend\RestAPIVend.csproj", "{1005EE85-6369-4EF4-B50D-4A536F42B03D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,18 +17,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{93A47460-8E6F-476D-9B35-1E80AD7D05ED}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{93A47460-8E6F-476D-9B35-1E80AD7D05ED}.Debug|ARM.Build.0 = Debug|Any CPU
-		{93A47460-8E6F-476D-9B35-1E80AD7D05ED}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{93A47460-8E6F-476D-9B35-1E80AD7D05ED}.Debug|x64.Build.0 = Debug|Any CPU
-		{93A47460-8E6F-476D-9B35-1E80AD7D05ED}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{93A47460-8E6F-476D-9B35-1E80AD7D05ED}.Debug|x86.Build.0 = Debug|Any CPU
-		{93A47460-8E6F-476D-9B35-1E80AD7D05ED}.Release|ARM.ActiveCfg = Release|Any CPU
-		{93A47460-8E6F-476D-9B35-1E80AD7D05ED}.Release|ARM.Build.0 = Release|Any CPU
-		{93A47460-8E6F-476D-9B35-1E80AD7D05ED}.Release|x64.ActiveCfg = Release|Any CPU
-		{93A47460-8E6F-476D-9B35-1E80AD7D05ED}.Release|x64.Build.0 = Release|Any CPU
-		{93A47460-8E6F-476D-9B35-1E80AD7D05ED}.Release|x86.ActiveCfg = Release|Any CPU
-		{93A47460-8E6F-476D-9B35-1E80AD7D05ED}.Release|x86.Build.0 = Release|Any CPU
 		{C7103157-BA4E-4928-9B9E-6946DD2EFD35}.Debug|ARM.ActiveCfg = Debug|Any CPU
 		{C7103157-BA4E-4928-9B9E-6946DD2EFD35}.Debug|ARM.Build.0 = Debug|Any CPU
 		{C7103157-BA4E-4928-9B9E-6946DD2EFD35}.Debug|ARM.Deploy.0 = Debug|Any CPU
@@ -47,6 +35,18 @@ Global
 		{C7103157-BA4E-4928-9B9E-6946DD2EFD35}.Release|x86.ActiveCfg = Release|Any CPU
 		{C7103157-BA4E-4928-9B9E-6946DD2EFD35}.Release|x86.Build.0 = Release|Any CPU
 		{C7103157-BA4E-4928-9B9E-6946DD2EFD35}.Release|x86.Deploy.0 = Release|Any CPU
+		{1005EE85-6369-4EF4-B50D-4A536F42B03D}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{1005EE85-6369-4EF4-B50D-4A536F42B03D}.Debug|ARM.Build.0 = Debug|Any CPU
+		{1005EE85-6369-4EF4-B50D-4A536F42B03D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1005EE85-6369-4EF4-B50D-4A536F42B03D}.Debug|x64.Build.0 = Debug|Any CPU
+		{1005EE85-6369-4EF4-B50D-4A536F42B03D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1005EE85-6369-4EF4-B50D-4A536F42B03D}.Debug|x86.Build.0 = Debug|Any CPU
+		{1005EE85-6369-4EF4-B50D-4A536F42B03D}.Release|ARM.ActiveCfg = Release|Any CPU
+		{1005EE85-6369-4EF4-B50D-4A536F42B03D}.Release|ARM.Build.0 = Release|Any CPU
+		{1005EE85-6369-4EF4-B50D-4A536F42B03D}.Release|x64.ActiveCfg = Release|Any CPU
+		{1005EE85-6369-4EF4-B50D-4A536F42B03D}.Release|x64.Build.0 = Release|Any CPU
+		{1005EE85-6369-4EF4-B50D-4A536F42B03D}.Release|x86.ActiveCfg = Release|Any CPU
+		{1005EE85-6369-4EF4-B50D-4A536F42B03D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

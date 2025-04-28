@@ -1,5 +1,5 @@
 
-namespace RestApiVending
+namespace RestApi
 {
     public class Program
     {

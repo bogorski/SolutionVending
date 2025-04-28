@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RestApiVending.ForView;
 using RestApiVending.Model;
 using RestApiVending.Model.Context;
 
@@ -23,14 +24,16 @@ namespace RestApiVending.Controllers
 
         // GET: api/Dostawcy
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Dostawcy>>> GetDostawcies()
+        public async Task<ActionResult<IEnumerable<DostawcyForView>>> GetDostawcies()
         {
-            return await _context.Dostawcies.ToListAsync();
+            return await _context.Dostawcies..Where(wrk => wrk.IsActive).ToListAsync())
+                .Select(cli => (DostawcyForView)cli)
+                .ToListAsync();
         }
 
         // GET: api/Dostawcy/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Dostawcy>> GetDostawcy(int id)
+        public async Task<ActionResult<DostawcyForView>> GetDostawcy(int id)
         {
             var dostawcy = await _context.Dostawcies.FindAsync(id);
 
@@ -45,7 +48,7 @@ namespace RestApiVending.Controllers
         // PUT: api/Dostawcy/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDostawcy(int id, Dostawcy dostawcy)
+        public async Task<IActionResult> PutDostawcy(int id, DostawcyForView dostawcy)
         {
             if (id != dostawcy.Iddostawcy)
             {
@@ -76,7 +79,7 @@ namespace RestApiVending.Controllers
         // POST: api/Dostawcy
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Dostawcy>> PostDostawcy(Dostawcy dostawcy)
+        public async Task<ActionResult<DostawcyForView>> PostDostawcy(DostawcyForView dostawcy)
         {
             _context.Dostawcies.Add(dostawcy);
             await _context.SaveChangesAsync();

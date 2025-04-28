@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using RestApiVending.Model.Context;
+
 namespace RestApiVending
 {
     public class Program
@@ -8,6 +11,9 @@ namespace RestApiVending
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddDbContext<CompanyContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("CompanyContext")
+            ?? throw new InvalidOperationException("Connection string 'CompanyContext' not found.")));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

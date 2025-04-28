@@ -66,7 +66,6 @@
    <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.100" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="8.0.100" />
-    <!-- Pozostałe pakiety, które już masz -->
     <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="8.0.15">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -84,8 +83,5 @@
     <PackageReference Include="System.Numerics.Vectors" Version="4.6.1" />
 </ItemGroup>
 
-	<Target Name="GenerateSwaggerClient" AfterTargets="Build">
-		<Exec Command="nswag openapi2csclient /input:https://localhost:7052/swagger/v1/swagger.json /output:Services/ServiceReference/swaggerClient.cs /namespace:SmartVendApp.ServiceReference /classname:VendingService" />
-	</Target>
-
+	
 </Project>
