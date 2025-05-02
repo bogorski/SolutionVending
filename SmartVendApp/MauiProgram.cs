@@ -4,7 +4,6 @@ using SmartVendApp.Services;
 using SmartVendApp.Models;
 using SmartVendApp.Controllers;
 using SmartVendApp.ServiceReference;
-using Microsoft.Extensions.Configuration;
 
 namespace SmartVendApp
 {
@@ -19,29 +18,17 @@ namespace SmartVendApp
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
-
             builder.Services.AddMauiBlazorWebView();
-            builder.Services.AddSingleton<IDataStore<Machine>, MachineDataStore>();
-            builder.Services.AddSingleton<MachineController>();
-
-            //builder.Services.AddSingleton<HttpClient>(sp =>
-            //{
-            //    var client = new HttpClient
-            //    {
-            //        BaseAddress = new Uri("https://localhost:7052") // Adres URL do API
-            //    };
-            //    return client;
-            //});
-            //   builder.Services.AddScoped<VendingService>();
+            builder.Services.AddSingleton<IDataStore<Machine, string>, MachineDataStore>();
+            builder.Services.AddSingleton<DostawcyDataStore>();
+            builder.Services.AddSingleton<IDataStore<DostawcyForView, int>, DostawcyDataStore>();
+            builder.Services.AddSingleton<VendingService>();
             builder.Services.AddScoped(sp => new HttpClient
             {
                 BaseAddress = new Uri("https://localhost:7198") // ← Podaj prawidłowy adres API
             });
-            //builder.Services.AddSingleton<HttpClient>(s =>
-            //{
-            //    return new HttpClient { BaseAddress = new Uri("https://localhost:7052") };
-            //});
-            builder.Services.AddSingleton<VendingService>(sp =>
+
+            builder.Services.AddScoped(sp =>
             {
                 var httpClient = sp.GetRequiredService<HttpClient>(); // Pobranie HttpClient z DI
                 var baseUrl = "https://localhost:7198";  // Adres URL API

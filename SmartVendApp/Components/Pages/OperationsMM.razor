@@ -1,71 +1,195 @@
 ﻿@page "/operationsmm"
-@using Newtonsoft.Json
-@using SmartVendApp.Models
+@using SmartVendApp.Services;
+@inject DostawcyDataStore DostawcyStore;
 @using SmartVendApp.ServiceReference
-@inject VendingService VendingService
+@inject DostawcyDataStore DataStore
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
 
-<h3>Lista Dostawców</h3>
+<h3>Zarządzanie dostawcami</h3>
 
-@if (errorMessage != null)
+@if (isLoading)
+{
+    <div class="alert alert-info">Ładowanie danych...</div>
+}
+else if (errorMessage != null)
 {
     <div class="alert alert-danger">@errorMessage</div>
 }
-
-@if (dostawcy == null)
+else if (DataStore._items == null || !DataStore._items.Any())
 {
-    <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Ładowanie...</span>
-    </div>
+    <div class="alert alert-warning">Brak dostawców w systemie</div>
 }
-else if (dostawcy.Any())
+else
 {
+    <div class="mb-3">
+        <button class="btn btn-primary" @onclick="ShowAddForm">Dodaj nowego dostawcę</button>
+    </div>
+
     <table class="table table-striped">
-        <thead class="table-dark">
+        <thead>
             <tr>
                 <th>ID</th>
                 <th>Nazwa</th>
-                <th>Adres</th>
-                <th>Kraj</th>
-                <th>Opis</th>
+                <th>Miasto</th>
+                <th>Akcje</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var dostawca in dostawcy)
+            @foreach (var item in DataStore._items)
             {
                 <tr>
-                    <td>@dostawca.Iddostawcy</td>
-                    <td>@dostawca.Nazwa</td>
+                    <td>@item.Iddostawcy</td>
+                    <td>@item.Nazwa</td>
+                    <td>@item.Miasto</td>
                     <td>
-                        @dostawca.Ulica, @dostawca.KodPocztowy @dostawca.Miasto
+                        <button class="btn btn-sm btn-info" @onclick="() => EditItem(item)">Edytuj</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteItem(item.Iddostawcy)">Usuń</button>
+
+                        @if (showSuccess)
+                        {
+                            <div class="alert alert-success mt-2">Dostawca został usunięty</div>
+                        }
+                        @if (showError)
+                        {
+                            <div class="alert alert-danger mt-2">Błąd podczas usuwania</div>
+                        }
                     </td>
-                    <td>@dostawca.Kraj</td>
-                    <td>@dostawca.Opis</td>
                 </tr>
             }
         </tbody>
     </table>
 }
-else
+
+@if (showForm)
 {
-    <div class="alert alert-info">Brak dostawców do wyświetlenia.</div>
+    <div class="modal" style="display:block; background:rgba(0,0,0,0.5)">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@(currentItem.Iddostawcy == 0 ? "Dodaj nowego" : "Edytuj") dostawcę</h5>
+                    <button type="button" class="close" @onclick="CancelForm">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Nazwa:</label>
+                        <input class="form-control" @bind="currentItem.Nazwa" />
+                    </div>
+                    <div class="form-group">
+                        <label>Miasto:</label>
+                        <input class="form-control" @bind="currentItem.Miasto" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="CancelForm">Anuluj</button>
+                    <button class="btn btn-primary" @onclick="SaveItem">Zapisz</button>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
-
 @code {
-    private ICollection<Dostawcy> dostawcy;
+    private bool isLoading = true;
     private string errorMessage;
+    private bool showForm = false;
+    private DostawcyForView currentItem = new();
+    private bool showSuccess;
+    private bool showError;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            // Bezpośrednie przypisanie wyniku z serwisu
-            dostawcy = await VendingService.DostawciesAllAsync();
+            await DataStore.Refresh();
         }
         catch (Exception ex)
         {
-            errorMessage = $"Wystąpił błąd: {ex.Message}";
-            Console.WriteLine($"Szczegóły błędu: {ex}");
+            errorMessage = $"Błąd ładowania danych: {ex.Message}";
         }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void ShowAddForm()
+    {
+        currentItem = new DostawcyForView();
+        showForm = true;
+    }
+
+    private void EditItem(DostawcyForView item)
+    {
+        currentItem = new DostawcyForView
+            {
+                Iddostawcy = item.Iddostawcy,
+                Nazwa = item.Nazwa,
+                Miasto = item.Miasto
+            };
+        showForm = true;
+    }
+
+    private async Task SaveItem()
+    {
+        try
+        {
+            bool result;
+
+            if (currentItem.Iddostawcy == 0)
+            {
+                result = await DataStore.AddItemAsync(currentItem);
+            }
+            else
+            {
+                result = await DataStore.UpdateItemAsync(currentItem);
+            }
+
+            if (result)
+            {
+                await DataStore.Refresh();
+                showForm = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Błąd zapisu: {ex.Message}";
+        }
+    }
+
+    private async Task DeleteItem(int id)
+    {
+        try
+        {
+            if (await JS.InvokeAsync<bool>("confirm", "Czy na pewno chcesz usunąć tego dostawcę?"))
+            {
+                bool result = await DataStore.DeleteItemAsync(id);
+
+                if (result)
+                {
+                    await DataStore.Refresh();
+                    showSuccess = true;
+                    showError = false;
+                    // Automatyczne ukrycie komunikatu po 3 sekundach
+                    await Task.Delay(3000);
+                    showSuccess = false;
+                }
+                else
+                {
+                    showError = true;
+                    showSuccess = false;
+                }
+            }
+        }
+        catch
+        {
+            showError = true;
+            showSuccess = false;
+        }
+    }
+
+    private void CancelForm()
+    {
+        showForm = false;
     }
 }

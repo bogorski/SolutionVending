@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
-
+	
     <PropertyGroup>
         <TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
         <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
@@ -12,7 +12,7 @@
             The Mac App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
             either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
         <!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
-
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <OutputType>Exe</OutputType>
         <RootNamespace>SmartVendApp</RootNamespace>
         <UseMaui>true</UseMaui>
@@ -38,7 +38,7 @@
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
     </PropertyGroup>
-
+	
     <ItemGroup>
         <!-- App Icon -->
         <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
@@ -58,6 +58,7 @@
     </ItemGroup>
 
    <ItemGroup>
+	   
     <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.100" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="8.0.100" />
     <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="8.0.15">
@@ -74,20 +75,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="NSwag.MSBuild" Version="14.4.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="System.Numerics.Vectors" Version="4.6.1" />
 </ItemGroup>
-
-   <ItemGroup>
-     <OpenApiReference Include="OpenAPIs\swagger.json" Namespace="SmartVendApp.ServiceReference" ClassName="VendingService">
-       <SourceUri>https://localhost:7198/swagger/v1/swagger.json</SourceUri>
-     </OpenApiReference>
-   </ItemGroup>
-
-   <ItemGroup>
-     <Folder Include="Services\ServiceReference\" />
-   </ItemGroup>
-	<Target Name="GenerateSwaggerClient" AfterTargets="Build">
-		<Exec Command="nswag openapi2csclient /input:https://localhost:7198/swagger/v1/swagger.json /output:Services/ServiceReference/swaggerClient.cs /namespace:SmartVendApp.ServiceReference /classname:VendingService" />
+	<Target Name="NSwag" BeforeTargets="Build">
+		<Exec Command="$(NSwagExe_Net80) run nswag.json" />
 	</Target>
 	
 </Project>

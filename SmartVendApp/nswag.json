@@ -1,0 +1,23 @@
+{
+  "runtime": "Net80",
+  "defaultVariables": "Environment=Development",
+  "documentGenerator": {
+    "fromDocument": {
+      "url": "https://localhost:7198/swagger/v1/swagger.json",
+      "output": null
+    }
+  },
+  "codeGenerators": {
+    "openApiToCSharpClient": {
+      "namespace": "SmartVendApp.ServiceReference",
+      "className": "VendingService",
+      "generateClientInterfaces": true,
+      "generateExceptionClasses": true,
+      "exceptionClass": "ApiException",
+      "useBaseUrl": true,
+      "generateClientClasses": true,
+      "generateOptionalParameters": true,
+      "output": "Services/VendingService.g.cs"
+    }
+  }
+}

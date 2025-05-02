@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace SmartVendApp.Services
 {
-    public interface IDataStore<T>
+    public interface IDataStore<T, Tid>
     {
         Task<bool> AddItemAsync(T item);
         Task<bool> UpdateItemAsync(T item);
-        Task<bool> DeleteItemAsync(string NumerMaszyny);
-        Task<T> GetItemAsync(string NumerMaszyny);
+        Task<bool> DeleteItemAsync(Tid id);
+        Task<T> GetItemAsync(Tid id);
         Task<IEnumerable<T>> GetItemsAsync(bool forceRefresh = false);
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmartVendApp.Services
 {
-    public class MachineDataStore : IDataStore<Machine>
+    public class MachineDataStore : IDataStore<Machine, string>
     {
         readonly List<Machine> items;
         public MachineDataStore()
@@ -41,22 +41,46 @@ namespace SmartVendApp.Services
 
         public async Task<bool> UpdateItemAsync(Machine item)
         {
-            var oldItem = items.Where((Machine arg) => arg.NumerMaszyny == item.NumerMaszyny).FirstOrDefault();
-            items.Remove(oldItem);
-            items.Add(item);
+            var oldItem = items.FirstOrDefault(i => i.NumerMaszyny == item.NumerMaszyny);
+
+            if (oldItem == null)
+            {
+                return await Task.FromResult(false);
+            }
+
+            oldItem.IdtypMaszyny = item.IdtypMaszyny;
+            oldItem.NumerSeryjny = item.NumerSeryjny;
+            oldItem.RokProdukcji = item.RokProdukcji;
+            oldItem.Opis = item.Opis;
+            oldItem.DataMontazu = item.DataMontazu;
+
             return await Task.FromResult(true);
         }
 
-        public async Task<bool> DeleteItemAsync(string id)
+        public async Task<bool> DeleteItemAsync(string? id)
         {
-            var oldItem = items.Where((Machine arg) => arg.NumerMaszyny == id).FirstOrDefault();
+            if (id == null)
+            {
+                return await Task.FromResult(false);
+            }
+
+            var oldItem = items.FirstOrDefault(item => item.NumerMaszyny == id);
+            if (oldItem == null)
+            {
+                return await Task.FromResult(false);
+            }
             items.Remove(oldItem);
             return await Task.FromResult(true);
         }
-
         public async Task<Machine?> GetItemAsync(string id)
         {
-            return await Task.FromResult(items.FirstOrDefault(s => s.NumerMaszyny == id));
+            if (id == null)
+            {
+                return await Task.FromResult<Machine?>(null);
+            }
+
+            var item = items.FirstOrDefault(s => s.NumerMaszyny == id);
+            return await Task.FromResult(item);
         }
 
         public async Task<IEnumerable<Machine>> GetItemsAsync(bool forceRefresh = false)

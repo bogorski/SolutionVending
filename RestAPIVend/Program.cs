@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RestAPIVend.Model.Context;
+using AutoMapper;
+using RestAPIVend.AutoMapperProfiles;
 
 namespace RestAPIVend
 {
@@ -13,7 +15,7 @@ namespace RestAPIVend
             builder.Services.AddDbContext<CompanyContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("CompanyContext")
             ?? throw new InvalidOperationException("Connection string 'CompanyContext' not found.")));
-
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
