@@ -1,36 +1,70 @@
-﻿using SmartVendApp.Models;
-using SmartVendApp.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SmartVendApp.Services;
+using SmartVendApp.Controllers.Abstract;
+using SmartVendApp.ServiceReference;
 
 namespace SmartVendApp.Controllers
 {
-    public class DostawcyController
+    public class DostawcyController : AItemController<DostawcyForView, int>
     {
-        private readonly IDataStore<Dostawcy, int> _machineStore;
-        private List<Dostawcy> _machines;
+        private readonly IDataStore<DostawcyForView, int> _dataStore;
 
-        public DostawcyController(IDataStore<Dostawcy, int> machineStore)
+        public DostawcyController(IDataStore<DostawcyForView, int> dataStore)
         {
-            _machineStore = machineStore;
-            _machines = new List<Dostawcy>();
-
+            _dataStore = dataStore;
         }
-        public async Task LoadMachineAsync()
+
+        protected override async Task LoadDataAsync()
         {
+            IsLoading = true;
             try
             {
-                var items = await _machineStore.GetItemsAsync(true);
-                _machines = new List<Dostawcy>(items);
+                var items = await _dataStore.GetItemsAsync(true);
+                Items = new List<DostawcyForView>(items);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error loading clients: {ex.Message}");
+                ErrorMessage = $"Błąd ładowania danych: {ex.Message}";
+            }
+            finally
+            {
+                IsLoading = false;
             }
         }
-        public List<Dostawcy> GetMachines() => _machines;
+
+        protected override async Task<bool> SaveItemAsync(DostawcyForView item)
+        {
+            try
+            {
+                bool result = item.Iddostawcy == 0
+                    ? await _dataStore.AddItemAsync(item)
+                    : await _dataStore.UpdateItemAsync(item);
+
+                if (result) await LoadDataAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Błąd zapisu: {ex.Message}";
+                return false;
+            }
+        }
+
+        protected override async Task<bool> DeleteItemAsync(int id)
+        {
+            try
+            {
+                bool result = await _dataStore.DeleteItemAsync(id);
+                if (result) await LoadDataAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Błąd usuwania: {ex.Message}";
+                return false;
+            }
+        }
+
+        // Dodatkowa metoda specyficzna dla kontrolera
+        public List<DostawcyForView> PobierzDostawcow() => Items;
     }
 }

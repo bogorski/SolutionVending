@@ -56,6 +56,12 @@
         <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
         <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
     </ItemGroup>
+	
+    <ItemGroup>
+      <None Include="wwwroot\content\add.svg" />
+      <None Include="wwwroot\content\delete.svg" />
+      <None Include="wwwroot\content\edit.svg" />
+    </ItemGroup>
 
    <ItemGroup>
 	   

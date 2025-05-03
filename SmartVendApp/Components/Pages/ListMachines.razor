@@ -1,10 +1,131 @@
 ﻿@page "/listmachines"
+@inject IJSRuntime JSRuntime
 
-@using SmartVendApp.Models
-@using SmartVendApp.Controllers;
-@using SmartVendApp.ServiceReference;
 
-@inject MachineController MachineController
-@inject VendingService VendingService
+<div class="container-fluid d-flex flex-column h-100 p-0 m-0">
+    <div class="row text-white p-3">
+        <div class="col text-center">
+            <h2>Lista</h2>
+        </div>
+    </div>
 
-<h3>Lista Maszyn</h3>
+    <div class="row flex-grow-1 m-0 bg-white position-relative rounded-3" style="overflow:hidden;">
+        <div class="col p-0 h-100" style="overflow-y:auto;">
+            <ul class="list-group m-0 p-0">
+                @for (int i = 0; i < 22; i++)
+                {
+                    var localIndex = i;
+                    <li class="list-group-item rounded-3 m-1 d-flex justify-content-between align-items-center cursor: pointer;">
+                        <span>Element listy @i</span>
+                        <div class="d-flex">
+                            <img src="content/edit.svg"
+                                 class="me-2 action-icon"
+                                 alt="Edytuj"
+                                 @onclick="() => HandleEditClick(localIndex)">
+                            <img src="content/delete.svg"
+                                 class="action-icon"
+                                 alt="Usuń"
+                                 @onclick="() => ConfirmDelete(localIndex)">
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="position-absolute bottom-0 text-center mb-3">
+
+            <img src="content/add.svg"
+                 class="action-icon action-icon-add"
+                 alt="Dodaj"
+                 @onclick="() => HandleAddClick()">
+        </div>
+    </div>
+
+    <div class="row p-4">
+        <div class="col text-center">
+            <a href="#">Wróć</a>
+        </div>
+    </div>
+    @if (showForm)
+    {
+        <div class="modal d-block fade show" tabindex="-1" role="dialog" style="background:rgba(0,0,0,0.5)">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Dodaj nowego</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Nazwa:</label>
+                            <input class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Miasto:</label>
+                            <input class="form-control" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" @onclick="CancelForm">Anuluj</button>
+                        <button class="btn btn-primary">Zapisz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (showDeleteModal)
+    {
+        <div class="modal d-block fade show" tabindex="-1" role="dialog" style="background:rgba(0,0,0,0.5)">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Potwierdzenie</h5>
+                    </div>
+                    <div class="modal-body">
+                        Czy na pewno chcesz usunąć ten element?
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" @onclick="CancelDeleteForm">Anuluj</button>
+                        <button class="btn btn-primary" @onclick="ProceedWithDelete">Usuń</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private bool showForm = false;
+    private bool showDeleteModal = false;
+    private int itemToDelete;
+
+    private void CancelForm()
+    {
+        showForm = false;
+    } 
+    private void CancelDeleteForm()
+    {
+        showDeleteModal = false;
+    }
+    private void HandleEditClick(int itemId)
+    {
+        showForm = true;
+    }  
+    private void HandleDeleteClick(int itemId)
+    {
+        System.Diagnostics.Debug.Print($"Usuń element o ID: {itemId}");
+    }
+    
+    private void HandleAddClick()
+    {
+        showForm = true;
+    }  
+    private void ConfirmDelete(int itemId)
+    {
+        itemToDelete = itemId;
+        showDeleteModal = true;
+    }
+    private void ProceedWithDelete()
+    {
+        HandleDeleteClick(itemToDelete);
+        showDeleteModal = false;
+    }
+}

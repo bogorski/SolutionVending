@@ -67,7 +67,7 @@ else
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">@(currentItem.Iddostawcy == 0 ? "Dodaj nowego" : "Edytuj") dostawcę</h5>
+                    <h5 class="modal-title">@(isNew == true ? "Dodaj nowego" : "Edytuj") dostawcę</h5>
                     <button type="button" class="close" @onclick="CancelForm">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -93,6 +93,7 @@ else
     private bool isLoading = true;
     private string errorMessage;
     private bool showForm = false;
+    private bool isNew = false;
     private DostawcyForView currentItem = new();
     private bool showSuccess;
     private bool showError;
@@ -116,6 +117,7 @@ else
     private void ShowAddForm()
     {
         currentItem = new DostawcyForView();
+        isNew = true;
         showForm = true;
     }
 
@@ -127,6 +129,7 @@ else
                 Nazwa = item.Nazwa,
                 Miasto = item.Miasto
             };
+        isNew = false;
         showForm = true;
     }
 

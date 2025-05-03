@@ -3,6 +3,25 @@
 }
 
 /*Moje css*/
+.action-icon {
+    width: 20px;
+    height: 20px;
+    opacity: 0.5;
+    transition: all 0.2s ease;
+}
+
+    .action-icon:hover {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+.action-icon-add {
+    width: 50px;
+    height: 50px;
+}
+.list-group-item:hover .action-icon {
+    opacity: 0.8;
+}
 
 h1 {
     color: white;
