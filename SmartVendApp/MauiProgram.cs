@@ -4,6 +4,7 @@ using SmartVendApp.Services;
 using SmartVendApp.Models;
 using SmartVendApp.Controllers;
 using SmartVendApp.ServiceReference;
+using SmartVendApp.Controllers.Dostawcy;
 
 namespace SmartVendApp
 {
@@ -22,6 +23,10 @@ namespace SmartVendApp
             builder.Services.AddSingleton<IDataStore<Machine, string>, MachineDataStore>();
             builder.Services.AddSingleton<DostawcyDataStore>();
             builder.Services.AddSingleton<IDataStore<DostawcyForView, int>, DostawcyDataStore>();
+
+            builder.Services.AddSingleton<DostawcyModalController>();
+            builder.Services.AddSingleton<DostawcyController>();
+
             builder.Services.AddSingleton<VendingService>();
             builder.Services.AddScoped(sp => new HttpClient
             {
@@ -34,7 +39,10 @@ namespace SmartVendApp
                 var baseUrl = "https://localhost:7198";  // Adres URL API
                 return new VendingService(baseUrl, httpClient);
             });
-
+            builder.Services.AddAutoMapper(cfg =>
+            {
+                cfg.CreateMap<DostawcyForView, DostawcyForView>();
+            });
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();  

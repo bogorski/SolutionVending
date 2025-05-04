@@ -2,28 +2,30 @@
 @using SmartVendApp.Services;
 @inject DostawcyDataStore DostawcyStore;
 @using SmartVendApp.ServiceReference
+@using SmartVendApp.Controllers.Dostawcy;
 @inject DostawcyDataStore DataStore
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
+@inject DostawcyController Controller
 
 <h3>Zarządzanie dostawcami</h3>
 
-@if (isLoading)
+@if (Controller.IsLoading)
 {
     <div class="alert alert-info">Ładowanie danych...</div>
 }
-else if (errorMessage != null)
+else if (Controller.ErrorMessage != null)
 {
-    <div class="alert alert-danger">@errorMessage</div>
+    <div class="alert alert-danger">@Controller.ErrorMessage</div>
 }
-else if (DataStore._items == null || !DataStore._items.Any())
+else if (Controller.Items == null || !Controller.Items.Any())
 {
     <div class="alert alert-warning">Brak dostawców w systemie</div>
 }
 else
 {
     <div class="mb-3">
-        <button class="btn btn-primary" @onclick="ShowAddForm">Dodaj nowego dostawcę</button>
+        <button class="btn btn-primary" @onclick="Controller.ModalController.ShowAddModal">Dodaj nowego dostawcę</button>
     </div>
 
     <table class="table table-striped">
@@ -36,15 +38,15 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in DataStore._items)
+            @foreach (var item in Controller.Items)
             {
                 <tr>
                     <td>@item.Iddostawcy</td>
                     <td>@item.Nazwa</td>
                     <td>@item.Miasto</td>
                     <td>
-                        <button class="btn btn-sm btn-info" @onclick="() => EditItem(item)">Edytuj</button>
-                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteItem(item.Iddostawcy)">Usuń</button>
+                        <button class="btn btn-sm btn-info" @onclick="() => Controller.ModalController.ShowEditModal(item)">Edytuj</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => ConfirmDelete(item.Iddostawcy)">Usuń</button>
 
                         @if (showSuccess)
                         {
@@ -61,27 +63,27 @@ else
     </table>
 }
 
-@if (showForm)
+@if (Controller.ModalController.ShowModal)
 {
     <div class="modal" style="display:block; background:rgba(0,0,0,0.5)">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">@(isNew == true ? "Dodaj nowego" : "Edytuj") dostawcę</h5>
-                    <button type="button" class="close" @onclick="CancelForm">&times;</button>
+                    <h5 class="modal-title">@(Controller.ModalController.IsNew ? "Dodaj nowego" : "Edytuj") dostawcę</h5>
+                    <button type="button" class="close" @onclick="Controller.ModalController.CloseModal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Nazwa:</label>
-                        <input class="form-control" @bind="currentItem.Nazwa" />
+                        <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Nazwa" />
                     </div>
                     <div class="form-group">
                         <label>Miasto:</label>
-                        <input class="form-control" @bind="currentItem.Miasto" />
+                        <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Miasto" />
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" @onclick="CancelForm">Anuluj</button>
+                    <button class="btn btn-secondary" @onclick="Controller.ModalController.CloseModal">Anuluj</button>
                     <button class="btn btn-primary" @onclick="SaveItem">Zapisz</button>
                 </div>
             </div>
@@ -90,109 +92,39 @@ else
 }
 
 @code {
-    private bool isLoading = true;
-    private string errorMessage;
-    private bool showForm = false;
-    private bool isNew = false;
-    private DostawcyForView currentItem = new();
     private bool showSuccess;
     private bool showError;
+    private int itemToDelete;
 
     protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            await DataStore.Refresh();
-        }
-        catch (Exception ex)
-        {
-            errorMessage = $"Błąd ładowania danych: {ex.Message}";
-        }
-        finally
-        {
-            isLoading = false;
-        }
-    }
-
-    private void ShowAddForm()
-    {
-        currentItem = new DostawcyForView();
-        isNew = true;
-        showForm = true;
-    }
-
-    private void EditItem(DostawcyForView item)
-    {
-        currentItem = new DostawcyForView
-            {
-                Iddostawcy = item.Iddostawcy,
-                Nazwa = item.Nazwa,
-                Miasto = item.Miasto
-            };
-        isNew = false;
-        showForm = true;
+        await Controller.LoadDataAsync();
     }
 
     private async Task SaveItem()
     {
-        try
+        if (await Controller.ModalController.SaveAsync())
         {
-            bool result;
+            await Controller.LoadDataAsync();
+        }
+    }
 
-            if (currentItem.Iddostawcy == 0)
+    private async Task ConfirmDelete(int id)
+    {
+        if (await JS.InvokeAsync<bool>("confirm", "Czy na pewno chcesz usunąć tego dostawcę?"))
+        {
+            if (await Controller.DeleteItemAsync(id))
             {
-                result = await DataStore.AddItemAsync(currentItem);
+                showSuccess = true;
+                showError = false;
+                await Task.Delay(3000);
+                showSuccess = false;
             }
             else
             {
-                result = await DataStore.UpdateItemAsync(currentItem);
-            }
-
-            if (result)
-            {
-                await DataStore.Refresh();
-                showForm = false;
+                showError = true;
+                showSuccess = false;
             }
         }
-        catch (Exception ex)
-        {
-            errorMessage = $"Błąd zapisu: {ex.Message}";
-        }
-    }
-
-    private async Task DeleteItem(int id)
-    {
-        try
-        {
-            if (await JS.InvokeAsync<bool>("confirm", "Czy na pewno chcesz usunąć tego dostawcę?"))
-            {
-                bool result = await DataStore.DeleteItemAsync(id);
-
-                if (result)
-                {
-                    await DataStore.Refresh();
-                    showSuccess = true;
-                    showError = false;
-                    // Automatyczne ukrycie komunikatu po 3 sekundach
-                    await Task.Delay(3000);
-                    showSuccess = false;
-                }
-                else
-                {
-                    showError = true;
-                    showSuccess = false;
-                }
-            }
-        }
-        catch
-        {
-            showError = true;
-            showSuccess = false;
-        }
-    }
-
-    private void CancelForm()
-    {
-        showForm = false;
     }
 }

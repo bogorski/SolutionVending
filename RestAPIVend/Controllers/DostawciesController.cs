@@ -63,30 +63,11 @@ namespace RestAPIVend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDostawcy(int id, DostawcyForView dostawcyForView)
         {
-            if (id != dostawcyForView.Iddostawcy)
-            {
-                return BadRequest();
-            }
+            var existing = await _context.Dostawcies.FindAsync(id);
+            if (existing == null) return NotFound();
 
-            var dostawcy = _mapper.Map<Dostawcy>(dostawcyForView);
-
-            _context.Entry(dostawcy).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DostawcyExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _mapper.Map(dostawcyForView, existing);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -94,7 +75,7 @@ namespace RestAPIVend.Controllers
         // POST: api/Dostawcies
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Dostawcy>> PostDostawcy(DostawcyForView dostawcyForView)
+        public async Task<ActionResult<DostawcyForView>> PostDostawcy(DostawcyForView dostawcyForView)
         {
             var dostawcy = _mapper.Map<Dostawcy>(dostawcyForView);
             _context.Dostawcies.Add(dostawcy);
@@ -102,7 +83,7 @@ namespace RestAPIVend.Controllers
 
             var result = _mapper.Map<DostawcyForView>(dostawcy);
 
-            return CreatedAtAction("GetDostawcy", new { id = dostawcy.Iddostawcy }, result);
+            return CreatedAtAction("GetDostawcy", new { id = result.Iddostawcy }, result);
         }
 
         // DELETE: api/Dostawcies/5

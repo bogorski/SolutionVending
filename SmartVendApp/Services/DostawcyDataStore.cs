@@ -1,34 +1,16 @@
 ﻿using SmartVendApp.ServiceReference;
 using SmartVendApp.Services.Abstract;
 using SmartVendApp.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Diagnostics;
 
 namespace SmartVendApp.Services
 {
     public class DostawcyDataStore : AListDataStore<DostawcyForView, int>
     {
         private readonly VendingService _vendingService;
-        public List<DostawcyForView> _items = new List<DostawcyForView>();
 
         public DostawcyDataStore(VendingService vendingService)
         {
             _vendingService = vendingService;
-        }
-
-        private async Task InitializeAsync()
-        {
-            try
-            {
-                await Refresh();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Błąd inicjalizacji dostawców: {ex.Message}");
-            }
         }
 
         public override async Task<bool> AddItemToService(DostawcyForView item)
@@ -62,16 +44,24 @@ namespace SmartVendApp.Services
         }
 
         public override DostawcyForView Find(DostawcyForView item)
-            => _items.FirstOrDefault(d => d.Iddostawcy == item.Iddostawcy);
+            => items.FirstOrDefault(d => d.Iddostawcy == item.Iddostawcy);
 
         public override DostawcyForView Find(int id)
-            => _items.FirstOrDefault(d => d.Iddostawcy == id);
+            => items.FirstOrDefault(d => d.Iddostawcy == id);
 
         public override async Task Refresh()
         {
-            _items = (List<DostawcyForView>)(await _vendingService.DostawciesAllAsync() ?? new List<DostawcyForView>());
+            try
+            {
+                var result = await _vendingService.DostawciesAllAsync();
+                items = result?.ToList() ?? new List<DostawcyForView>();
+            }
+            catch (Exception ex)
+            {
+                items = new List<DostawcyForView>();
+                Console.WriteLine($"Błąd odświeżenia: {ex.Message}");
+            }
         }
-
         public override async Task<bool> UpdateItemInService(DostawcyForView item)
         {
             try

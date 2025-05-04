@@ -10,7 +10,7 @@ namespace RestAPIVend.ForView
 
         public string Nazwa { get; set; } = null!;
 
-        //public string? Ulica { get; set; }
+        public string? Ulica { get; set; }
 
         public string? Miasto { get; set; }
 

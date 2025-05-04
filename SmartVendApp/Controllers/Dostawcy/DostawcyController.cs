@@ -1,29 +1,33 @@
 ﻿using SmartVendApp.Services;
 using SmartVendApp.Controllers.Abstract;
 using SmartVendApp.ServiceReference;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 
-namespace SmartVendApp.Controllers
+namespace SmartVendApp.Controllers.Dostawcy
 {
-    public class DostawcyController : AItemController<DostawcyForView, int>
+    public class DostawcyController : AListController<DostawcyForView, int>
     {
-        private readonly IDataStore<DostawcyForView, int> _dataStore;
+        public DostawcyModalController ModalController { get; }
 
-        public DostawcyController(IDataStore<DostawcyForView, int> dataStore)
+        public DostawcyController(DostawcyDataStore dataStore, DostawcyModalController modalController)
+            : base(dataStore)
         {
-            _dataStore = dataStore;
+            ModalController = modalController;
+            ModalController.OnSaved += async () => await LoadDataAsync();
         }
 
-        protected override async Task LoadDataAsync()
+        public override async Task LoadDataAsync()
         {
-            IsLoading = true;
             try
             {
+                IsLoading = true;
                 var items = await _dataStore.GetItemsAsync(true);
-                Items = new List<DostawcyForView>(items);
+                Items = new ObservableCollection<DostawcyForView>(items);
             }
             catch (Exception ex)
             {
-                ErrorMessage = $"Błąd ładowania danych: {ex.Message}";
+                ErrorMessage = $"Błąd ładowania: {ex.Message}";
             }
             finally
             {
@@ -31,7 +35,7 @@ namespace SmartVendApp.Controllers
             }
         }
 
-        protected override async Task<bool> SaveItemAsync(DostawcyForView item)
+        public override async Task<bool> SaveItemAsync(DostawcyForView item)
         {
             try
             {
@@ -49,7 +53,7 @@ namespace SmartVendApp.Controllers
             }
         }
 
-        protected override async Task<bool> DeleteItemAsync(int id)
+        public override async Task<bool> DeleteItemAsync(int id)
         {
             try
             {
@@ -63,8 +67,5 @@ namespace SmartVendApp.Controllers
                 return false;
             }
         }
-
-        // Dodatkowa metoda specyficzna dla kontrolera
-        public List<DostawcyForView> PobierzDostawcow() => Items;
     }
 }
