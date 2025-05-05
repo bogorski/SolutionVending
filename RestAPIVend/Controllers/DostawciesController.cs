@@ -34,7 +34,7 @@ namespace RestAPIVend.Controllers
                 return NotFound();
             }
 
-            var dostawcy = await _context.Dostawcies.Where(d => d.IsActive ?? false).ToListAsync(); // null traktowany jako false
+            var dostawcy = await _context.Dostawcies.Where(d => d.IsActive ?? false).ToListAsync();
 
             var result = _mapper.Map<List<DostawcyForView>>(dostawcy);
 
@@ -52,7 +52,6 @@ namespace RestAPIVend.Controllers
                 return NotFound();
             }
 
-            // return dostawcy;
             var result = _mapper.Map<DostawcyForView>(dostawcy);
 
             return Ok(result);
