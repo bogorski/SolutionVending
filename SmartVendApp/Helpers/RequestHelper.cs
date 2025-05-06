@@ -15,7 +15,8 @@ namespace SmartVendApp.Helpers
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                Debug.Print(ex.Message);
+                Debug.WriteLine($"Stack Trace: {ex.StackTrace}");
                 return false;
             }
         }

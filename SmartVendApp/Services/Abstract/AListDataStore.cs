@@ -10,8 +10,8 @@
         public abstract Task<bool> DeleteItemFromService(T item);
         public abstract Task<bool> UpdateItemInService(T item);
         public abstract Task<bool> AddItemToService(T item);
-        public abstract T Find(T item);
-        public abstract T Find(Tid id);
+        public abstract Task<T> FindAsync(T item);
+        public abstract Task<T> FindAsync(Tid id);
 
         public async Task<bool> AddItemAsync(T item)
         {
@@ -29,7 +29,7 @@
 
         public async Task<bool> DeleteItemAsync(Tid id)
         {
-            var oldItem = Find(id);
+            var oldItem = await FindAsync(id);
             if (oldItem == null) return false;
 
             await DeleteItemFromService(oldItem);
@@ -37,8 +37,7 @@
             return await Task.FromResult(true);
         }
 
-        public async Task<T> GetItemAsync(Tid id) => await Task.FromResult(Find(id));
-        
+        public async Task<T> GetItemAsync(Tid id) => await Task.FromResult(await FindAsync(id));
 
         public async Task<IEnumerable<T>> GetItemsAsync(bool forceRefresh = false)
         {

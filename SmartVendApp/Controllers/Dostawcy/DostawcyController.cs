@@ -18,5 +18,6 @@ namespace SmartVendApp.Controllers.Dostawcy
         {
             return item.Iddostawcy == 0;
         }
+
     }
 }

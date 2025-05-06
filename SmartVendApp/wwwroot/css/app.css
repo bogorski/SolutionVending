@@ -1,5 +1,5 @@
 ﻿html, body {
-    font-family: 'Algerian', sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
 
 /*Moje css*/
@@ -16,8 +16,8 @@
     }
 
 .action-icon-add {
-    width: 50px;
-    height: 50px;
+    width: 75px;
+    height: 75px;
 }
 .list-group-item:hover .action-icon {
     opacity: 0.8;

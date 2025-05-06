@@ -11,5 +11,10 @@ namespace SmartVendApp.Controllers.Dostawcy
         {
             Title = "Dostawca";
         }
+
+        public override int GetItemId(DostawcyForView item)
+        {
+            return item.Iddostawcy;
+        }
     }
 }

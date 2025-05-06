@@ -20,7 +20,7 @@ namespace SmartVendApp
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
             builder.Services.AddMauiBlazorWebView();
-            builder.Services.AddSingleton<IDataStore<Machine, string>, MachineDataStore>();
+            //builder.Services.AddSingleton<IDataStore<Machine, string>, MachineDataStore>();
             builder.Services.AddSingleton<DostawcyDataStore>();
             builder.Services.AddSingleton<IDataStore<DostawcyForView, int>, DostawcyDataStore>();
 

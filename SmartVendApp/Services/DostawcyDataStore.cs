@@ -33,6 +33,7 @@ namespace SmartVendApp.Services
             try
             {
                 var result = await _vendingService.DostawciesDELETEAsync(item.Iddostawcy).HandleRequest();
+
                 if (result) await Refresh();
                 return result;
             }
@@ -43,11 +44,23 @@ namespace SmartVendApp.Services
             }
         }
 
-        public override DostawcyForView Find(DostawcyForView item)
-            => items.FirstOrDefault(d => d.Iddostawcy == item.Iddostawcy);
+        public override async Task<DostawcyForView> FindAsync(int id)
+        {
+            await Refresh();
 
-        public override DostawcyForView Find(int id)
-            => items.FirstOrDefault(d => d.Iddostawcy == id);
+            if (items == null || !items.Any())
+            {
+                System.Diagnostics.Debug.Print("Kolekcja items jest null lub pusta.");
+                return null;
+            }
+
+            return items.FirstOrDefault(d => d.Iddostawcy == id);
+        }
+
+        public override Task<DostawcyForView> FindAsync(DostawcyForView item)
+        {
+            throw new NotImplementedException();
+        }
 
         public override async Task Refresh()
         {

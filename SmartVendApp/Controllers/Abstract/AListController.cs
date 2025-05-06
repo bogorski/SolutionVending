@@ -51,6 +51,11 @@ namespace SmartVendApp.Controllers.Abstract
         }
         public virtual async Task<bool> DeleteItemAsync(TId id)
         {
+            if (id == null)
+            {
+                ErrorMessage = "ID cannot be null!";
+                return false;
+            }
             try
             {
                 bool result = await _dataStore.DeleteItemAsync(id);
@@ -60,6 +65,7 @@ namespace SmartVendApp.Controllers.Abstract
             catch (Exception ex)
             {
                 ErrorMessage = $"Błąd usuwania: {ex.Message}";
+                System.Diagnostics.Debug.Print($"Błąd usuwania: {ex}");
                 return false;
             }
         }
