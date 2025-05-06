@@ -9,12 +9,11 @@
 @inject DostawcyController Controller
 
 <h3>Zarządzanie dostawcami</h3>
-
 @if (Controller.IsLoading)
 {
     <div class="alert alert-info">Ładowanie danych...</div>
 }
-else if (Controller.ErrorMessage != null)
+else if (!string.IsNullOrEmpty(Controller.ErrorMessage))
 {
     <div class="alert alert-danger">@Controller.ErrorMessage</div>
 }
@@ -26,7 +25,15 @@ else
 {
     <div class="mb-3">
         <button class="btn btn-primary" @onclick="Controller.ModalController.ShowAddModal">Dodaj nowego dostawcę</button>
-    </div>
+    </div>  
+    @if (showSuccess)
+    {
+        <div class="alert alert-success mt-2">Dostawca został usunięty</div>
+    }
+    @if (showError)
+    {
+        <div class="alert alert-danger mt-2">Błąd podczas usuwania</div>
+    }
 
     <table class="table table-striped">
         <thead>
@@ -48,14 +55,7 @@ else
                         <button class="btn btn-sm btn-info" @onclick="() => Controller.ModalController.ShowEditModal(item)">Edytuj</button>
                         <button class="btn btn-sm btn-danger" @onclick="() => ConfirmDelete(item.Iddostawcy)">Usuń</button>
 
-                        @if (showSuccess)
-                        {
-                            <div class="alert alert-success mt-2">Dostawca został usunięty</div>
-                        }
-                        @if (showError)
-                        {
-                            <div class="alert alert-danger mt-2">Błąd podczas usuwania</div>
-                        }
+
                     </td>
                 </tr>
             }
@@ -94,7 +94,6 @@ else
 @code {
     private bool showSuccess;
     private bool showError;
-    private int itemToDelete;
 
     protected override async Task OnInitializedAsync()
     {
@@ -117,13 +116,21 @@ else
             {
                 showSuccess = true;
                 showError = false;
+                StateHasChanged(); // Odświeżenie UI
+
                 await Task.Delay(3000);
                 showSuccess = false;
+                StateHasChanged(); // Odświeżenie UI
             }
             else
             {
                 showError = true;
                 showSuccess = false;
+                StateHasChanged(); // Odświeżenie UI
+
+                await Task.Delay(3000);
+                showError = false;
+                StateHasChanged();
             }
         }
     }

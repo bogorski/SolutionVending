@@ -7,7 +7,7 @@ namespace RestAPIVend.Helpers
     {
         public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
         {
-            swaggerDoc.Components.Schemas.Remove("DostawaTowary");
+          /*  swaggerDoc.Components.Schemas.Remove("DostawaTowary");
             swaggerDoc.Components.Schemas.Remove("Dostawcy");
             swaggerDoc.Components.Schemas.Remove("Faktury");
             swaggerDoc.Components.Schemas.Remove("LokalizacjaMaszyny");
@@ -29,7 +29,7 @@ namespace RestAPIVend.Helpers
             swaggerDoc.Components.Schemas.Remove("Wizyty");
             swaggerDoc.Components.Schemas.Remove("Zamowienia");
             swaggerDoc.Components.Schemas.Remove("ZamowieniaZewnetrzne");
-            swaggerDoc.Components.Schemas.Remove("ZamowienieTowary");
+            swaggerDoc.Components.Schemas.Remove("ZamowienieTowary");*/
         }
     }
 }

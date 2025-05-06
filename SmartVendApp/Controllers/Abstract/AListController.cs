@@ -1,67 +1,68 @@
 ﻿using SmartVendApp.Services;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartVendApp.Controllers.Abstract
 {
-    public abstract class AListController<T, TId> : INotifyPropertyChanged
+    public abstract class AListController<T, TId>
     {
         protected readonly IDataStore<T, TId> _dataStore;
 
-        private bool _isLoading;
-        private string _errorMessage;
-        private ObservableCollection<T> _items = new();
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set
-            {
-                _isLoading = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string ErrorMessage
-        {
-            get => _errorMessage;
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<T> Items
-        {
-            get => _items;
-            set
-            {
-                _items = value;
-                OnPropertyChanged();
-            }
-        }
-
+        public bool IsLoading { get; set; }
+        public string ErrorMessage { get; set; }
+        public List<T> Items { get; set; } = new();
         protected AListController(IDataStore<T, TId> dataStore)
         {
             _dataStore = dataStore;
         }
 
-        public abstract Task LoadDataAsync();
-        public abstract Task<bool> SaveItemAsync(T item);
-        public abstract Task<bool> DeleteItemAsync(TId id);
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public virtual async Task LoadDataAsync()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            try
+            {
+                IsLoading = true;
+                Items = (List<T>)await _dataStore.GetItemsAsync();
+                ErrorMessage = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Błąd ładowania: {ex.Message}";
+                Items = new List<T>();
+            }
+            finally
+            {
+                IsLoading = false;
+            }
         }
+        public virtual async Task<bool> SaveItemAsync(T item)
+        {
+            try
+            {
+                bool result = IsNewItem(item)
+                    ? await _dataStore.AddItemAsync(item)
+                    : await _dataStore.UpdateItemAsync(item);
+
+                if (result) await LoadDataAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Błąd zapisu: {ex.Message}";
+                return false;
+            }
+        }
+        public virtual async Task<bool> DeleteItemAsync(TId id)
+        {
+            try
+            {
+                bool result = await _dataStore.DeleteItemAsync(id);
+                if (result) await LoadDataAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Błąd usuwania: {ex.Message}";
+                return false;
+            }
+        }
+        protected abstract bool IsNewItem(T item);
     }
 }

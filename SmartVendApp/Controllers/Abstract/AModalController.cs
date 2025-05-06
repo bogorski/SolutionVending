@@ -1,31 +1,54 @@
-﻿using AutoMapper;
-using System.Diagnostics;
-using System.Text.Json;
+﻿using SmartVendApp.Services;
 
 namespace SmartVendApp.Controllers.Abstract
 {
     public abstract class AModalController<T> where T : new()
     {
-        private static readonly IMapper _mapper = new MapperConfiguration(cfg => cfg.CreateMap<T, T>()).CreateMapper();
+        protected readonly IDataStore<T, int> _dataStore;
         public bool ShowModal { get; set; }
-        public T CurrentItem { get; set; }
+        public T CurrentItem { get; set; } = new T();
         public bool IsNew { get; set; }
-        public string Title { get; protected set; }
+        public string Title { get; protected set; } = string.Empty;
+        protected AModalController(IDataStore<T, int> dataStore)
+        {
+            _dataStore = dataStore;
+        }
+        public virtual async Task<bool> SaveAsync()
+        {
+            try
+            {
+                var result = IsNew
+                    ? await _dataStore.AddItemAsync(CurrentItem)
+                    : await _dataStore.UpdateItemAsync(CurrentItem);
 
-        public abstract Task<bool> SaveAsync();
+                if (result)
+                {
+                    CloseModal();
+                }
+                else
+                {
+                    System.Diagnostics.Debug.Print("Operacja zapisu nie powiodła się");
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.Print($"Błąd podczas zapisu: {ex.Message}");
+                return false;
+            }
+        }
 
         public void ShowAddModal()
         {
-            CurrentItem = Activator.CreateInstance<T>();
+            CurrentItem = new T();
             IsNew = true;
             ShowModal = true;
         }
 
         public void ShowEditModal(T item)
         {
-            CurrentItem = _mapper.Map<T>(item);
-
-            Debug.WriteLine(JsonSerializer.Serialize(CurrentItem, new JsonSerializerOptions { WriteIndented = true }));
+            CurrentItem = item;
             IsNew = false;
             ShowModal = true;
         }
@@ -33,77 +56,3 @@ namespace SmartVendApp.Controllers.Abstract
         public void CloseModal() => ShowModal = false;
     }
 }
-/*
-using AutoMapper;
-using System.Text.Json;
-
-namespace SmartVendApp.Controllers.Abstract
-{
-    public abstract class AModalController<T>
-    {
-        private static readonly IMapper _mapper;
-        private bool _showModal;
-        private T _currentItem;
-        private bool _isNew;
-
-        static AModalController()
-        {
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<T, T>());
-            _mapper = config.CreateMapper();
-        }
-
-        public bool ShowModal
-        {
-            get => _showModal;
-            set
-            {
-                _showModal = value;
-            }
-        }
-
-        public T CurrentItem
-        {
-            get => _currentItem;
-            set
-            {
-                _currentItem = value;
-            }
-        }
-
-        public bool IsNew
-        {
-            get => _isNew;
-            set
-            {
-                _isNew = value;
-            }
-        }
-
-        public string Title { get; protected set; }
-
-        public abstract Task<bool> SaveAsync();
-
-        public void ShowAddModal()
-        {
-            CurrentItem = Activator.CreateInstance<T>();
-            IsNew = true;
-            ShowModal = true;
-        }
-
-        public void ShowEditModal(T item)
-        {
-            CurrentItem = _mapper.Map<T>(item);
-
-            System.Diagnostics.Debug.Print(
-                JsonSerializer.Serialize(CurrentItem, new JsonSerializerOptions { WriteIndented = true })
-            );
-            IsNew = false;
-            ShowModal = true;
-        }
-
-        public void CloseModal()
-        {
-            ShowModal = false;
-        }
-    }
-}*/
