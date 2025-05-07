@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace RestAPIVend.Model;
+namespace RestAPIVending.Model;
 
 [PrimaryKey("IdLokalizacji", "MaszynaId")]
 [Table("LokalizacjaMaszyny")]

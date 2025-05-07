@@ -6,7 +6,7 @@ namespace SmartVendApp.Controllers.Dostawcy
 {
     public class DostawcyModalController : AModalController<DostawcyForView>
     {
-        public DostawcyModalController(IDataStore<DostawcyForView, int> dataStore)
+        public DostawcyModalController(IDataStore<DostawcyForView> dataStore)
             : base(dataStore)
         {
             Title = "Dostawca";

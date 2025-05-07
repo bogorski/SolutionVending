@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace RestAPIVend.Model;
+namespace RestAPIVending.Model;
 
 [Table("Maszyny")]
 [Index("NumerMaszyny", Name = "UQ_Maszyny_numerMaszyny", IsUnique = true)]

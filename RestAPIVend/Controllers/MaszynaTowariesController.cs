@@ -30,7 +30,7 @@ namespace RestAPIVend.Controllers
 
         // GET: api/MaszynaTowaries/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<MaszynaTowary>> GetMaszynaTowary(string id)
+        public async Task<ActionResult<MaszynaTowary>> GetMaszynaTowary(int id)
         {
             var maszynaTowary = await _context.MaszynaTowaries.FindAsync(id);
 
@@ -45,9 +45,9 @@ namespace RestAPIVend.Controllers
         // PUT: api/MaszynaTowaries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMaszynaTowary(string id, MaszynaTowary maszynaTowary)
+        public async Task<IActionResult> PutMaszynaTowary(int id, MaszynaTowary maszynaTowary)
         {
-            if (id != maszynaTowary.NumerMaszyny)
+            if (id != maszynaTowary.Idtowaru)
             {
                 return BadRequest();
             }
@@ -85,7 +85,7 @@ namespace RestAPIVend.Controllers
             }
             catch (DbUpdateException)
             {
-                if (MaszynaTowaryExists(maszynaTowary.NumerMaszyny))
+                if (MaszynaTowaryExists(maszynaTowary.Idtowaru))
                 {
                     return Conflict();
                 }
@@ -95,12 +95,12 @@ namespace RestAPIVend.Controllers
                 }
             }
 
-            return CreatedAtAction("GetMaszynaTowary", new { id = maszynaTowary.NumerMaszyny }, maszynaTowary);
+            return CreatedAtAction("GetMaszynaTowary", new { id = maszynaTowary.Idtowaru }, maszynaTowary);
         }
 
         // DELETE: api/MaszynaTowaries/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMaszynaTowary(string id)
+        public async Task<IActionResult> DeleteMaszynaTowary(int id)
         {
             var maszynaTowary = await _context.MaszynaTowaries.FindAsync(id);
             if (maszynaTowary == null)
@@ -114,9 +114,9 @@ namespace RestAPIVend.Controllers
             return NoContent();
         }
 
-        private bool MaszynaTowaryExists(string id)
+        private bool MaszynaTowaryExists(int id)
         {
-            return _context.MaszynaTowaries.Any(e => e.NumerMaszyny == id);
+            return _context.MaszynaTowaries.Any(e => e.Idtowaru == id);
         }
     }
 }

@@ -4,14 +4,15 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace RestAPIVend.Model;
+namespace RestAPIVending.Model;
 
-[PrimaryKey("IdLokalizacji", "MaszynaId")]
-[Table("LokalizacjaMaszyny")]
-public partial class LokalizacjaMaszyny
+[PrimaryKey("Idtrasy", "MaszynaId")]
+[Table("MaszynaTrasa")]
+public partial class MaszynaTrasa
 {
     [Key]
-    public int IdLokalizacji { get; set; }
+    [Column("IDTrasy")]
+    public int Idtrasy { get; set; }
 
     public bool? IsActive { get; set; }
 
@@ -19,11 +20,11 @@ public partial class LokalizacjaMaszyny
     [Column("maszyna_id")]
     public int MaszynaId { get; set; }
 
-    [ForeignKey("IdLokalizacji")]
-    [InverseProperty("LokalizacjaMaszynies")]
-    public virtual Lokalizacje IdLokalizacjiNavigation { get; set; } = null!;
+    [ForeignKey("Idtrasy")]
+    [InverseProperty("MaszynaTrasas")]
+    public virtual Trasy IdtrasyNavigation { get; set; } = null!;
 
     [ForeignKey("MaszynaId")]
-    [InverseProperty("LokalizacjaMaszynies")]
+    [InverseProperty("MaszynaTrasas")]
     public virtual Maszyny Maszyna { get; set; } = null!;
 }

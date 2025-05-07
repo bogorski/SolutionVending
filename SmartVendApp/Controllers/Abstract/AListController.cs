@@ -4,12 +4,12 @@ namespace SmartVendApp.Controllers.Abstract
 {
     public abstract class AListController<T, TId>
     {
-        protected readonly IDataStore<T, TId> _dataStore;
+        protected readonly IDataStore<T> _dataStore;
 
         public bool IsLoading { get; set; }
         public string ErrorMessage { get; set; }
         public List<T> Items { get; set; } = new();
-        protected AListController(IDataStore<T, TId> dataStore)
+        protected AListController(IDataStore<T> dataStore)
         {
             _dataStore = dataStore;
         }
@@ -49,7 +49,7 @@ namespace SmartVendApp.Controllers.Abstract
                 return false;
             }
         }
-        public virtual async Task<bool> DeleteItemAsync(TId id)
+        public virtual async Task<bool> DeleteItemAsync(int id)
         {
             if (id == null)
             {

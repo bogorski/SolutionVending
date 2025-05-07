@@ -30,7 +30,7 @@ namespace RestAPIVend.Controllers
 
         // GET: api/MaszynaTrasas/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<MaszynaTrasa>> GetMaszynaTrasa(string id)
+        public async Task<ActionResult<MaszynaTrasa>> GetMaszynaTrasa(int id)
         {
             var maszynaTrasa = await _context.MaszynaTrasas.FindAsync(id);
 
@@ -45,9 +45,9 @@ namespace RestAPIVend.Controllers
         // PUT: api/MaszynaTrasas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMaszynaTrasa(string id, MaszynaTrasa maszynaTrasa)
+        public async Task<IActionResult> PutMaszynaTrasa(int id, MaszynaTrasa maszynaTrasa)
         {
-            if (id != maszynaTrasa.NumerMaszyny)
+            if (id != maszynaTrasa.Idtrasy)
             {
                 return BadRequest();
             }
@@ -85,7 +85,7 @@ namespace RestAPIVend.Controllers
             }
             catch (DbUpdateException)
             {
-                if (MaszynaTrasaExists(maszynaTrasa.NumerMaszyny))
+                if (MaszynaTrasaExists(maszynaTrasa.Idtrasy))
                 {
                     return Conflict();
                 }
@@ -95,12 +95,12 @@ namespace RestAPIVend.Controllers
                 }
             }
 
-            return CreatedAtAction("GetMaszynaTrasa", new { id = maszynaTrasa.NumerMaszyny }, maszynaTrasa);
+            return CreatedAtAction("GetMaszynaTrasa", new { id = maszynaTrasa.Idtrasy }, maszynaTrasa);
         }
 
         // DELETE: api/MaszynaTrasas/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMaszynaTrasa(string id)
+        public async Task<IActionResult> DeleteMaszynaTrasa(int id)
         {
             var maszynaTrasa = await _context.MaszynaTrasas.FindAsync(id);
             if (maszynaTrasa == null)
@@ -114,9 +114,9 @@ namespace RestAPIVend.Controllers
             return NoContent();
         }
 
-        private bool MaszynaTrasaExists(string id)
+        private bool MaszynaTrasaExists(int id)
         {
-            return _context.MaszynaTrasas.Any(e => e.NumerMaszyny == id);
+            return _context.MaszynaTrasas.Any(e => e.Idtrasy == id);
         }
     }
 }

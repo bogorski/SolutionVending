@@ -22,7 +22,7 @@ namespace SmartVendApp
             builder.Services.AddMauiBlazorWebView();
             //builder.Services.AddSingleton<IDataStore<Machine, string>, MachineDataStore>();
             builder.Services.AddSingleton<DostawcyDataStore>();
-            builder.Services.AddSingleton<IDataStore<DostawcyForView, int>, DostawcyDataStore>();
+            builder.Services.AddSingleton<IDataStore<DostawcyForView>, DostawcyDataStore>();
 
             builder.Services.AddSingleton<DostawcyModalController>();
             builder.Services.AddSingleton<DostawcyController>();

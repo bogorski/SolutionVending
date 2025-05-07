@@ -4,25 +4,23 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace RestAPIVend.Model;
+namespace RestAPIVending.Model;
 
-[Table("Transakcje")]
-public partial class Transakcje
+[Table("Wizyty")]
+public partial class Wizyty
 {
     [Key]
-    [Column("IDTransakcji")]
-    public int Idtransakcji { get; set; }
+    [Column("IDWizyty")]
+    public int Idwizyty { get; set; }
 
-    [Column("IDTowaru")]
-    public int Idtowaru { get; set; }
-
-    public int Ilosc { get; set; }
-
-    [StringLength(10)]
-    public string TypPlatnosci { get; set; } = null!;
+    [Column("IDPracownika")]
+    public int Idpracownika { get; set; }
 
     [Column(TypeName = "datetime")]
     public DateTime Data { get; set; }
+
+    [StringLength(50)]
+    public string TypWizyty { get; set; } = null!;
 
     [StringLength(50)]
     public string? Opis { get; set; }
@@ -32,11 +30,11 @@ public partial class Transakcje
     [Column("maszyna_id")]
     public int? MaszynaId { get; set; }
 
-    [ForeignKey("Idtowaru")]
-    [InverseProperty("Transakcjes")]
-    public virtual Towary IdtowaruNavigation { get; set; } = null!;
+    [ForeignKey("Idpracownika")]
+    [InverseProperty("Wizyties")]
+    public virtual Pracownicy IdpracownikaNavigation { get; set; } = null!;
 
     [ForeignKey("MaszynaId")]
-    [InverseProperty("Transakcjes")]
+    [InverseProperty("Wizyties")]
     public virtual Maszyny? Maszyna { get; set; }
 }

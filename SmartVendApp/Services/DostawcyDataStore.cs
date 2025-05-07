@@ -4,7 +4,7 @@ using SmartVendApp.Helpers;
 
 namespace SmartVendApp.Services
 {
-    public class DostawcyDataStore : AListDataStore<DostawcyForView, int>
+    public class DostawcyDataStore : AListDataStore<DostawcyForView>
     {
         private readonly VendingService _vendingService;
 
@@ -13,81 +13,25 @@ namespace SmartVendApp.Services
             _vendingService = vendingService;
         }
 
-        public override async Task<bool> AddItemToService(DostawcyForView item)
+        protected override async Task<bool> PerformAddItemToService(DostawcyForView item)
         {
-            try
-            {
-                var result = await _vendingService.DostawciesPOSTAsync(item).HandleRequest();
-                if (result) await Refresh();
-                return result;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Błąd dodawania dostawcy: {ex.Message}");
-                return false;
-            }
+            return await _vendingService.DostawciesPOSTAsync(item).HandleRequest();
         }
-
-        public override async Task<bool> DeleteItemFromService(DostawcyForView item)
+        protected override async Task<bool> PerformUpdateAsync(DostawcyForView item)
         {
-            try
-            {
-                var result = await _vendingService.DostawciesDELETEAsync(item.Iddostawcy).HandleRequest();
-
-                if (result) await Refresh();
-                return result;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Błąd usuwania dostawcy: {ex.Message}");
-                return false;
-            }
+            return await _vendingService.DostawciesPUTAsync(item.Iddostawcy, item).HandleRequest();
         }
-
-        public override async Task<DostawcyForView> FindAsync(int id)
+        protected override async Task<bool> PerformDeleteItemFromService(DostawcyForView item)
         {
-            await Refresh();
-
-            if (items == null || !items.Any())
-            {
-                System.Diagnostics.Debug.Print("Kolekcja items jest null lub pusta.");
-                return null;
-            }
-
-            return items.FirstOrDefault(d => d.Iddostawcy == id);
+            return await _vendingService.DostawciesDELETEAsync(item.Iddostawcy).HandleRequest();
         }
-
-        public override Task<DostawcyForView> FindAsync(DostawcyForView item)
+        protected override async Task<IEnumerable<DostawcyForView>> FetchAllItemsAsync()
         {
-            throw new NotImplementedException();
+            return await _vendingService.DostawciesAllAsync();
         }
-
-        public override async Task Refresh()
+        protected override int GetItemId(DostawcyForView item)
         {
-            try
-            {
-                var result = await _vendingService.DostawciesAllAsync();
-                items = result?.ToList() ?? new List<DostawcyForView>();
-            }
-            catch (Exception ex)
-            {
-                items = new List<DostawcyForView>();
-                Console.WriteLine($"Błąd odświeżenia: {ex.Message}");
-            }
-        }
-        public override async Task<bool> UpdateItemInService(DostawcyForView item)
-        {
-            try
-            {
-                var result = await _vendingService.DostawciesPUTAsync(item.Iddostawcy, item).HandleRequest();
-                if (result) await Refresh();
-                return result;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Błąd aktualizacji dostawcy: {ex.Message}");
-                return false;
-            }
+            return item.Iddostawcy;
         }
     }
 }

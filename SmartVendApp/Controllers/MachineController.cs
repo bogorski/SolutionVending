@@ -8,10 +8,10 @@ namespace SmartVendApp.Controllers
 {
     public class MachineController
     {
-        private readonly IDataStore<Machine, string> _machineStore;
+        private readonly IDataStore<Machine> _machineStore;
         private List<Machine> _machines;
 
-        public MachineController(IDataStore<Machine, string> machineStore)
+        public MachineController(IDataStore<Machine> machineStore)
         {
             _machineStore = machineStore;
             _machines = new List<Machine>();

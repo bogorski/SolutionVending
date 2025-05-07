@@ -6,25 +6,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RestAPIVend.Model;
 
-[PrimaryKey("NumerMaszyny", "Idtrasy")]
+[PrimaryKey("Idtrasy", "MaszynaId")]
 [Table("MaszynaTrasa")]
 public partial class MaszynaTrasa
 {
-    [Key]
-    [StringLength(10)]
-    public string NumerMaszyny { get; set; } = null!;
-
     [Key]
     [Column("IDTrasy")]
     public int Idtrasy { get; set; }
 
     public bool? IsActive { get; set; }
 
+    [Key]
+    [Column("maszyna_id")]
+    public int MaszynaId { get; set; }
+
     [ForeignKey("Idtrasy")]
     [InverseProperty("MaszynaTrasas")]
     public virtual Trasy IdtrasyNavigation { get; set; } = null!;
 
-    [ForeignKey("NumerMaszyny")]
+    [ForeignKey("MaszynaId")]
     [InverseProperty("MaszynaTrasas")]
-    public virtual Maszyny NumerMaszynyNavigation { get; set; } = null!;
+    public virtual Maszyny Maszyna { get; set; } = null!;
 }

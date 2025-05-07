@@ -216,17 +216,17 @@ namespace SmartVendApp.ServiceReference
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<MaszynaTowary> MaszynaTowariesGETAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<MaszynaTowary> MaszynaTowariesGETAsync(int id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MaszynaTowariesPUTAsync(string id, MaszynaTowary body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task MaszynaTowariesPUTAsync(int id, MaszynaTowary body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MaszynaTowariesDELETEAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task MaszynaTowariesDELETEAsync(int id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
@@ -241,17 +241,17 @@ namespace SmartVendApp.ServiceReference
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<MaszynaTrasa> MaszynaTrasasGETAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<MaszynaTrasa> MaszynaTrasasGETAsync(int id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MaszynaTrasasPUTAsync(string id, MaszynaTrasa body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task MaszynaTrasasPUTAsync(int id, MaszynaTrasa body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MaszynaTrasasDELETEAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task MaszynaTrasasDELETEAsync(int id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
@@ -3343,7 +3343,7 @@ namespace SmartVendApp.ServiceReference
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<MaszynaTowary> MaszynaTowariesGETAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<MaszynaTowary> MaszynaTowariesGETAsync(int id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -3418,7 +3418,7 @@ namespace SmartVendApp.ServiceReference
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task MaszynaTowariesPUTAsync(string id, MaszynaTowary body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task MaszynaTowariesPUTAsync(int id, MaszynaTowary body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -3491,7 +3491,7 @@ namespace SmartVendApp.ServiceReference
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task MaszynaTowariesDELETEAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task MaszynaTowariesDELETEAsync(int id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -3706,7 +3706,7 @@ namespace SmartVendApp.ServiceReference
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<MaszynaTrasa> MaszynaTrasasGETAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<MaszynaTrasa> MaszynaTrasasGETAsync(int id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -3781,7 +3781,7 @@ namespace SmartVendApp.ServiceReference
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task MaszynaTrasasPUTAsync(string id, MaszynaTrasa body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task MaszynaTrasasPUTAsync(int id, MaszynaTrasa body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -3854,7 +3854,7 @@ namespace SmartVendApp.ServiceReference
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task MaszynaTrasasDELETEAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task MaszynaTrasasDELETEAsync(int id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -9268,18 +9268,17 @@ namespace SmartVendApp.ServiceReference
         [Newtonsoft.Json.JsonProperty("idLokalizacji", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int IdLokalizacji { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("numerMaszyny", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(10)]
-        public string NumerMaszyny { get; set; }
-
         [Newtonsoft.Json.JsonProperty("isActive", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? IsActive { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("maszynaId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int MaszynaId { get; set; }
 
         [Newtonsoft.Json.JsonProperty("idLokalizacjiNavigation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Lokalizacje IdLokalizacjiNavigation { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("numerMaszynyNavigation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Maszyny NumerMaszynyNavigation { get; set; }
+        [Newtonsoft.Json.JsonProperty("maszyna", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Maszyny Maszyna { get; set; }
 
     }
 
@@ -9398,10 +9397,6 @@ namespace SmartVendApp.ServiceReference
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.4.0.0 (NJsonSchema v11.3.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class MaszynaTowary
     {
-        [Newtonsoft.Json.JsonProperty("numerMaszyny", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(10)]
-        public string NumerMaszyny { get; set; }
-
         [Newtonsoft.Json.JsonProperty("idtowaru", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int Idtowaru { get; set; }
 
@@ -9418,32 +9413,34 @@ namespace SmartVendApp.ServiceReference
         [Newtonsoft.Json.JsonProperty("isActive", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? IsActive { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("maszynaId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int MaszynaId { get; set; }
+
         [Newtonsoft.Json.JsonProperty("idtowaruNavigation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Towary IdtowaruNavigation { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("numerMaszynyNavigation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Maszyny NumerMaszynyNavigation { get; set; }
+        [Newtonsoft.Json.JsonProperty("maszyna", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Maszyny Maszyna { get; set; }
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.4.0.0 (NJsonSchema v11.3.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class MaszynaTrasa
     {
-        [Newtonsoft.Json.JsonProperty("numerMaszyny", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(10)]
-        public string NumerMaszyny { get; set; }
-
         [Newtonsoft.Json.JsonProperty("idtrasy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int Idtrasy { get; set; }
 
         [Newtonsoft.Json.JsonProperty("isActive", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? IsActive { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("maszynaId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int MaszynaId { get; set; }
+
         [Newtonsoft.Json.JsonProperty("idtrasyNavigation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Trasy IdtrasyNavigation { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("numerMaszynyNavigation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Maszyny NumerMaszynyNavigation { get; set; }
+        [Newtonsoft.Json.JsonProperty("maszyna", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Maszyny Maszyna { get; set; }
 
     }
 
@@ -9474,11 +9471,14 @@ namespace SmartVendApp.ServiceReference
         [Newtonsoft.Json.JsonProperty("isActive", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? IsActive { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Id { get; set; }
+
         [Newtonsoft.Json.JsonProperty("idtypMaszynyNavigation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TypyMaszyn IdtypMaszynyNavigation { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("lokalizacjaMaszyny", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public LokalizacjaMaszyny LokalizacjaMaszyny { get; set; }
+        [Newtonsoft.Json.JsonProperty("lokalizacjaMaszynies", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<LokalizacjaMaszyny> LokalizacjaMaszynies { get; set; }
 
         [Newtonsoft.Json.JsonProperty("maszynaTowaries", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<MaszynaTowary> MaszynaTowaries { get; set; }
@@ -9718,10 +9718,6 @@ namespace SmartVendApp.ServiceReference
         [Newtonsoft.Json.JsonProperty("idtransakcji", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int Idtransakcji { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("numerMaszyny", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(10)]
-        public string NumerMaszyny { get; set; }
-
         [Newtonsoft.Json.JsonProperty("idtowaru", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int Idtowaru { get; set; }
 
@@ -9742,11 +9738,14 @@ namespace SmartVendApp.ServiceReference
         [Newtonsoft.Json.JsonProperty("isActive", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? IsActive { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("maszynaId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaszynaId { get; set; }
+
         [Newtonsoft.Json.JsonProperty("idtowaruNavigation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Towary IdtowaruNavigation { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("numerMaszynyNavigation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Maszyny NumerMaszynyNavigation { get; set; }
+        [Newtonsoft.Json.JsonProperty("maszyna", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Maszyny Maszyna { get; set; }
 
     }
 
@@ -9859,10 +9858,6 @@ namespace SmartVendApp.ServiceReference
         [Newtonsoft.Json.JsonProperty("idpracownika", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int Idpracownika { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("numerMaszyny", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(10)]
-        public string NumerMaszyny { get; set; }
-
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset Data { get; set; }
 
@@ -9877,11 +9872,14 @@ namespace SmartVendApp.ServiceReference
         [Newtonsoft.Json.JsonProperty("isActive", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? IsActive { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("maszynaId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaszynaId { get; set; }
+
         [Newtonsoft.Json.JsonProperty("idpracownikaNavigation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Pracownicy IdpracownikaNavigation { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("numerMaszynyNavigation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Maszyny NumerMaszynyNavigation { get; set; }
+        [Newtonsoft.Json.JsonProperty("maszyna", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Maszyny Maszyna { get; set; }
 
     }
 

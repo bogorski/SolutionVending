@@ -6,7 +6,7 @@ namespace SmartVendApp.Controllers.Abstract
 {
     public abstract class AModalController<T> where T : new()
     {
-        protected readonly IDataStore<T, int> _dataStore;
+        protected readonly IDataStore<T> _dataStore;
         public bool ShowModal { get; set; }
         public bool ShowDeleteModal { get; set; }
         public T CurrentItem { get; set; } = new T();
@@ -14,7 +14,7 @@ namespace SmartVendApp.Controllers.Abstract
         public string Title { get; protected set; } = string.Empty;
         public bool ShowSuccess { get; set; }
         public bool ShowError { get; set; }
-        protected AModalController(IDataStore<T, int> dataStore)
+        protected AModalController(IDataStore<T> dataStore)
         {
             _dataStore = dataStore;
         }
@@ -44,50 +44,12 @@ namespace SmartVendApp.Controllers.Abstract
             }
         }
 
-        public void ShowAddModal()
-        {
-            CurrentItem = new T();
-            IsNew = true;
-            ShowModal = true;
-        }
-
-        public void ShowEditModal(T item)
-        {
-            CurrentItem = item;
-            IsNew = false;
-            ShowModal = true;
-        }
-
-        public void CloseModal() => ShowModal = false;
-
-        public void DeleteModal(T item)
-        {
-            //  CurrentItem = item;  // Ustawia element do usunięcia
-            //  ShowDeleteModal = true;  // Ustawia stan modala usuwania na widoczny
-            if (item == null)
-            {
-                System.Diagnostics.Debug.Print("Brak elementu do usunięcia");
-                return;
-            }
-
-            CurrentItem = item;
-            ShowDeleteModal = true;
-        }
-        public void CloseDeleteModal() => ShowDeleteModal = false;
-
         public virtual async Task<bool> DeleteAsync()
         {
             try
             {
-                if (CurrentItem == null)
-                {
-                    System.Diagnostics.Debug.Print("Brak elementu do usunięcia");
-                    ShowSuccess = false;
-                    ShowError = true;
-                    return false;
-                }
-
-                bool result = await _dataStore.DeleteItemAsync(GetItemId(CurrentItem)).HandleRequest();
+                var itemId = GetItemId(CurrentItem);
+                bool result = await _dataStore.DeleteItemAsync(itemId);
 
                 if (result)
                 {
@@ -107,12 +69,33 @@ namespace SmartVendApp.Controllers.Abstract
             }
             catch (Exception ex)
             {
-                ShowSuccess = false;
-                ShowError = true;
                 System.Diagnostics.Debug.Print($"Błąd podczas usuwania: {ex.Message}");
                 return false;
             }
         }
-        public abstract int GetItemId(T item);
+
+        public void ShowAddModal()
+        {
+            CurrentItem = new T();
+            IsNew = true;
+            ShowModal = true;
+        }
+
+        public void ShowEditModal(T item)
+        {
+            CurrentItem = item;
+            IsNew = false;
+            ShowModal = true;
+        }
+
+        public void ShowDeleteConfirmationModal(T item)
+        {
+            CurrentItem = item;
+            ShowDeleteModal = true;
+        }
+        public void CloseModal() => ShowModal = false;
+        public void CloseDeleteModal() => ShowDeleteModal = false;
+
+       public abstract int GetItemId(T item);
     }
 }
