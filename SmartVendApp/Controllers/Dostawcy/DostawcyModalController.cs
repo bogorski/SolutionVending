@@ -16,5 +16,17 @@ namespace SmartVendApp.Controllers.Dostawcy
         {
             return item.Iddostawcy;
         }
+
+        public override string GetDisplayName(DostawcyForView item)
+        {
+            if (item == null) return "";
+            return item.Nazwa;
+        }
+
+        public override string GetDisplayDetails(DostawcyForView item)
+        {
+            if (item == null) return "";
+            return $"{item.Ulica}, {item.Miasto}";
+        }
     }
 }

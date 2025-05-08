@@ -1,4 +1,5 @@
 ﻿using SmartVendApp.Controllers.Abstract;
+using SmartVendApp.Controllers.Interface;
 using SmartVendApp.ServiceReference;
 using SmartVendApp.Services;
 
@@ -17,7 +18,6 @@ namespace SmartVendApp.Controllers.Dostawcy
         protected override bool IsNewItem(DostawcyForView item)
         {
             return item.Iddostawcy == 0;
-        }
-
+        } 
     }
 }

@@ -5,6 +5,7 @@ using SmartVendApp.Models;
 using SmartVendApp.Controllers;
 using SmartVendApp.ServiceReference;
 using SmartVendApp.Controllers.Dostawcy;
+using SmartVendApp.Controllers.Interface;
 
 namespace SmartVendApp
 {
@@ -26,6 +27,8 @@ namespace SmartVendApp
 
             builder.Services.AddSingleton<DostawcyModalController>();
             builder.Services.AddSingleton<DostawcyController>();
+
+            builder.Services.AddSingleton<IModalController<DostawcyForView>, DostawcyModalController>();
 
             builder.Services.AddSingleton<VendingService>();
             builder.Services.AddScoped(sp => new HttpClient

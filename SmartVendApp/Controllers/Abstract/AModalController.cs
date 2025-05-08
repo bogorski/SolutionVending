@@ -1,10 +1,11 @@
 ﻿using Newtonsoft.Json;
+using SmartVendApp.Controllers.Interface;
 using SmartVendApp.Helpers;
 using SmartVendApp.Services;
 
 namespace SmartVendApp.Controllers.Abstract
 {
-    public abstract class AModalController<T> where T : new()
+    public abstract class AModalController<T> : IModalController<T> where T : new()
     {
         protected readonly IDataStore<T> _dataStore;
         public bool ShowModal { get; set; }
@@ -14,9 +15,30 @@ namespace SmartVendApp.Controllers.Abstract
         public string Title { get; protected set; } = string.Empty;
         public bool ShowSuccess { get; set; }
         public bool ShowError { get; set; }
+        public List<T> Items { get; set; } = new List<T>();
+        public bool IsLoading { get; set; }
+        public abstract string GetDisplayName(T item);
+        public abstract string GetDisplayDetails(T item);
         protected AModalController(IDataStore<T> dataStore)
         {
             _dataStore = dataStore;
+        }
+        public virtual async Task LoadItemsAsync()
+        {
+            try
+            {
+                IsLoading = true;
+                Items = (await _dataStore.GetItemsAsync()).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Błąd podczas ładowania danych: {ex.Message}");
+                ShowError = true;
+            }
+            finally
+            {
+                IsLoading = false;
+            }
         }
         public virtual async Task<bool> SaveAsync()
         {
@@ -96,6 +118,8 @@ namespace SmartVendApp.Controllers.Abstract
         public void CloseModal() => ShowModal = false;
         public void CloseDeleteModal() => ShowDeleteModal = false;
 
-       public abstract int GetItemId(T item);
+        public abstract int GetItemId(T item);
+
+        
     }
 }

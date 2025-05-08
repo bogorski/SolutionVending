@@ -44,6 +44,9 @@
             <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToAddMachines">Dodaj maszyny</button>
         </div>
         <div class="col-12 my-1">
+            <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToDostawcyList">Lista dostawcow</button>
+        </div>
+        <div class="col-12 my-1">
             <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToViewList">Pokaż listę</button>
         </div>
         <div class="col-12 my-1">
@@ -86,6 +89,7 @@
     }
 
     private void NavigateToAddMachines() => NavigationManager.NavigateTo("/addmachines");
+    private void NavigateToDostawcyList() => NavigationManager.NavigateTo("/dostawcyList");
     private void NavigateToViewList() => NavigationManager.NavigateTo("/viewlist");
     private void NavigateToListMachies() => NavigationManager.NavigateTo("/listmachines");
     private void NavigateToOrders() => NavigationManager.NavigateTo("/orders");

@@ -1,0 +1,35 @@
+﻿@page "/dostawcyList"
+@using SmartVendApp.Controllers.Dostawcy;
+@using SmartVendApp.Components.Pages.Components;
+@using SmartVendApp.ServiceReference;
+
+@inject DostawcyController Controller;
+
+
+<h2>Lista Dostawców</h2>
+   @if (Controller.IsLoading)
+    {
+                    <div class="alert alert-info">Ładowanie danych...</div>
+    }
+    else if (!string.IsNullOrEmpty(Controller.ErrorMessage))
+    {
+                    <div class="alert alert-danger">@Controller.ErrorMessage</div>
+    }
+    else if (Controller.Items == null || !Controller.Items.Any())
+    {
+                    <div class="alert alert-warning">Brak dostawców w systemie</div>
+    }
+    else
+    {
+<GenericList TItem="DostawcyForView"
+                 Items="@Controller.Items"
+                 mainName="products"
+                 itemList="Lalalala" />
+    }
+@code {
+    private List<DostawcyForView> products = new List<DostawcyForView>();
+    protected override async Task OnInitializedAsync()
+    {
+        await Controller.LoadDataAsync();
+    }
+}
