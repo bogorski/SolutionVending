@@ -5,7 +5,7 @@ using SmartVendApp.Services;
 
 namespace SmartVendApp.Controllers.Dostawcy
 {
-    public class DostawcyController : AListController<DostawcyForView, int>
+    public class DostawcyController : AListController<DostawcyForView>
     {
         public DostawcyModalController ModalController { get; }
 

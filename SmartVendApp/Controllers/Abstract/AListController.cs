@@ -1,8 +1,9 @@
 ﻿using SmartVendApp.Services;
+using SmartVendApp.Controllers.Interface;
 
 namespace SmartVendApp.Controllers.Abstract
 {
-    public abstract class AListController<T, TId>
+    public abstract class AListController<T> : IListController<T> where T : new()
     {
         protected readonly IDataStore<T> _dataStore;
 
@@ -70,5 +71,6 @@ namespace SmartVendApp.Controllers.Abstract
             }
         }
         protected abstract bool IsNewItem(T item);
+
     }
 }

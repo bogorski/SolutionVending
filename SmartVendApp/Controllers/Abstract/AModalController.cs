@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SmartVendApp.Controllers.Interface;
+using SmartVendApp.Controllers.Abstract;
 using SmartVendApp.Helpers;
 using SmartVendApp.Services;
 
@@ -42,6 +43,7 @@ namespace SmartVendApp.Controllers.Abstract
         }
         public virtual async Task<bool> SaveAsync()
         {
+            System.Diagnostics.Debug.Print("SaveAsync");
             try
             {
                 var result = IsNew
@@ -68,6 +70,7 @@ namespace SmartVendApp.Controllers.Abstract
 
         public virtual async Task<bool> DeleteAsync()
         {
+            System.Diagnostics.Debug.Print("DeleteAsync");
             try
             {
                 var itemId = GetItemId(CurrentItem);
@@ -98,6 +101,7 @@ namespace SmartVendApp.Controllers.Abstract
 
         public void ShowAddModal()
         {
+            System.Diagnostics.Debug.Print("ShowAddModal");
             CurrentItem = new T();
             IsNew = true;
             ShowModal = true;
@@ -105,6 +109,7 @@ namespace SmartVendApp.Controllers.Abstract
 
         public void ShowEditModal(T item)
         {
+            System.Diagnostics.Debug.Print("ShowEditModal");
             CurrentItem = item;
             IsNew = false;
             ShowModal = true;
@@ -119,7 +124,5 @@ namespace SmartVendApp.Controllers.Abstract
         public void CloseDeleteModal() => ShowDeleteModal = false;
 
         public abstract int GetItemId(T item);
-
-        
     }
 }

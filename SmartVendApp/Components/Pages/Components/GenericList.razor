@@ -1,13 +1,7 @@
 ﻿@typeparam TItem;
 @using SmartVendApp.Controllers.Interface;
 @inject IModalController<TItem> ModalController;
-
-    @if (Items == null)
-{
-    <div class="alert alert-warning">Ładowanie danych...</div>
-}
-else
-{
+@inject IListController<TItem> ListController;
 
 <div class="row flex-grow-1 m-0 bg-white position-relative rounded-3" style="overflow:hidden;">
     <div class="col p-0 h-100" style="overflow-y:auto;">
@@ -35,16 +29,21 @@ else
          class="action-icon action-icon-add position-absolute bottom-0 start-50 translate-middle-x"
          alt="Dodaj"
          @onclick="ModalController.ShowAddModal">
+        @if (@ModalController.ShowSuccess)
+        {
+                <div class="position-absolute bottom-50 alert-dark text-center p-5">"@Name został usunięty"</div>
+        }
+        @if (@ModalController.ShowError)
+        {
+                <div class="alert alert-danger mt-2">Błąd podczas usuwania</div>
+        }
 </div>
-}
+ 
 @code {
     [Parameter]
     public IEnumerable<TItem> Items { get; set; }
 
     [Parameter]
-    public string mainName { get; set; }
-
-    [Parameter]
-    public string itemList { get; set; }
+    public string Name { get; set; }
 
 }

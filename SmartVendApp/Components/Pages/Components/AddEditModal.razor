@@ -1,0 +1,48 @@
+﻿@typeparam TItem
+@using SmartVendApp.Components
+@using SmartVendApp.Controllers.Interface;
+@inject IModalController<TItem> ModalController;
+
+<div class="modal d-block fade show" tabindex="-1" role="dialog" style="background:rgba(0,0,0,0.5)">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@Title</h5>
+            </div>
+            <div class="modal-body">
+                @foreach (var field in Fields)
+                {
+                                <div class="form-group">
+                                    <label>@field.Label</label>
+                                    @* <InputText class="form-control" @bind-Value="field.Value" /> *@
+                                        <InputText class="form-control" 
+                                     Value="@field.Value" 
+                                     ValueChanged="@(val => { field.Value = val; })" />
+                                </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @onclick="ModalController.CloseModal">Anuluj</button>
+                <button class="btn btn-primary" @onclick="SaveItem">Zapisz</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public List<FormField> Fields { get; set; } = new();
+
+    private async void SaveItem()
+    {
+        if (await ModalController.SaveAsync())
+        {
+           // await Controllers.Dostawcy.DostawcyController.LoadDataAsync();
+        }
+    }
+    public class FormField
+    {
+        public string Label { get; set; } = string.Empty;
+        public string Value { get; set; } = string.Empty;
+    }
+}
