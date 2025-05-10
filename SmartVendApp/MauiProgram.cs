@@ -6,6 +6,7 @@ using SmartVendApp.Controllers;
 using SmartVendApp.ServiceReference;
 using SmartVendApp.Controllers.Dostawcy;
 using SmartVendApp.Controllers.Interface;
+using SmartVendApp.Controllers.Faktury;
 
 namespace SmartVendApp
 {
@@ -21,26 +22,35 @@ namespace SmartVendApp
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
             builder.Services.AddMauiBlazorWebView();
-            //builder.Services.AddSingleton<IDataStore<Machine, string>, MachineDataStore>();
+
             builder.Services.AddSingleton<DostawcyDataStore>();
+            builder.Services.AddSingleton<FakturyDataStore>();
+
             builder.Services.AddSingleton<IDataStore<DostawcyForView>, DostawcyDataStore>();
+            builder.Services.AddSingleton<IDataStore<FakturyForView>, FakturyDataStore>();
 
             builder.Services.AddSingleton<DostawcyModalController>();
             builder.Services.AddSingleton<DostawcyController>();
+            
+            builder.Services.AddSingleton<FakturyModalController>();
+            builder.Services.AddSingleton<FakturyController>();
 
             builder.Services.AddSingleton<IModalController<DostawcyForView>, DostawcyModalController>();
-            builder.Services.AddScoped<IListController<DostawcyForView>, DostawcyController>();
+            builder.Services.AddScoped<IListController<DostawcyForView>, DostawcyController>(); 
+            
+            builder.Services.AddSingleton<IModalController<FakturyForView>, FakturyModalController>();
+            builder.Services.AddScoped<IListController<FakturyForView>, FakturyController>();
 
             builder.Services.AddSingleton<VendingService>();
             builder.Services.AddScoped(sp => new HttpClient
             {
-                BaseAddress = new Uri("https://localhost:7198") // ← Podaj prawidłowy adres API
+                BaseAddress = new Uri("https://localhost:7198")
             });
 
             builder.Services.AddScoped(sp =>
             {
-                var httpClient = sp.GetRequiredService<HttpClient>(); // Pobranie HttpClient z DI
-                var baseUrl = "https://localhost:7198";  // Adres URL API
+                var httpClient = sp.GetRequiredService<HttpClient>();
+                var baseUrl = "https://localhost:7198";
                 return new VendingService(baseUrl, httpClient);
             });
             builder.Services.AddAutoMapper(cfg =>
