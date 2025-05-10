@@ -3,64 +3,43 @@
 @inject VendingService VendingService
 @inject NavigationManager NavigationManager
 
-<div class="container-fluid d-flex flex-column h-100">
-    <div class="row flex-grow-1 d-flex align-items-start">
+<div class="container-fluid d-flex flex-column h-100 p-0 m-0">
+    <div class="row flex-grow-1 d-flex align-items-start mb-3">
         <div class="col-12 text-center">
             <img src="content/SmartVendLogo.png" alt="Logo" />
         </div>
     </div>
 
-    @if (dostawcy == null)
-    {
-        <div class="row text-center">
-            <p>Ładowanie listy dostawców...</p>
-        </div>
-    }
-    else
-    {
-        <div class="row text-center mb-5 pb-3">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Nazwa</th>
-                        <th>Miasto</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var dostawca in dostawcy)
-                    {
-                        <tr>
-                            <td>@dostawca.Nazwa</td>
-                            <td>@dostawca.Miasto</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-
-    <div class="row text-center mb-5 pb-3">
-        <div class="col-12 my-1">
-            <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToAddMachines">Dodaj maszyny</button>
-        </div>
-        <div class="col-12 my-1">
-            <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToDostawcyList">Lista dostawcow</button>
-        </div>
-        <div class="col-12 my-1">
-            <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToViewList">Pokaż listę</button>
-        </div>
-        <div class="col-12 my-1">
-            <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToListMachies">Lista maszyn</button>
-        </div>
-        <div class="col-12 my-1">
-            <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToOrders">Zamówienia</button>
-        </div>
-        <div class="col-12 my-1">
-            <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToOperationsMM">Operacje MM</button>
+    <div class="row flex-grow-1 m-0 position-relative" style="overflow-y: scroll; scrollbar-width: none;">
+        <div class="col p-0 h-100">
+            <div class="col-12 my-1">
+                <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToMachines">Dostawcy</button>
+            </div>
+            <div class="col-12 my-1">
+                <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToLocations">Lokalizacje</button>
+            </div>
+            <div class="col-12 my-1">
+                <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToWarehouses">Magazyny</button>
+            </div>
+            <div class="col-12 my-1">
+                <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToProducts">Towary</button>
+            </div>
+            <div class="col-12 my-1">
+                <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToCarRepairShop">Warsztaty</button>
+            </div>
+            <div class="col-12 my-1">
+                <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToRoutes">Trasy</button>
+            </div>
+            <div class="col-12 my-1">
+                <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToWorkstations">Stanowiska pracy</button>
+            </div>
+            <div class="col-12 my-1">
+                <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToInvoices">Faktury</button>
+            </div>
         </div>
     </div>
 
-    <div class="row text-center mb-5 pb-3">
+    <div class="row text-center">
         <div class="col-12 my-4">
             <a href="#" @onclick="Logout">Wyloguj się</a>
         </div>
@@ -68,36 +47,17 @@
 </div>
 
 @code {
-    private ICollection<DostawcyForView> dostawcy;
-    private bool isLoading = true;
-    private string errorMessage;
-
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            dostawcy = await VendingService.DostawciesAllAsync();
-        }
-        catch (Exception ex)
-        {
-            errorMessage = $"Wystąpił błąd podczas ładowania dostawców: {ex.Message}";
-        }
-        finally
-        {
-            isLoading = false;
-        }
-    }
-
-    private void NavigateToAddMachines() => NavigationManager.NavigateTo("/addmachines");
-    private void NavigateToDostawcyList() => NavigationManager.NavigateTo("/dostawcyList");
-    private void NavigateToViewList() => NavigationManager.NavigateTo("/viewlist");
-    private void NavigateToListMachies() => NavigationManager.NavigateTo("/listmachines");
-    private void NavigateToOrders() => NavigationManager.NavigateTo("/orders");
-    private void NavigateToOperationsMM() => NavigationManager.NavigateTo("/operationsmm");
+    private void NavigateToMachines() => NavigationManager.NavigateTo("/dostawcy");
+    private void NavigateToLocations() => NavigationManager.NavigateTo("/lokalizacje");
+    private void NavigateToWarehouses() => NavigationManager.NavigateTo("/magazyny");
+    private void NavigateToProducts() => NavigationManager.NavigateTo("/towary");
+    private void NavigateToCarRepairShop() => NavigationManager.NavigateTo("/warsztaty");
+    private void NavigateToRoutes() => NavigationManager.NavigateTo("/trasy");
+    private void NavigateToWorkstations() => NavigationManager.NavigateTo("/stanowiskapracy");
+    private void NavigateToInvoices() => NavigationManager.NavigateTo("/faktury");
 
     private void Logout()
     {
-        // Tutaj dodaj logikę wylogowania
-        NavigationManager.NavigateTo("/logout");
+        NavigationManager.NavigateTo("/");
     }
 }

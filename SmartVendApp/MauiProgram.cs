@@ -29,6 +29,7 @@ namespace SmartVendApp
             builder.Services.AddSingleton<DostawcyController>();
 
             builder.Services.AddSingleton<IModalController<DostawcyForView>, DostawcyModalController>();
+            builder.Services.AddScoped<IListController<DostawcyForView>, DostawcyController>();
 
             builder.Services.AddSingleton<VendingService>();
             builder.Services.AddScoped(sp => new HttpClient
