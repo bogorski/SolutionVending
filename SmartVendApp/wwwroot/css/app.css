@@ -57,8 +57,9 @@ input {
     background-color: #00395F;
 }
 
-img {
+.Logo {
     width: 50%;
+    max-width: 150px;
 }
 
 .avatar {

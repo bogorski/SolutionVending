@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RestAPIVend.ForView;
 using RestAPIVend.Model;
 using RestAPIVend.Model.Context;
 
@@ -15,22 +12,27 @@ namespace RestAPIVend.Controllers
     public class TrasiesController : ControllerBase
     {
         private readonly CompanyContext _context;
-
-        public TrasiesController(CompanyContext context)
+        private readonly IMapper _mapper;
+        public TrasiesController(CompanyContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Trasies
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Trasy>>> GetTrasies()
+        public async Task<ActionResult<IEnumerable<TrasyForView>>> GetTrasies()
         {
-            return await _context.Trasies.ToListAsync();
+            var trasy = await _context.Trasies.Where(d => d.IsActive ?? false).ToListAsync();
+
+            var result = _mapper.Map<List<TrasyForView>>(trasy);
+
+            return Ok(result);
         }
 
         // GET: api/Trasies/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Trasy>> GetTrasy(int id)
+        public async Task<ActionResult<TrasyForView>> GetTrasy(int id)
         {
             var trasy = await _context.Trasies.FindAsync(id);
 
@@ -39,36 +41,21 @@ namespace RestAPIVend.Controllers
                 return NotFound();
             }
 
-            return trasy;
+            var result = _mapper.Map<TrasyForView>(trasy);
+
+            return Ok(result);
         }
 
         // PUT: api/Trasies/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTrasy(int id, Trasy trasy)
+        public async Task<IActionResult> PutTrasy(int id, TrasyForView trasyForView)
         {
-            if (id != trasy.Idtrasy)
-            {
-                return BadRequest();
-            }
+            var existing = await _context.Trasies.FindAsync(id);
+            if (existing == null) return NotFound();
 
-            _context.Entry(trasy).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TrasyExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _mapper.Map(trasyForView, existing);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -76,12 +63,15 @@ namespace RestAPIVend.Controllers
         // POST: api/Trasies
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Trasy>> PostTrasy(Trasy trasy)
+        public async Task<ActionResult<Trasy>> PostTrasy(TrasyForView trasyForView)
         {
+            var trasy = _mapper.Map<Trasy>(trasyForView);
             _context.Trasies.Add(trasy);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTrasy", new { id = trasy.Idtrasy }, trasy);
+            var result = _mapper.Map<TrasyForView>(trasy);
+
+            return CreatedAtAction("GetTrasy", new { id = result.Idtrasy }, result);
         }
 
         // DELETE: api/Trasies/5
@@ -94,7 +84,8 @@ namespace RestAPIVend.Controllers
                 return NotFound();
             }
 
-            _context.Trasies.Remove(trasy);
+            trasy.IsActive = false;
+            _context.Entry(trasy).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return NoContent();

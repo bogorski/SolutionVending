@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RestAPIVend.ForView;
 using RestAPIVend.Model;
 using RestAPIVend.Model.Context;
 
@@ -15,22 +12,27 @@ namespace RestAPIVend.Controllers
     public class WarsztatiesController : ControllerBase
     {
         private readonly CompanyContext _context;
-
-        public WarsztatiesController(CompanyContext context)
+        private readonly IMapper _mapper;
+        public WarsztatiesController(CompanyContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Warsztaties
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Warsztaty>>> GetWarsztaties()
+        public async Task<ActionResult<IEnumerable<WarsztatyForView>>> GetWarsztaties()
         {
-            return await _context.Warsztaties.ToListAsync();
+            var warsztaty = await _context.Warsztaties.Where(d => d.IsActive ?? false).ToListAsync();
+
+            var result = _mapper.Map<List<WarsztatyForView>>(warsztaty);
+
+            return Ok(result);
         }
 
         // GET: api/Warsztaties/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Warsztaty>> GetWarsztaty(int id)
+        public async Task<ActionResult<WarsztatyForView>> GetWarsztaty(int id)
         {
             var warsztaty = await _context.Warsztaties.FindAsync(id);
 
@@ -38,37 +40,21 @@ namespace RestAPIVend.Controllers
             {
                 return NotFound();
             }
+            var result = _mapper.Map<WarsztatyForView>(warsztaty);
 
-            return warsztaty;
+            return Ok(result);
         }
 
         // PUT: api/Warsztaties/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWarsztaty(int id, Warsztaty warsztaty)
+        public async Task<IActionResult> PutWarsztaty(int id, WarsztatyForView warsztatyForView)
         {
-            if (id != warsztaty.Idwarsztatu)
-            {
-                return BadRequest();
-            }
+            var existing = await _context.Warsztaties.FindAsync(id);
+            if (existing == null) return NotFound();
 
-            _context.Entry(warsztaty).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!WarsztatyExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _mapper.Map(warsztatyForView, existing);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -76,12 +62,15 @@ namespace RestAPIVend.Controllers
         // POST: api/Warsztaties
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Warsztaty>> PostWarsztaty(Warsztaty warsztaty)
+        public async Task<ActionResult<Warsztaty>> PostWarsztaty(WarsztatyForView warsztatyForView)
         {
+            var warsztaty = _mapper.Map<Warsztaty>(warsztatyForView);
             _context.Warsztaties.Add(warsztaty);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetWarsztaty", new { id = warsztaty.Idwarsztatu }, warsztaty);
+            var result = _mapper.Map<WarsztatyForView>(warsztaty);
+
+            return CreatedAtAction("GetWarsztaty", new { id = result.Idwarsztatu }, result);
         }
 
         // DELETE: api/Warsztaties/5
@@ -94,7 +83,8 @@ namespace RestAPIVend.Controllers
                 return NotFound();
             }
 
-            _context.Warsztaties.Remove(warsztaty);
+            warsztaty.IsActive = false;
+            _context.Entry(warsztaty).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return NoContent();

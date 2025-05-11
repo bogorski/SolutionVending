@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RestAPIVend.ForView;
 using RestAPIVend.Model;
 using RestAPIVend.Model.Context;
 
@@ -15,22 +12,28 @@ namespace RestAPIVend.Controllers
     public class MagazyniesController : ControllerBase
     {
         private readonly CompanyContext _context;
+        private readonly IMapper _mapper;
 
-        public MagazyniesController(CompanyContext context)
+        public MagazyniesController(CompanyContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Magazynies
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Magazyny>>> GetMagazynies()
+        public async Task<ActionResult<IEnumerable<MagazynyForView>>> GetMagazynies()
         {
-            return await _context.Magazynies.ToListAsync();
+            var magazyny = await _context.Magazynies.Where(d => d.IsActive ?? false).ToListAsync();
+
+            var result = _mapper.Map<List<MagazynyForView>>(magazyny);
+
+            return Ok(result);
         }
 
         // GET: api/Magazynies/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Magazyny>> GetMagazyny(int id)
+        public async Task<ActionResult<MagazynyForView>> GetMagazyny(int id)
         {
             var magazyny = await _context.Magazynies.FindAsync(id);
 
@@ -39,36 +42,21 @@ namespace RestAPIVend.Controllers
                 return NotFound();
             }
 
-            return magazyny;
+            var result = _mapper.Map<MagazynyForView>(magazyny);
+
+            return Ok(result);
         }
 
         // PUT: api/Magazynies/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMagazyny(int id, Magazyny magazyny)
+        public async Task<IActionResult> PutMagazyny(int id, MagazynyForView magazynyForView)
         {
-            if (id != magazyny.Idmagazynu)
-            {
-                return BadRequest();
-            }
+            var existing = await _context.Magazynies.FindAsync(id);
+            if (existing == null) return NotFound();
 
-            _context.Entry(magazyny).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MagazynyExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _mapper.Map(magazynyForView, existing);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -76,12 +64,15 @@ namespace RestAPIVend.Controllers
         // POST: api/Magazynies
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Magazyny>> PostMagazyny(Magazyny magazyny)
+        public async Task<ActionResult<Magazyny>> PostMagazyny(MagazynyForView magazynyForView)
         {
+            var magazyny = _mapper.Map<Magazyny>(magazynyForView);
             _context.Magazynies.Add(magazyny);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMagazyny", new { id = magazyny.Idmagazynu }, magazyny);
+            var result = _mapper.Map<MagazynyForView>(magazyny);
+
+            return CreatedAtAction("GetMagazyny", new { id = result.Idmagazynu }, result);
         }
 
         // DELETE: api/Magazynies/5
@@ -94,7 +85,8 @@ namespace RestAPIVend.Controllers
                 return NotFound();
             }
 
-            _context.Magazynies.Remove(magazyny);
+            magazyny.IsActive = false;
+            _context.Entry(magazyny).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return NoContent();

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestAPIVend.ForView;
@@ -29,11 +24,6 @@ namespace RestAPIVend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FakturyForView>>> GetFakturies()
         {
-            if (_context.Fakturies == null)
-            {
-                return NotFound();
-            }
-
             var faktury = await _context.Fakturies.Where(d => d.IsActive ?? false).ToListAsync();
 
             var result = _mapper.Map<List<FakturyForView>>(faktury);

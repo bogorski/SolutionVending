@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RestAPIVend.ForView;
 using RestAPIVend.Model;
 using RestAPIVend.Model.Context;
 
@@ -15,22 +12,28 @@ namespace RestAPIVend.Controllers
     public class LokalizacjesController : ControllerBase
     {
         private readonly CompanyContext _context;
+        private readonly IMapper _mapper;
 
-        public LokalizacjesController(CompanyContext context)
+        public LokalizacjesController(CompanyContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Lokalizacjes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Lokalizacje>>> GetLokalizacjes()
+        public async Task<ActionResult<IEnumerable<LokalizacjeForView>>> GetLokalizacjes()
         {
-            return await _context.Lokalizacjes.ToListAsync();
+            var lokalizacje = await _context.Fakturies.Where(d => d.IsActive ?? false).ToListAsync();
+
+            var result = _mapper.Map<List<LokalizacjeForView>>(lokalizacje);
+
+            return Ok(result);
         }
 
         // GET: api/Lokalizacjes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Lokalizacje>> GetLokalizacje(int id)
+        public async Task<ActionResult<LokalizacjeForView>> GetLokalizacje(int id)
         {
             var lokalizacje = await _context.Lokalizacjes.FindAsync(id);
 
@@ -39,36 +42,21 @@ namespace RestAPIVend.Controllers
                 return NotFound();
             }
 
-            return lokalizacje;
+            var result = _mapper.Map<LokalizacjeForView>(lokalizacje);
+
+            return Ok(result);
         }
 
         // PUT: api/Lokalizacjes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLokalizacje(int id, Lokalizacje lokalizacje)
+        public async Task<IActionResult> PutLokalizacje(int id, LokalizacjeForView lokalizacjeForView)
         {
-            if (id != lokalizacje.Idlokalizacji)
-            {
-                return BadRequest();
-            }
+            var existing = await _context.Lokalizacjes.FindAsync(id);
+            if (existing == null) return NotFound();
 
-            _context.Entry(lokalizacje).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LokalizacjeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _mapper.Map(lokalizacjeForView, existing);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -76,12 +64,15 @@ namespace RestAPIVend.Controllers
         // POST: api/Lokalizacjes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Lokalizacje>> PostLokalizacje(Lokalizacje lokalizacje)
+        public async Task<ActionResult<LokalizacjeForView>> PostLokalizacje(LokalizacjeForView lokalizacjeForView)
         {
+            var lokalizacje = _mapper.Map<Lokalizacje>(lokalizacjeForView);
             _context.Lokalizacjes.Add(lokalizacje);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLokalizacje", new { id = lokalizacje.Idlokalizacji }, lokalizacje);
+            var result = _mapper.Map<LokalizacjeForView>(lokalizacje);
+
+            return CreatedAtAction("GetLokalizacje", new { id = result.Idlokalizacji }, result);
         }
 
         // DELETE: api/Lokalizacjes/5
@@ -94,7 +85,8 @@ namespace RestAPIVend.Controllers
                 return NotFound();
             }
 
-            _context.Lokalizacjes.Remove(lokalizacje);
+            lokalizacje.IsActive = false;
+            _context.Entry(lokalizacje).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return NoContent();

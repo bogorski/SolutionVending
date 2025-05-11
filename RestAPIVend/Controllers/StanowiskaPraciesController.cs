@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RestAPIVend.ForView;
 using RestAPIVend.Model;
 using RestAPIVend.Model.Context;
 
@@ -15,22 +12,28 @@ namespace RestAPIVend.Controllers
     public class StanowiskaPraciesController : ControllerBase
     {
         private readonly CompanyContext _context;
+        private readonly IMapper _mapper;
 
-        public StanowiskaPraciesController(CompanyContext context)
+        public StanowiskaPraciesController(CompanyContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/StanowiskaPracies
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<StanowiskaPracy>>> GetStanowiskaPracies()
+        public async Task<ActionResult<IEnumerable<StanowiskaPracyForView>>> GetStanowiskaPracies()
         {
-            return await _context.StanowiskaPracies.ToListAsync();
+            var stanowiskaPracy = await _context.StanowiskaPracies.Where(d => d.IsActive ?? false).ToListAsync();
+
+            var result = _mapper.Map<List<StanowiskaPracyForView>>(stanowiskaPracy);
+
+            return Ok(result);
         }
 
         // GET: api/StanowiskaPracies/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<StanowiskaPracy>> GetStanowiskaPracy(int id)
+        public async Task<ActionResult<StanowiskaPracyForView>> GetStanowiskaPracy(int id)
         {
             var stanowiskaPracy = await _context.StanowiskaPracies.FindAsync(id);
 
@@ -39,36 +42,21 @@ namespace RestAPIVend.Controllers
                 return NotFound();
             }
 
-            return stanowiskaPracy;
+            var result = _mapper.Map<StanowiskaPracyForView>(stanowiskaPracy);
+
+            return Ok(result);
         }
 
         // PUT: api/StanowiskaPracies/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStanowiskaPracy(int id, StanowiskaPracy stanowiskaPracy)
+        public async Task<IActionResult> PutStanowiskaPracy(int id, StanowiskaPracyForView stanowiskaPracyForView)
         {
-            if (id != stanowiskaPracy.IdstanowiskaPracy)
-            {
-                return BadRequest();
-            }
+            var existing = await _context.StanowiskaPracies.FindAsync(id);
+            if (existing == null) return NotFound();
 
-            _context.Entry(stanowiskaPracy).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StanowiskaPracyExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _mapper.Map(stanowiskaPracyForView, existing);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -76,12 +64,15 @@ namespace RestAPIVend.Controllers
         // POST: api/StanowiskaPracies
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<StanowiskaPracy>> PostStanowiskaPracy(StanowiskaPracy stanowiskaPracy)
+        public async Task<ActionResult<StanowiskaPracy>> PostStanowiskaPracy(StanowiskaPracyForView stanowiskaPracyForView)
         {
-            _context.StanowiskaPracies.Add(stanowiskaPracy);
+            var stanowiskaPracy = _mapper.Map<Faktury>(stanowiskaPracyForView);
+            _context.Fakturies.Add(stanowiskaPracy);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetStanowiskaPracy", new { id = stanowiskaPracy.IdstanowiskaPracy }, stanowiskaPracy);
+            var result = _mapper.Map<StanowiskaPracyForView>(stanowiskaPracy);
+
+            return CreatedAtAction("GetStanowiskaPracy", new { id = result.IdstanowiskaPracy }, result);
         }
 
         // DELETE: api/StanowiskaPracies/5
@@ -94,7 +85,8 @@ namespace RestAPIVend.Controllers
                 return NotFound();
             }
 
-            _context.StanowiskaPracies.Remove(stanowiskaPracy);
+            stanowiskaPracy.IsActive = false;
+            _context.Entry(stanowiskaPracy).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return NoContent();
