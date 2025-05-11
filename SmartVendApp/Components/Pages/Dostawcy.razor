@@ -2,7 +2,6 @@
 @using SmartVendApp.Controllers.Dostawcy;
 
 @inject DostawcyController Controller
-@inject DostawcyModalController ModalController
 
 
 <div class="container-fluid d-flex flex-column h-100 p-0 m-0">
@@ -31,7 +30,7 @@
                     @foreach (var item in Controller.Items)
                     {
                         <li class="list-group-item rounded-3 m-1 d-flex justify-content-between align-items-center cursor: pointer;">
-                            <span><bold>@item.Nazwa</bold> <br /> @item.Ulica @item.Miasto</span>
+                            <span><strong>@item.Nazwa</strong> <br /> @item.Ulica @item.Miasto</span>
                             <div class="d-flex">
                                 <img src="content/edit.svg"
                                      class="me-2 action-icon"

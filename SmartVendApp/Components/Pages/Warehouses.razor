@@ -1,5 +1,7 @@
 ﻿@page "/magazyny"
+@using SmartVendApp.Controllers.Magazyny;
 
+@inject MagazynyController Controller
 
 <div class="container-fluid d-flex flex-column h-100 p-0 m-0">
     <div class="row text-white p-3">
@@ -7,9 +9,149 @@
             <h2>Magazyny</h2>
         </div>
     </div>
-    <div class="row p-4">
-        <div class="col text-center">
-            <a href="/menu">Wróć</a>
+    @if (Controller.IsLoading)
+    {
+        <div class="alert alert-info">Ładowanie danych...</div>
+    }
+    else if (!string.IsNullOrEmpty(Controller.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Controller.ErrorMessage</div>
+    }
+    else if (Controller.Items == null || !Controller.Items.Any())
+    {
+        <div class="alert alert-warning">Brak lokalizacji w systemie</div>
+    }
+    else
+    {
+        <div class="row flex-grow-1 m-0 bg-white position-relative rounded-3" style="overflow:hidden;">
+            <div class="col p-0 h-100" style="overflow-y:auto;">
+                <ul class="list-group m-0 p-0">
+                    @foreach (var item in Controller.Items)
+                    {
+                        <li class="list-group-item rounded-3 m-1 d-flex justify-content-between align-items-center cursor: pointer;">
+                            <span><strong>@item.Nazwa</strong> <br /> @item.Ulica @item.Miasto</span>
+                            <div class="d-flex">
+                                <img src="content/edit.svg"
+                                     class="me-2 action-icon"
+                                     alt="Edytuj"
+                                     @onclick="() => Controller.ModalController.ShowEditModal(item)" />
+                                <img src="content/delete.svg"
+                                     class="action-icon"
+                                     alt="Usuń"
+                                     @onclick="() => Controller.ModalController.ShowDeleteConfirmationModal(item)" />
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <img src="content/add.svg"
+                 class="action-icon action-icon-add position-absolute bottom-0 start-50 translate-middle-x"
+                 alt="Dodaj"
+                 @onclick="Controller.ModalController.ShowAddModal" />
+
+            @if (@Controller.ModalController.ShowSuccess)
+            {
+                <div class="position-absolute bottom-50 alert-dark text-center p-5">Lokalizacja został usunięta</div>
+            }
+            @if (@Controller.ModalController.ShowError)
+            {
+                <div class="alert alert-danger mt-2">Błąd podczas usuwania</div>
+            }
         </div>
-    </div>
+
+        <div class="row p-4">
+            <div class="col text-center">
+                <a href="/menu">Wróć</a>
+            </div>
+        </div>
+        @if (Controller.ModalController.ShowModal)
+        {
+            <div class="modal d-block fade show" tabindex="-1" role="dialog" style="background:rgba(0,0,0,0.5)">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">@(Controller.ModalController.IsNew ? "Dodaj nową" : "Edytuj") lokalizację</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Nazwa:</label>
+                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Nazwa" />
+                            </div>
+                            <div class="form-group">
+                                <label>Ulica:</label>
+                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Ulica" />
+                            </div>
+                            <div class="form-group">
+                                <label>Miasto:</label>
+                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Miasto" />
+                            </div>
+                            <div class="form-group">
+                                <label>Kod pocztowy:</label>
+                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.KodPocztowy" />
+                            </div>
+                            <div class="form-group">
+                                <label>Kraj:</label>
+                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Kraj" />
+                            </div>
+                            <div class="form-group">
+                                <label>Opis:</label>
+                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Opis" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" @onclick="Controller.ModalController.CloseModal">Anuluj</button>
+                            <button class="btn btn-primary" @onclick="SaveItem">Zapisz</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        @if (Controller.ModalController.ShowDeleteModal)
+        {
+            <div class="modal d-block fade show" tabindex="-1" role="dialog" style="background:rgba(0,0,0,0.5)">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Potwierdzenie</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>Czy na pewno chcesz usunąć lokalizację <strong>@Controller.ModalController.CurrentItem.Nazwa</strong>?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" @onclick="Controller.ModalController.CloseDeleteModal">Anuluj</button>
+                            <button class="btn btn-primary" @onclick="() => DeleteItem()">Usuń</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
 </div>
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await Controller.LoadDataAsync();
+    }
+
+    private async Task SaveItem()
+    {
+        if (await Controller.ModalController.SaveAsync())
+        {
+            await Controller.LoadDataAsync();
+        }
+    }
+    private async Task DeleteItem()
+    {
+        if (await Controller.ModalController.DeleteAsync())
+        {
+            await Controller.LoadDataAsync();
+            StateHasChanged();
+            await ShowSuccessMessage();
+        }
+    }
+    private async Task ShowSuccessMessage()
+    {
+        await Task.Delay(3000);
+        Controller.ModalController.ShowSuccess = false;
+    }
+}

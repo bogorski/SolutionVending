@@ -24,7 +24,7 @@ namespace RestAPIVend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LokalizacjeForView>>> GetLokalizacjes()
         {
-            var lokalizacje = await _context.Fakturies.Where(d => d.IsActive ?? false).ToListAsync();
+            var lokalizacje = await _context.Lokalizacjes.Where(d => d.IsActive ?? false).ToListAsync();
 
             var result = _mapper.Map<List<LokalizacjeForView>>(lokalizacje);
 

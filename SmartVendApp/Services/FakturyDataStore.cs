@@ -1,11 +1,6 @@
 ﻿using SmartVendApp.Helpers;
 using SmartVendApp.ServiceReference;
 using SmartVendApp.Services.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartVendApp.Services
 {

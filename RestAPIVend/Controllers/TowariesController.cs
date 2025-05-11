@@ -23,7 +23,7 @@ namespace RestAPIVend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TowaryForView>>> GetTowaries()
         {
-            var towary = await _context.Fakturies.Where(d => d.IsActive ?? false).ToListAsync();
+            var towary = await _context.Towaries.Where(d => d.IsActive ?? false).ToListAsync();
 
             var result = _mapper.Map<List<TowaryForView>>(towary);
 
