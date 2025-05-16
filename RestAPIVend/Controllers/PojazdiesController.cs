@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RestAPIVend.ForView;
 using RestAPIVend.Model;
 using RestAPIVend.Model.Context;
 
@@ -15,60 +12,60 @@ namespace RestAPIVend.Controllers
     public class PojazdiesController : ControllerBase
     {
         private readonly CompanyContext _context;
+        private readonly IMapper _mapper;
 
-        public PojazdiesController(CompanyContext context)
+        public PojazdiesController(CompanyContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Pojazdies
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Pojazdy>>> GetPojazdies()
+        public async Task<ActionResult<IEnumerable<PojazdyForView>>> GetPojazdies()
         {
-            return await _context.Pojazdies.ToListAsync();
+            if (_context.Pojazdies == null)
+            {
+                return NotFound();
+            }
+
+            var pojazdy = await _context.Pojazdies
+                .Include(p => p.IdwarsztatuNavigation)
+                .Where(p => p.IsActive ?? false)
+                .ToListAsync();
+
+            var result = _mapper.Map<List<PojazdyForView>>(pojazdy);
+
+            return Ok(result);
         }
 
         // GET: api/Pojazdies/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Pojazdy>> GetPojazdy(int id)
+        public async Task<ActionResult<PojazdyForView>> GetPojazdy(int id)
         {
-            var pojazdy = await _context.Pojazdies.FindAsync(id);
+            var pojazdy = await _context.Pojazdies.Include(p => p.IdwarsztatuNavigation)
+                .Where(p => p.IsActive ?? false).FirstOrDefaultAsync(p => p.Idpojazdu == id);
 
             if (pojazdy == null)
             {
                 return NotFound();
             }
 
-            return pojazdy;
+            var result = _mapper.Map<PojazdyForView>(pojazdy);
+
+            return Ok(result);
         }
 
         // PUT: api/Pojazdies/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPojazdy(int id, Pojazdy pojazdy)
+        public async Task<IActionResult> PutPojazdy(int id, PojazdyForView pojazdyForView)
         {
-            if (id != pojazdy.Idpojazdu)
-            {
-                return BadRequest();
-            }
+            var existing = await _context.Pojazdies.FindAsync(id);
+            if (existing == null) return NotFound();
 
-            _context.Entry(pojazdy).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PojazdyExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _mapper.Map(pojazdyForView, existing);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -76,12 +73,15 @@ namespace RestAPIVend.Controllers
         // POST: api/Pojazdies
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Pojazdy>> PostPojazdy(Pojazdy pojazdy)
+        public async Task<ActionResult<PojazdyForView>> PostPojazdy(PojazdyForView pojazdyForView)
         {
+            var pojazdy = _mapper.Map<Pojazdy>(pojazdyForView);
             _context.Pojazdies.Add(pojazdy);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPojazdy", new { id = pojazdy.Idpojazdu }, pojazdy);
+            var result = _mapper.Map<PojazdyForView>(pojazdy);
+
+            return CreatedAtAction("GetPojazdy", new { id = result.Idpojazdu }, result);
         }
 
         // DELETE: api/Pojazdies/5
@@ -94,10 +94,11 @@ namespace RestAPIVend.Controllers
                 return NotFound();
             }
 
-            _context.Pojazdies.Remove(pojazdy);
+            pojazdy.IsActive = false;
+            _context.Entry(pojazdy).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
         private bool PojazdyExists(int id)

@@ -31,6 +31,12 @@ namespace RestAPIVend.AutoMapperProfiles
 
             CreateMap<Warsztaty, WarsztatyForView>();
             CreateMap<WarsztatyForView, Warsztaty>();
+            
+            CreateMap<Pojazdy, PojazdyForView>()
+                .ForMember(dest => dest.WarsztatData,
+                    opt => opt.MapFrom(src => src.IdwarsztatuNavigation != null ? src.IdwarsztatuNavigation.Nazwa : null));
+            CreateMap<PojazdyForView, Pojazdy>()
+                .ForMember(dest => dest.IdwarsztatuNavigation, opt => opt.Ignore());
         }
     }
 }

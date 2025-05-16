@@ -99,7 +99,7 @@ namespace SmartVendApp.Controllers.Abstract
             }
         }
 
-        public void ShowAddModal()
+        public virtual void ShowAddModal()
         {
             System.Diagnostics.Debug.Print("ShowAddModal");
             CurrentItem = new T();

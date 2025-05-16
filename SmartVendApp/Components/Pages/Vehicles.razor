@@ -1,0 +1,173 @@
+﻿@page "/pojazdy"
+@using SmartVendApp.Controllers.Pojazdy;
+@using SmartVendApp.ServiceReference
+
+@inject PojazdyController Controller
+
+
+<div class="container-fluid d-flex flex-column h-100 p-0 m-0">
+    <div class="row text-white p-3">
+        <div class="col text-center">
+            <h2>Pojazdy</h2>
+        </div>
+    </div>
+    @if (Controller.IsLoading)
+    {
+        <div class="alert alert-info">Ładowanie danych...</div>
+    }
+    else if (!string.IsNullOrEmpty(Controller.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Controller.ErrorMessage</div>
+    }
+    else if (Controller.Items == null || !Controller.Items.Any())
+    {
+        <div class="alert alert-warning">Brak pojazdów w systemie</div>
+    }
+    else
+    {
+        <div class="row flex-grow-1 m-0 bg-white position-relative rounded-3" style="overflow:hidden;">
+            <div class="col p-0 h-100" style="overflow-y:auto;">
+                <ul class="list-group m-0 p-0">
+                    @foreach (var item in Controller.Items)
+                    {
+                        <li class="list-group-item rounded-3 m-1 d-flex justify-content-between align-items-center cursor: pointer;">
+                            <span>
+                                <strong>@item.Marka</strong> @item.NumerRejestracyjny<br />
+                                <strong>Warsztat:</strong> @item.WarsztatData
+                            </span>
+                            <div class="d-flex">
+                                <img src="content/edit.svg"
+                                     class="me-2 action-icon"
+                                     alt="Edytuj"
+                                     @onclick="() => Controller.ModalController.ShowEditModal(item)" />
+                                <img src="content/delete.svg"
+                                     class="action-icon"
+                                     alt="Usuń"
+                                     @onclick="() => Controller.ModalController.ShowDeleteConfirmationModal(item)" />
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <img src="content/add.svg"
+                 class="action-icon action-icon-add position-absolute bottom-0 start-50 translate-middle-x"
+                 alt="Dodaj"
+                 @onclick="Controller.ModalController.ShowAddModal">
+
+            @if (@Controller.ModalController.ShowSuccess)
+            {
+                <div class="position-absolute bottom-50 alert-dark text-center p-5">Pojazd został usunięty</div>
+            }
+            @if (@Controller.ModalController.ShowError)
+            {
+                <div class="alert alert-danger mt-2">Błąd podczas usuwania</div>
+            }
+        </div>
+
+        <div class="row p-4">
+            <div class="col text-center">
+                <a href="/menu">Wróć</a>
+            </div>
+        </div>
+        @if (Controller.ModalController.ShowModal)
+        {
+            <div class="modal d-block fade show" tabindex="-1" role="dialog" style="background:rgba(0,0,0,0.5)">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">@(Controller.ModalController.IsNew ? "Dodaj nowy" : "Edytuj") pojazd</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Marka:</label>
+                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Marka" />
+                            </div>
+                            <div class="form-group">
+                                <label>Numer rejestracyjny:</label>
+                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.NumerRejestracyjny" />
+                            </div>
+                            <div class="form-group">
+                                <label>Data przegladu:</label>
+                                <InputDate class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.DataPrzegladu" />
+                            </div>
+                            <div class="form-group">
+                                <label>Data ubezpieczenia:</label>
+                                <InputDate class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.DataUbezpieczenia" />
+                            </div>
+                            <div class="form-group">
+                                <label>Usterki:</label>
+                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Usterki" />
+                            </div>
+                            <div class="form-group">
+                                <label>Opis:</label>
+                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Opis" />
+                            </div>
+                            <div class="form-group">
+                                <label>Warsztat:</label>
+                                <InputSelect class="form-control" @bind-Value="Controller.ModalController.CurrentItem.Idwarsztatu">
+                                    <option value="">-- Wybierz warsztat --</option>
+                                    @foreach (var warsztat in Controller.ModalController.Warsztaty)
+                                    {
+                                        <option value="@warsztat.Idwarsztatu">@warsztat.Nazwa</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" @onclick="Controller.ModalController.CloseModal">Anuluj</button>
+                            <button class="btn btn-primary" @onclick="SaveItem">Zapisz</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        @if (Controller.ModalController.ShowDeleteModal)
+        {
+            <div class="modal d-block fade show" tabindex="-1" role="dialog" style="background:rgba(0,0,0,0.5)">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Potwierdzenie</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>Czy na pewno chcesz usunąć pojazd <strong>@Controller.ModalController.CurrentItem.NumerRejestracyjny</strong>?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" @onclick="Controller.ModalController.CloseDeleteModal">Anuluj</button>
+                            <button class="btn btn-primary" @onclick="() => DeleteItem()">Usuń</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await Controller.LoadDataAsync();
+        await Controller.ModalController.LoadWarsztatyAsync();
+    }
+
+    private async Task SaveItem()
+    {
+        if (await Controller.ModalController.SaveAsync())
+        {
+            await Controller.LoadDataAsync();
+        }
+    }
+    private async Task DeleteItem()
+    {
+        if (await Controller.ModalController.DeleteAsync())
+        {
+            await Controller.LoadDataAsync();
+            StateHasChanged();
+            await ShowSuccessMessage();
+        }
+    }
+    private async Task ShowSuccessMessage()
+    {
+        await Task.Delay(3000);
+        Controller.ModalController.ShowSuccess = false;
+    }
+}
