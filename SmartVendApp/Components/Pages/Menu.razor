@@ -14,6 +14,9 @@
         <div class="col p-0 h-100">
             <div class="col-12 my-1">
                 <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToVehicles">Pojazdy</button>
+            </div> 
+            <div class="col-12 my-1">
+                <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToEmployees">Pracownicy</button>
             </div>
             <div class="col-12 my-1">
                 <button type="button" class="main-button w-100 mb-3" @onclick="NavigateToMachines">Dostawcy</button>
@@ -51,6 +54,7 @@
 
 @code {
     private void NavigateToVehicles() => NavigationManager.NavigateTo("/pojazdy");
+    private void NavigateToEmployees() => NavigationManager.NavigateTo("/pracownicy");
     private void NavigateToMachines() => NavigationManager.NavigateTo("/dostawcy");
     private void NavigateToLocations() => NavigationManager.NavigateTo("/lokalizacje");
     private void NavigateToWarehouses() => NavigationManager.NavigateTo("/magazyny");

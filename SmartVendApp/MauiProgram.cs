@@ -9,6 +9,7 @@ using SmartVendApp.Controllers.Faktury;
 using SmartVendApp.Controllers.Lokalizacje;
 using SmartVendApp.Controllers.Magazyny;
 using SmartVendApp.Controllers.Pojazdy;
+using SmartVendApp.Controllers.Pracownicy;
 using SmartVendApp.Controllers.StanowiskaPracy;
 using SmartVendApp.Controllers.Towary;
 using SmartVendApp.Controllers.Trasy;
@@ -98,6 +99,13 @@ namespace SmartVendApp
             builder.Services.AddSingleton<PojazdyController>();
             builder.Services.AddSingleton<IModalController<PojazdyForView>, PojazdyModalController>();
             builder.Services.AddScoped<IListController<PojazdyForView>, PojazdyController>();
+
+            builder.Services.AddSingleton<IDataStore<PracownicyForView>, PracownicyDataStore>();
+            builder.Services.AddSingleton<PracownicyDataStore>();
+            builder.Services.AddSingleton<PracownicyModalController>();
+            builder.Services.AddSingleton<PracownicyController>();
+            builder.Services.AddSingleton<IModalController<PracownicyForView>, PracownicyModalController>();
+            builder.Services.AddScoped<IListController<PracownicyForView>, PracownicyController>();
 
             builder.Services.AddSingleton<VendingService>();
             builder.Services.AddScoped(sp => new HttpClient

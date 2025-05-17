@@ -1,0 +1,190 @@
+﻿@page "/pracownicy"
+@using SmartVendApp.Controllers.Pracownicy;
+
+@inject PracownicyController Controller
+
+
+<div class="container-fluid d-flex flex-column h-100 p-0 m-0">
+    <div class="row text-white p-3">
+        <div class="col text-center">
+            <h2>Pracownicy</h2>
+        </div>
+    </div>
+    @if (Controller.IsLoading)
+    {
+                <div class="alert alert-info">Ładowanie danych...</div>
+    }
+    else if (!string.IsNullOrEmpty(Controller.ErrorMessage))
+    {
+                <div class="alert alert-danger">@Controller.ErrorMessage</div>
+    }
+    else if (Controller.Items == null || !Controller.Items.Any())
+    {
+                <div class="alert alert-warning">Brak pracowników w systemie</div>
+    }
+    else
+    {
+                <div class="row flex-grow-1 m-0 bg-white position-relative rounded-3" style="overflow:hidden;">
+                    <div class="col p-0 h-100" style="overflow-y:auto;">
+                        <ul class="list-group m-0 p-0">
+                    @foreach (var item in Controller.Items)
+                    {
+                                        <li class="list-group-item rounded-3 m-1 d-flex justify-content-between align-items-center cursor: pointer;">
+                                            <span>
+                                                <strong>@item.Imie @item.Nazwisko</strong><br />
+                                                        Stanowisko: @item.StanowiskoPracyData<br />
+                                                        Pojazd: @item.PojazdData<br />
+                                                        Trasa: @item.TrasaData<br />
+                                            </span>
+                                            <div class="d-flex">
+                                                <img src="content/edit.svg"
+                                                     class="me-2 action-icon"
+                                                     alt="Edytuj"
+                                                     @onclick="() => Controller.ModalController.ShowEditModal(item)" />
+                                                <img src="content/delete.svg"
+                                                     class="action-icon"
+                                                     alt="Usuń"
+                                                     @onclick="() => Controller.ModalController.ShowDeleteConfirmationModal(item)" />
+                                            </div>
+                                        </li>
+                    }
+                        </ul>
+                    </div>
+                    <img src="content/add.svg"
+                         class="action-icon action-icon-add position-absolute bottom-0 start-50 translate-middle-x"
+                         alt="Dodaj"
+                         @onclick="Controller.ModalController.ShowAddModal">
+
+            @if (@Controller.ModalController.ShowSuccess)
+            {
+                                <div class="position-absolute bottom-50 alert-dark text-center p-5">Pracownik został usunięty</div>
+            }
+            @if (@Controller.ModalController.ShowError)
+            {
+                                <div class="alert alert-danger mt-2">Błąd podczas usuwania</div>
+            }
+                </div>
+
+                <div class="row p-4">
+                    <div class="col text-center">
+                        <a href="/menu">Wróć</a>
+                    </div>
+                </div>
+        @if (Controller.ModalController.ShowModal)
+        {
+                            <div class="modal d-block fade show" tabindex="-1" role="dialog" style="background:rgba(0,0,0,0.5)">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">@(Controller.ModalController.IsNew ? "Dodaj nowego" : "Edytuj") pracownika</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                        <label>Imie:</label>
+                                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Imie" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Nazwisko:</label>
+                                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Nazwisko" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Stanowisko pracy:</label>
+                                                <InputSelect class="form-control" @bind-Value="Controller.ModalController.CurrentItem.IdstanowiskaPracy">
+                                                    <option value="">-- Wybierz stanowisko pracy --</option>
+                                                    @foreach (var stanowiskoPracy in Controller.ModalController.StanowiskaPracy)
+                                                    { 
+                                                        <option value="@stanowiskoPracy.IdstanowiskaPracy">@stanowiskoPracy.NazwaStanowiska</option>
+                                                    }
+                                                </InputSelect>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Pensja:</label>
+                                                <InputNumber class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Pensja" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Data zatrudnienia:</label>
+                                                <InputDate class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.DataZatrudnienia" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Pojazd:</label>
+                                                <InputSelect class="form-control" @bind-Value="Controller.ModalController.CurrentItem.Idpojazdu">
+                                                    <option value="">-- Wybierz pojazd --</option>
+                                                    @foreach (var pojazd in Controller.ModalController.Pojazdy)
+                                                    {
+                                                        <option value="@pojazd.Idpojazdu">@pojazd.NumerRejestracyjny</option>
+                                                    }
+                                                </InputSelect>
+                                            </div> 
+                                            <div class="form-group">
+                                                <label>Trasa:</label>
+                                                <InputSelect class="form-control" @bind-Value="Controller.ModalController.CurrentItem.Idtrasy">
+                                                    <option value="">-- Wybierz trasę --</option>
+                                                    @foreach (var trasa in Controller.ModalController.Trasy)
+                                                    {
+                                                        <option value="@trasa.Idtrasy">@trasa.Nazwa</option>
+                                                    }
+                                                </InputSelect>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Opis:</label>
+                                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Opis" />
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary" @onclick="Controller.ModalController.CloseModal">Anuluj</button>
+                                            <button class="btn btn-primary" @onclick="SaveItem">Zapisz</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        }
+        @if (Controller.ModalController.ShowDeleteModal)
+        {
+                            <div class="modal d-block fade show" tabindex="-1" role="dialog" style="background:rgba(0,0,0,0.5)">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Potwierdzenie</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                                    <p>Czy na pewno chcesz usunąć pojazd <strong>@Controller.ModalController.CurrentItem.Imie @Controller.ModalController.CurrentItem.Nazwisko</strong>?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary" @onclick="Controller.ModalController.CloseDeleteModal">Anuluj</button>
+                                            <button class="btn btn-primary" @onclick="() => DeleteItem()">Usuń</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        }
+    }
+</div>
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await Controller.LoadDataAsync();
+        await Controller.ModalController.LoadDataAsync();
+    }
+
+    private async Task SaveItem()
+    {
+        if (await Controller.ModalController.SaveAsync())
+        {
+            await Controller.LoadDataAsync();
+        }
+    }
+    private async Task DeleteItem()
+    {
+        if (await Controller.ModalController.DeleteAsync())
+        {
+            await Controller.LoadDataAsync();
+            StateHasChanged();
+            await ShowSuccessMessage();
+        }
+    }
+    private async Task ShowSuccessMessage()
+    {
+        await Task.Delay(3000);
+        Controller.ModalController.ShowSuccess = false;
+    }
+}
