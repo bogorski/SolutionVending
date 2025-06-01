@@ -1,0 +1,44 @@
+﻿@page "/mapa"
+@using SmartVendApp.Components.Map
+@using SmartVendApp.Controllers.Lokalizacje
+@using SmartVendApp.ServiceReference
+@inject LokalizacjeController Controller
+
+<div class="container-fluid d-flex flex-column h-100 p-0 m-0">
+    <div class="row text-white p-3">
+        <div class="col text-center">
+            <h2>Mapa</h2>
+        </div>
+    </div>
+        @if (Controller.IsLoading)
+        {
+            <div class="alert alert-info">Ładowanie danych...</div>
+        }
+        else if (!string.IsNullOrEmpty(Controller.ErrorMessage))
+        {
+            <div class="alert alert-danger">@Controller.ErrorMessage</div>
+        }
+        else if (Controller.Items == null || !Controller.Items.Any())
+        {
+            <div class="alert alert-warning">Brak lokalizacji w systemie</div>
+        }
+        else
+        {
+            <Map Locations="lokalizacje" />
+        }
+    <div class="row p-4">
+        <div class="col text-center">
+            <a href="/menu">Wróć</a>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<LokalizacjeForView>? lokalizacje;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Controller.LoadDataAsync();
+        lokalizacje = Controller.Items;
+    }
+}

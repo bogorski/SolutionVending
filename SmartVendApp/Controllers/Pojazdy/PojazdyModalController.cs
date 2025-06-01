@@ -36,7 +36,7 @@ namespace SmartVendApp.Controllers.Pojazdy
         {
             Warsztaty = (List<WarsztatyForView>)await _warsztatyDataStore.GetItemsAsync();
         }
-        public override void ShowAddModal()
+        public override async Task ShowAddModal()
         {
             base.ShowAddModal();
             CurrentItem.DataUbezpieczenia = DateTime.Today;

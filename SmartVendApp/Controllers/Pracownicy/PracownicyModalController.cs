@@ -49,9 +49,9 @@ namespace SmartVendApp.Controllers.Pracownicy
             Trasy = (List<TrasyForView>)await _trasyDataStore.GetItemsAsync();
         }
 
-        public override void ShowAddModal()
+        public override async Task ShowAddModal()
         {
-            base.ShowAddModal();
+            await base.ShowAddModal();
             CurrentItem.DataZatrudnienia = DateTime.Today;
         }
     }

@@ -30,6 +30,8 @@ public partial class Lokalizacje
 
     [StringLength(50)]
     public string? Opis { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
 
     public bool? IsActive { get; set; }
 

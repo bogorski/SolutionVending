@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using RestAPIVend.ForView;
 using RestAPIVend.Model;
 using RestAPIVend.Model.Context;
+using RestAPIVend.Services;
 
 namespace RestAPIVend.Controllers
 {
@@ -13,11 +14,13 @@ namespace RestAPIVend.Controllers
     {
         private readonly CompanyContext _context;
         private readonly IMapper _mapper;
+        private readonly GeocodingService _geocoding;
 
-        public LokalizacjesController(CompanyContext context, IMapper mapper)
+        public LokalizacjesController(CompanyContext context, IMapper mapper, GeocodingService geocoding)
         {
             _context = context;
             _mapper = mapper;
+            _geocoding = geocoding;
         }
 
         // GET: api/Lokalizacjes
@@ -95,6 +98,20 @@ namespace RestAPIVend.Controllers
         private bool LokalizacjeExists(int id)
         {
             return _context.Lokalizacjes.Any(e => e.Idlokalizacji == id);
+        }
+
+        [HttpGet("koordynaty")]
+        public async Task<IActionResult> GetCoords([FromQuery] string address)
+        {
+            try
+            {
+                var (lat, lng) = await _geocoding.GetCoordinatesFromAddressAsync(address);
+                return Ok(new { latitude = lat, longitude = lng });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
         }
     }
 }

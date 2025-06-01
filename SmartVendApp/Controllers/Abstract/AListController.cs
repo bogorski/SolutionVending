@@ -50,16 +50,16 @@ namespace SmartVendApp.Controllers.Abstract
                 return false;
             }
         }
-        public virtual async Task<bool> DeleteItemAsync(int id)
+        public virtual async Task<bool> DeleteItemAsync(T item)
         {
-            if (id == null)
+            if (item == null)
             {
-                ErrorMessage = "ID cannot be null!";
+                ErrorMessage = "Item cannot be null!";
                 return false;
             }
             try
             {
-                bool result = await _dataStore.DeleteItemAsync(id);
+                bool result = await _dataStore.DeleteItemAsync(item);
                 if (result) await LoadDataAsync();
                 return result;
             }
@@ -71,6 +71,5 @@ namespace SmartVendApp.Controllers.Abstract
             }
         }
         protected abstract bool IsNewItem(T item);
-
     }
 }

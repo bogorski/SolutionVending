@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RestAPIVend.ForView;
 using RestAPIVend.Model;
 using RestAPIVend.Model.Context;
 
@@ -15,60 +17,61 @@ namespace RestAPIVend.Controllers
     public class MaszyniesController : ControllerBase
     {
         private readonly CompanyContext _context;
+        private readonly IMapper _mapper;
 
-        public MaszyniesController(CompanyContext context)
+
+        public MaszyniesController(CompanyContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Maszynies
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Maszyny>>> GetMaszynies()
+        public async Task<ActionResult<IEnumerable<MaszynyForView>>> GetMaszynies()
         {
-            return await _context.Maszynies.ToListAsync();
+            if (_context.Maszynies == null)
+            {
+                return NotFound();
+            }
+
+            var maszyny = await _context.Maszynies
+                .Include(p => p.IdtypMaszynyNavigation)
+                .Where(p => p.IsActive ?? false)
+                .ToListAsync();
+
+            var result = _mapper.Map<List<MaszynyForView>>(maszyny);
+
+            return Ok(result);
         }
 
         // GET: api/Maszynies/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Maszyny>> GetMaszyny(string id)
+        public async Task<ActionResult<MaszynyForView>> GetMaszyny(int id)
         {
-            var maszyny = await _context.Maszynies.FindAsync(id);
+            var maszyny = await _context.Maszynies.Include(p => p.IdtypMaszynyNavigation)
+                .Where(p => p.IsActive ?? false).FirstOrDefaultAsync(p => p.Id == id);
 
             if (maszyny == null)
             {
                 return NotFound();
             }
 
-            return maszyny;
+            var result = _mapper.Map<MaszynyForView>(maszyny);
+
+            return Ok(result);
         }
 
         // PUT: api/Maszynies/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMaszyny(string id, Maszyny maszyny)
+        public async Task<IActionResult> PutMaszyny(int id, MaszynyForView maszynyForView)
         {
-            if (id != maszyny.NumerMaszyny)
-            {
-                return BadRequest();
-            }
+            var existing = await _context.Maszynies.FindAsync(id);
+            if (existing == null) return NotFound();
 
-            _context.Entry(maszyny).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MaszynyExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _mapper.Map(maszynyForView, existing);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -76,31 +79,20 @@ namespace RestAPIVend.Controllers
         // POST: api/Maszynies
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Maszyny>> PostMaszyny(Maszyny maszyny)
+        public async Task<ActionResult<MaszynyForView>> PostMaszyny(MaszynyForView maszynyForView)
         {
+            var maszyny = _mapper.Map<Maszyny>(maszynyForView);
             _context.Maszynies.Add(maszyny);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (MaszynyExists(maszyny.NumerMaszyny))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMaszyny", new { id = maszyny.NumerMaszyny }, maszyny);
+            var result = _mapper.Map<MaszynyForView>(maszyny);
+
+            return CreatedAtAction("GetMaszyny", new { id = result.Id }, result);
         }
 
         // DELETE: api/Maszynies/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMaszyny(string id)
+        public async Task<IActionResult> DeleteMaszyny(int id)
         {
             var maszyny = await _context.Maszynies.FindAsync(id);
             if (maszyny == null)
@@ -108,15 +100,16 @@ namespace RestAPIVend.Controllers
                 return NotFound();
             }
 
-            _context.Maszynies.Remove(maszyny);
+            maszyny.IsActive = false;
+            _context.Entry(maszyny).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
-        private bool MaszynyExists(string id)
+        private bool MaszynyExists(int id)
         {
-            return _context.Maszynies.Any(e => e.NumerMaszyny == id);
+            return _context.Maszynies.Any(m => m.Id == id);
         }
     }
 }

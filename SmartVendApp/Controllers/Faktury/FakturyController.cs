@@ -1,5 +1,4 @@
 ﻿using SmartVendApp.Controllers.Abstract;
-using SmartVendApp.Controllers.Interface;
 using SmartVendApp.ServiceReference;
 using SmartVendApp.Services;
 

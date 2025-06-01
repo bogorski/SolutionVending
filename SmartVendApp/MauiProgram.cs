@@ -7,6 +7,7 @@ using SmartVendApp.Controllers.Dostawcy;
 using SmartVendApp.Controllers.Interface;
 using SmartVendApp.Controllers.Faktury;
 using SmartVendApp.Controllers.Lokalizacje;
+using SmartVendApp.Controllers.MagazynTowary;
 using SmartVendApp.Controllers.Magazyny;
 using SmartVendApp.Controllers.Pojazdy;
 using SmartVendApp.Controllers.Pracownicy;
@@ -33,12 +34,10 @@ namespace SmartVendApp
             builder.Services.AddSingleton<DostawcyDataStore>();
             builder.Services.AddSingleton<FakturyDataStore>();
             builder.Services.AddSingleton<LokalizacjeDataStore>();
-            
 
             builder.Services.AddSingleton<IDataStore<DostawcyForView>, DostawcyDataStore>();
             builder.Services.AddSingleton<IDataStore<FakturyForView>, FakturyDataStore>();
             builder.Services.AddSingleton<IDataStore<LokalizacjeForView>, LokalizacjeDataStore>();
-
 
             builder.Services.AddSingleton<DostawcyModalController>();
             builder.Services.AddSingleton<DostawcyController>();
@@ -106,6 +105,15 @@ namespace SmartVendApp
             builder.Services.AddSingleton<PracownicyController>();
             builder.Services.AddSingleton<IModalController<PracownicyForView>, PracownicyModalController>();
             builder.Services.AddScoped<IListController<PracownicyForView>, PracownicyController>();
+
+            builder.Services.AddSingleton<IDataStore<MagazynTowaryForView>, MagazynTowaryDataStore>();
+            builder.Services.AddSingleton<MagazynTowaryDataStore>();
+            builder.Services.AddSingleton<MagazynTowaryModalController>();
+            builder.Services.AddSingleton<MagazynTowaryController>();
+            builder.Services.AddSingleton<IModalController<MagazynTowaryForView>, MagazynTowaryModalController>();
+            builder.Services.AddScoped<IListController<MagazynTowaryForView>, MagazynTowaryController>();
+
+            builder.Services.AddSingleton(new GeocodingService(new HttpClient()));
 
             builder.Services.AddSingleton<VendingService>();
             builder.Services.AddScoped(sp => new HttpClient

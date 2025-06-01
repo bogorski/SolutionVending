@@ -1,0 +1,20 @@
+﻿@using SmartVendApp.ServiceReference
+@inject IJSRuntime JS
+
+<div id="map" style="height: 100%; width: 100%;"></div>
+
+@code {
+    [Parameter]
+    public List<LokalizacjeForView>? Locations { get; set; }
+
+    private bool _mapInitialized;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && Locations != null && !_mapInitialized)
+        {
+            await JS.InvokeVoidAsync("initLeafletMapMultipleMarkers", Locations);
+            _mapInitialized = true;
+        }
+    }
+}

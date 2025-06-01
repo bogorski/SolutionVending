@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using RestAPIVend.Model.Context;
-using AutoMapper;
 using RestAPIVend.AutoMapperProfiles;
 using RestAPIVend.Helpers;
+using RestAPIVend.Services;
 
 namespace RestAPIVend
 {
@@ -12,7 +12,19 @@ namespace RestAPIVend
         {
             var builder = WebApplication.CreateBuilder(args);
 
-              builder.Services.AddDbContext<CompanyContext>(options =>
+            // Dodaj CORS
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowNetworkClients",
+                    policy =>
+                    {
+                        policy.WithOrigins("http://192.168.0.203:5283")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
+
+            builder.Services.AddDbContext<CompanyContext>(options =>
               options.UseSqlServer(builder.Configuration.GetConnectionString("CompanyContext")
               ?? throw new InvalidOperationException("Connection string 'CompanyContext' not found.")));
 
@@ -26,6 +38,8 @@ namespace RestAPIVend
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddHttpClient<GeocodingService>();
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -33,6 +47,9 @@ namespace RestAPIVend
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            // W³¹cz CORS przed innymi middleware, które mog¹ u¿ywaæ CORS (np. UseAuthorization)
+            app.UseCors("AllowNetworkClients");
 
             app.UseHttpsRedirection();
 

@@ -1,13 +1,14 @@
-﻿@page "/lokalizacje"
-@using SmartVendApp.Controllers.Lokalizacje;
+﻿@page "/magazynTowary"
+@using SmartVendApp.Controllers.MagazynTowary;
+@using SmartVendApp.ServiceReference
 
-@inject LokalizacjeController Controller
+@inject MagazynTowaryController Controller
 
 
 <div class="container-fluid d-flex flex-column h-100 p-0 m-0">
     <div class="row text-white p-3">
         <div class="col text-center">
-            <h2>Lokalizacje</h2>
+            <h2>Magazyn towary</h2>
         </div>
     </div>
     @if (Controller.IsLoading)
@@ -20,7 +21,7 @@
     }
     else if (Controller.Items == null || !Controller.Items.Any())
     {
-        <div class="alert alert-warning">Brak lokalizacji w systemie</div>
+        <div class="alert alert-warning">Brak danych w systemie</div>
     }
     else
     {
@@ -30,16 +31,19 @@
                     @foreach (var item in Controller.Items)
                     {
                         <li class="list-group-item rounded-3 m-1 d-flex justify-content-between align-items-center cursor: pointer;">
-                            <span><strong>@item.NazwaKlienta</strong> <br/> @item.Ulica @item.Miasto</span>
+                            <span>
+                                Magazyn: <strong>@item.MagazynData</strong> <br />
+                                <strong>@item.TowarData:</strong> @item.Stan
+                            </span>
                             <div class="d-flex">
                                 <img src="content/edit.svg"
                                      class="me-2 action-icon"
                                      alt="Edytuj"
-                                     @onclick="() => Controller.ModalController.ShowEditModal(item)"/>
+                                     @onclick="() => Controller.ModalController.ShowEditModal(item)" />
                                 <img src="content/delete.svg"
                                      class="action-icon"
                                      alt="Usuń"
-                                     @onclick="() => Controller.ModalController.ShowDeleteConfirmationModal(item)"/>
+                                     @onclick="() => Controller.ModalController.ShowDeleteConfirmationModal(item)" />
                             </div>
                         </li>
                     }
@@ -48,11 +52,11 @@
             <img src="content/add.svg"
                  class="action-icon action-icon-add position-absolute bottom-0 start-50 translate-middle-x"
                  alt="Dodaj"
-                 @onclick="Controller.ModalController.ShowAddModal"/>
+                 @onclick="Controller.ModalController.ShowAddModal">
 
             @if (@Controller.ModalController.ShowSuccess)
             {
-                <div class="position-absolute bottom-50 alert-dark text-center p-5">Lokalizacja został usunięta</div>
+                <div class="position-absolute bottom-50 alert-dark text-center p-5">Towar z magazynu został usunięty</div>
             }
             @if (@Controller.ModalController.ShowError)
             {
@@ -71,32 +75,38 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">@(Controller.ModalController.IsNew ? "Dodaj nową" : "Edytuj") lokalizację</h5>
+                            <h5 class="modal-title">@(Controller.ModalController.IsNew ? "Dodaj nowy" : "Edytuj") magazyn towar</h5>
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
-                                <label>Nazwa:</label>
-                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.NazwaKlienta"/>
+                                <label>Magazyn:</label>
+                                <InputSelect class="form-control" @bind-Value="Controller.ModalController.CurrentItem.Idmagazynu" disabled="@(Controller.ModalController.IsNew ? false : true)">
+                                    ">
+                                    <option value="">-- Wybierz magazyn --</option>
+                                    @foreach (var magazyn in Controller.ModalController.Magazyny)
+                                    {
+                                        <option value="@magazyn.Idmagazynu">@magazyn.Nazwa</option>
+                                    }
+                                </InputSelect>
                             </div>
                             <div class="form-group">
-                                <label>Ulica:</label>
-                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Ulica"/>
+                                <label>Towar:</label>
+                                <InputSelect class="form-control" @bind-Value="Controller.ModalController.CurrentItem.Idtowaru" disabled="@(Controller.ModalController.IsNew ? false : true)">
+                                    >
+                                    <option value="">-- Wybierz towar --</option>
+                                    @foreach (var towar in Controller.ModalController.Towary)
+                                    {
+                                        <option value="@towar.Idtowaru">@towar.Nazwa</option>
+                                    }
+                                </InputSelect>
                             </div>
                             <div class="form-group">
-                                <label>Miasto:</label>
-                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Miasto"/>
-                            </div>
-                            <div class="form-group">
-                                <label>Kod pocztowy:</label>
-                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.KodPocztowy"/>
-                            </div>
-                            <div class="form-group">
-                                <label>Kraj:</label>
-                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Kraj"/>
+                                <label>Stan:</label>
+                                <InputNumber class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Stan" />
                             </div>
                             <div class="form-group">
                                 <label>Opis:</label>
-                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Opis"/>
+                                <InputText class="form-control" @bind-Value="@Controller.ModalController.CurrentItem.Opis" />
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -107,7 +117,6 @@
                 </div>
             </div>
         }
-
         @if (Controller.ModalController.ShowDeleteModal)
         {
             <div class="modal d-block fade show" tabindex="-1" role="dialog" style="background:rgba(0,0,0,0.5)">
@@ -117,7 +126,7 @@
                             <h5 class="modal-title">Potwierdzenie</h5>
                         </div>
                         <div class="modal-body">
-                            <p>Czy na pewno chcesz usunąć lokalizację <strong>@Controller.ModalController.CurrentItem.NazwaKlienta</strong>?</p>
+                            <p>Czy na pewno chcesz usunąć towar z magazynu <strong>@Controller.ModalController.CurrentItem.TowarData z @Controller.ModalController.CurrentItem.MagazynData </strong>?</p>
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary" @onclick="Controller.ModalController.CloseDeleteModal">Anuluj</button>
@@ -133,6 +142,7 @@
     protected override async Task OnInitializedAsync()
     {
         await Controller.LoadDataAsync();
+        await Controller.ModalController.LoadDataAsync();
     }
 
     private async Task SaveItem()

@@ -19,5 +19,7 @@ namespace RestAPIVend.ForView
         public string Kraj { get; set; } = null!;
 
         public string? Opis { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace SmartVendApp.Controllers.Interface
 {
-    public interface IListController<T> //where T : new()
+    public interface IListController<T>
     {
         bool IsLoading { get; set; }
         string ErrorMessage { get; set; }
@@ -8,6 +8,6 @@
 
         Task LoadDataAsync();
         Task<bool> SaveItemAsync(T item);
-        Task<bool> DeleteItemAsync(int id);
+        Task<bool> DeleteItemAsync(T item);
     }
 }

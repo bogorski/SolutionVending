@@ -1,10 +1,5 @@
 ﻿using SmartVendApp.Controllers.Abstract;
 using SmartVendApp.ServiceReference;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SmartVendApp.Services;
 
 namespace SmartVendApp.Controllers.StanowiskaPracy

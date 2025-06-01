@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SmartVendApp.Controllers.Interface
+﻿namespace SmartVendApp.Controllers.Interface
 {
-    public interface IModalController<T> //where T : new()
+    public interface IModalController<T>
     {
-        // Properties
         bool ShowModal { get; set; }
         bool ShowDeleteModal { get; set; }
         T CurrentItem { get; set; }
@@ -16,14 +9,12 @@ namespace SmartVendApp.Controllers.Interface
         string Title { get; }
         bool ShowSuccess { get; set; }
         bool ShowError { get; set; }
-        List<T> Items { get; set; }  // Dodane do obsługi listy
-        bool IsLoading { get; set; } // Dodane do obsługi stanu ładowania
+        List<T> Items { get; set; }
+        bool IsLoading { get; set; }
 
-        // Methods
         Task<bool> SaveAsync();
-        Task<bool> DeleteAsync();
-        Task LoadItemsAsync();       // Dodane do ładowania danych
-        void ShowAddModal();
+        Task<bool> DeleteAsync();  
+        Task ShowAddModal();
         void ShowEditModal(T item);
         void ShowDeleteConfirmationModal(T item);
         void CloseModal();

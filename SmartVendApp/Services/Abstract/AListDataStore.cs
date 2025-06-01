@@ -3,9 +3,7 @@
     public abstract class AListDataStore<T> : IDataStore<T>
     {
         protected List<T> items;
-        public AListDataStore()
-        {
-        }
+      
         public virtual async Task Refresh()
         {
             try
@@ -66,30 +64,7 @@
                 return false;
             }
         }
-        public virtual async Task<T> FindAsync(int id)
-        {
-            await Refresh();
-
-            if (items == null || !items.Any())
-            {
-                System.Diagnostics.Debug.Print($"Kolekcja jest null lub pusta.");
-                return default;
-            }
-
-            return items.FirstOrDefault(item => GetItemId(item) == id);
-        }
-        public virtual async Task<T> FindAsync(T item)
-        {
-            await Refresh();
-
-            if (items == null || !items.Any())
-            {
-                System.Diagnostics.Debug.Print($"Kolekcja jest null lub pusta.");
-                return default;
-            }
-
-            return items.FirstOrDefault(x => GetItemId(x) == GetItemId(item));
-        }
+       
 
 
         public async Task<bool> AddItemAsync(T item)
@@ -105,18 +80,14 @@
             await Refresh();
             return await Task.FromResult(true);
         }
-
-        public async Task<bool> DeleteItemAsync(int id)
+        public async Task<bool> DeleteItemAsync(T item)
         {
-            var oldItem = await FindAsync(id);
-            if (oldItem == null) return false;
+            if (item == null) return false;
 
-            await DeleteItemFromService(oldItem);
+            await DeleteItemFromService(item);
             await Refresh();
-            return await Task.FromResult(true);
+            return true;
         }
-
-        public async Task<T> GetItemAsync(int id) => await Task.FromResult(await FindAsync(id));
 
         public async Task<IEnumerable<T>> GetItemsAsync(bool forceRefresh = false)
         {

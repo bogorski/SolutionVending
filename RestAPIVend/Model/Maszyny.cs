@@ -29,6 +29,8 @@ public partial class Maszyny
     public DateTime? DataMontazu { get; set; }
 
     public bool? IsActive { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
 
     [Key]
     [Column("id")]

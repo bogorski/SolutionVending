@@ -49,6 +49,21 @@ namespace RestAPIVend.AutoMapperProfiles
                 .ForMember(dest => dest.IdstanowiskaPracyNavigation, opt => opt.Ignore())
                 .ForMember(dest => dest.IdpojazduNavigation, opt => opt.Ignore())
                 .ForMember(dest => dest.IdtrasyNavigation, opt => opt.Ignore());
+
+            CreateMap<MagazynTowary, MagazynTowaryForView>()
+                .ForMember(dest => dest.MagazynData,
+                    opt => opt.MapFrom(src => src.IdmagazynuNavigation != null ? src.IdmagazynuNavigation.Nazwa : null))
+                .ForMember(dest => dest.TowarData,
+                    opt => opt.MapFrom(src => src.IdtowaruNavigation != null ? src.IdtowaruNavigation.Nazwa : null));
+            CreateMap<MagazynTowaryForView, MagazynTowary>()
+                .ForMember(dest => dest.IdmagazynuNavigation, opt => opt.Ignore())
+                .ForMember(dest => dest.IdtowaruNavigation, opt => opt.Ignore());
+
+            CreateMap<Maszyny, MaszynyForView>()
+                .ForMember(dest => dest.TypMaszynyData,
+                    opt => opt.MapFrom(src => src.IdtypMaszynyNavigation != null ? src.IdtypMaszynyNavigation.Typ : null));
+            CreateMap<MaszynyForView, Maszyny>()
+                .ForMember(dest => dest.IdtypMaszynyNavigation, opt => opt.Ignore());
         }
     }
 }

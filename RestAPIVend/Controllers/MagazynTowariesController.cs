@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RestAPIVend.ForView;
 using RestAPIVend.Model;
 using RestAPIVend.Model.Context;
 
@@ -15,60 +17,67 @@ namespace RestAPIVend.Controllers
     public class MagazynTowariesController : ControllerBase
     {
         private readonly CompanyContext _context;
+        private readonly IMapper _mapper;
 
-        public MagazynTowariesController(CompanyContext context)
+        public MagazynTowariesController(CompanyContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/MagazynTowaries
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MagazynTowary>>> GetMagazynTowaries()
+        public async Task<ActionResult<IEnumerable<MagazynTowaryForView>>> GetMagazynTowaries()
         {
-            return await _context.MagazynTowaries.ToListAsync();
+            if (_context.MagazynTowaries == null)
+            {
+                return NotFound();
+            }
+
+            var magazynTowary = await _context.MagazynTowaries
+                .Include(p => p.IdtowaruNavigation)
+                .Include(p => p.IdmagazynuNavigation)
+                .Where(p => p.IsActive ?? false)
+                .ToListAsync();
+
+            var result = _mapper.Map<List<MagazynTowaryForView>>(magazynTowary);
+
+            return Ok(result);
         }
 
         // GET: api/MagazynTowaries/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<MagazynTowary>> GetMagazynTowary(int id)
+        [HttpGet("{idMagazynu}/{idTowaru}")]
+        public async Task<ActionResult<MagazynTowaryForView>> GetMagazynTowary(int idMagazynu, int idTowaru)
         {
-            var magazynTowary = await _context.MagazynTowaries.FindAsync(id);
+            var magazynTowary = await _context.MagazynTowaries
+                .Include(p => p.IdtowaruNavigation)
+                .Include(p => p.IdmagazynuNavigation)
+                .Where(p => (p.IsActive ?? false) &&
+                            p.Idtowaru == idTowaru && 
+                            p.Idmagazynu == idMagazynu)
+                .FirstOrDefaultAsync();
 
             if (magazynTowary == null)
             {
                 return NotFound();
             }
 
-            return magazynTowary;
+            var result = _mapper.Map<MagazynTowaryForView>(magazynTowary);
+
+            return Ok(result);
         }
 
         // PUT: api/MagazynTowaries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMagazynTowary(int id, MagazynTowary magazynTowary)
+        [HttpPut("{idMagazynu}/{idTowaru}")]
+        public async Task<IActionResult> PutMagazynTowary(int idMagazynu, int idTowaru, MagazynTowaryForView magazynTowaryForView)
         {
-            if (id != magazynTowary.Idmagazynu)
-            {
-                return BadRequest();
-            }
+            var existing = await _context.MagazynTowaries
+                .FirstOrDefaultAsync(p => p.Idmagazynu == idMagazynu && p.Idtowaru == idTowaru);
+            if (existing == null) return NotFound();
 
-            _context.Entry(magazynTowary).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MagazynTowaryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _mapper.Map(magazynTowaryForView, existing);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -76,47 +85,36 @@ namespace RestAPIVend.Controllers
         // POST: api/MagazynTowaries
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<MagazynTowary>> PostMagazynTowary(MagazynTowary magazynTowary)
+        public async Task<ActionResult<MagazynTowaryForView>> PostMagazynTowary(MagazynTowaryForView magazynTowaryForView)
         {
+            var magazynTowary = _mapper.Map<MagazynTowary>(magazynTowaryForView);
             _context.MagazynTowaries.Add(magazynTowary);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (MagazynTowaryExists(magazynTowary.Idmagazynu))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMagazynTowary", new { id = magazynTowary.Idmagazynu }, magazynTowary);
+            var result = _mapper.Map<MagazynTowaryForView>(magazynTowary);
+
+            return CreatedAtAction("GetMagazynTowary", new { idMagazynu = result.Idmagazynu, idTowaru = result.Idtowaru }, result);
         }
 
         // DELETE: api/MagazynTowaries/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMagazynTowary(int id)
+        [HttpDelete("{idMagazynu}/{idTowaru}")]
+        public async Task<IActionResult> DeleteMagazynTowary(int idMagazynu, int idTowaru)
         {
-            var magazynTowary = await _context.MagazynTowaries.FindAsync(id);
+            var magazynTowary = await _context.MagazynTowaries.FirstOrDefaultAsync(p => p.Idmagazynu == idMagazynu && p.Idtowaru == idTowaru);
             if (magazynTowary == null)
             {
                 return NotFound();
             }
 
-            _context.MagazynTowaries.Remove(magazynTowary);
+            magazynTowary.IsActive = false;
+            _context.Entry(magazynTowary).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
-
-        private bool MagazynTowaryExists(int id)
+        private bool MagazynTowaryExists(int idMagazynu, int idTowaru)
         {
-            return _context.MagazynTowaries.Any(e => e.Idmagazynu == id);
+            return _context.MagazynTowaries.Any(e => e.Idmagazynu == idMagazynu && e.Idtowaru == idTowaru);
         }
     }
 }
